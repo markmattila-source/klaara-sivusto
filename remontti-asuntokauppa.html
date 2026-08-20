@@ -71,6 +71,12 @@
             <option value="0.03">Kiinteistö / omakotitalo (varainsiirtovero 3 %)</option>
           </select>
         </div>
+
+        <div class="kentta" id="vastikeKentta">
+          <label for="vastike">Kuukausittainen yhtiövastike (€)</label>
+          <input type="number" id="vastike" value="250" min="0" step="10">
+          <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Vain asunto-osakkeille — kiinteistöllä/omakotitalolla ei ole yhtiövastiketta, vaan omat erilliset ylläpitokulut.</div>
+        </div>
       </div>
 
       <div class="osio-otsikko">Remontti</div>
@@ -167,6 +173,11 @@
         </div>
       </div>
 
+      <div class="kentta">
+        <label for="avausmaksu">Lainan avaus-/järjestelymaksu (€) — valinnainen</label>
+        <input type="number" id="avausmaksu" value="0" min="0" step="10">
+      </div>
+
     </div>
 
     <!-- RESULTS -->
@@ -211,6 +222,12 @@
 
       <div class="lainapaneeli">
         <h3>Rahoituksen erittely</h3>
+
+        <div id="kuukausiKokonaisLaatikko" class="ei-lainatarvetta" style="background:#EDF3EF; margin-bottom:14px;">
+          <div style="font-size:12px; color:var(--muste-hiljainen); margin-bottom:4px;">Kuukausittainen kokonaiskustannus asumisesta</div>
+          <div class="kuukausierä" id="kuukausiKokonais" style="font-size:26px;">—</div>
+          <div style="font-size:12px; color:var(--muste-hiljainen); margin-top:4px;" id="kuukausiKokonaisSelite">Lainaerä + yhtiövastike</div>
+        </div>
 
         <div id="eiLainatarvetta" class="ei-lainatarvetta piilotettu">
           Ei rahoitustarvetta — omat säästösi kattavat koko kokonaiskustannuksen.
@@ -311,6 +328,26 @@
               <div class="palkki-arvo" id="palkkiBulArvo">—</div>
             </div>
           </div>
+
+          <div class="vertailu-otsikko">Korkoriski — mitä jos korko nousisi?</div>
+          <div class="osio-selite" style="margin-top:-4px;">Valitun lainatyypin ensimmäinen kuukausierä nykyisellä korolla ja kaksi mahdollista korkonousua verrattuna.</div>
+          <div class="palkki-vertailu" style="margin-top:10px;">
+            <div class="palkki-rivi">
+              <div class="palkki-nimi" id="korkoriskiNimi1">Nykyinen</div>
+              <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiKorkoNyt" style="background: var(--kuusi); width: 0%;"></div></div>
+              <div class="palkki-arvo" id="palkkiKorkoNytArvo">—</div>
+            </div>
+            <div class="palkki-rivi">
+              <div class="palkki-nimi" id="korkoriskiNimi2">+1 %-yks.</div>
+              <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiKorkoP1" style="background: var(--ruska); width: 0%;"></div></div>
+              <div class="palkki-arvo" id="palkkiKorkoP1Arvo">—</div>
+            </div>
+            <div class="palkki-rivi">
+              <div class="palkki-nimi" id="korkoriskiNimi3">+2 %-yks.</div>
+              <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiKorkoP2" style="background: var(--virhe); width: 0%;"></div></div>
+              <div class="palkki-arvo" id="palkkiKorkoP2Arvo">—</div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -353,7 +390,7 @@
     <details class="termi">
       <summary>Varainsiirtovero</summary>
       <div class="termi-teksti">
-        Kertaluonteinen vero, joka maksetaan asunnon tai kiinteistön kaupan yhteydessä. Asunto-osakkeesta (esim. kerros- tai rivitalohuoneisto) vero on 1,5 % kauppahinnasta, kiinteistöstä (esim. omakotitalo tontteineen) 3 %. Ensiasunnon ostaja voi tietyin ehdoin olla vapautettu verosta — laskuri ei huomioi ensiasunto-vapautusta automaattisesti. <a href="sanasto-varainsiirtovero.html">Lue tarkempi selitys →</a>
+        Kertaluonteinen vero, joka maksetaan asunnon tai kiinteistön kaupan yhteydessä. Asunto-osakkeesta (esim. kerros- tai rivitalohuoneisto) vero on 1,5 % kauppahinnasta, kiinteistöstä (esim. omakotitalo tontteineen) 3 %. Ensiasunnon ostajan verovapaus poistui vuoden 2024 alusta — kaikki ostajat maksavat nykyään saman veron. <a href="sanasto-varainsiirtovero.html">Lue tarkempi selitys →</a>
       </div>
     </details>
 
@@ -502,6 +539,11 @@
 
     const korko = parseFloat(el('korko').value) || 0;
     const lainaAika = parseFloat(el('lainaAika').value) || 0;
+    const avausmaksu = parseFloat(el('avausmaksu').value) || 0;
+
+    const onAsuntoOsake = veroProsentti === 0.015;
+    el('vastikeKentta').classList.toggle('piilotettu', !(sisallytaAsunto && onAsuntoOsake));
+    const vastike = (sisallytaAsunto && onAsuntoOsake) ? (parseFloat(el('vastike').value) || 0) : 0;
 
     // --- Näytä/piilota osiot togglien mukaan ---
     el('riviVarainsiirto').classList.toggle('piilotettu', !sisallytaAsunto);
@@ -532,6 +574,13 @@
     el('eiLainatarvetta').classList.toggle('piilotettu', !eiTarvetta);
     el('lainaTulokset').classList.toggle('piilotettu', eiTarvetta);
 
+    if (eiTarvetta) {
+      el('kuukausiKokonais').textContent = vastike > 0 ? (fmt(vastike) + ' / kk') : fmt(0) + ' / kk';
+      el('kuukausiKokonaisSelite').textContent = vastike > 0
+        ? `Ei lainaa — pelkkä yhtiövastike ${fmt(vastike)}`
+        : 'Ei lainaa eikä yhtiövastiketta';
+    }
+
     if (!eiTarvetta) {
       const ann = laskeAnnuiteetti(rahoitettava, korko, lainaAika);
       const tal = laskeTasalyhennys(rahoitettava, korko, lainaAika);
@@ -553,7 +602,34 @@
 
       const valittu = lainatyyppiTila === 'annuiteetti' ? ann : (lainatyyppiTila === 'tasalyhennys' ? tal : bul);
       el('valittuYhteensaKorko').textContent = fmt(valittu.korkoYht);
-      el('valittuYhteensaMaksettu').textContent = fmt(valittu.maksettuYht);
+      el('valittuYhteensaMaksettu').textContent = fmt(valittu.maksettuYht + avausmaksu);
+
+      // --- Kuukausittainen kokonaiskustannus (valittu lainaerä + vastike) ---
+      const kuukausiKokonais = valittu.alku + vastike;
+      el('kuukausiKokonais').textContent = fmt(kuukausiKokonais) + ' / kk';
+      el('kuukausiKokonaisSelite').textContent = vastike > 0
+        ? `Lainaerä ${fmt(valittu.alku)} + yhtiövastike ${fmt(vastike)}`
+        : 'Lainaerä (ei yhtiövastiketta valitulle kohdetyypille)';
+
+      // --- Korkoriski: sama lainatyyppi ja summa, korko +0 / +1 / +2 %-yks. ---
+      function eraValitulla(k) {
+        if (lainatyyppiTila === 'annuiteetti') return laskeAnnuiteetti(rahoitettava, k, lainaAika).alku;
+        if (lainatyyppiTila === 'tasalyhennys') return laskeTasalyhennys(rahoitettava, k, lainaAika).alku;
+        return laskeBulletti(rahoitettava, k, lainaAika).alku;
+      }
+      const eraNyt = eraValitulla(korko);
+      const eraP1 = eraValitulla(korko + 1);
+      const eraP2 = eraValitulla(korko + 2);
+      const maxEra = Math.max(eraNyt, eraP1, eraP2, 1);
+      el('korkoriskiNimi1').textContent = korko.toFixed(1).replace('.', ',') + ' %';
+      el('korkoriskiNimi2').textContent = (korko + 1).toFixed(1).replace('.', ',') + ' %';
+      el('korkoriskiNimi3').textContent = (korko + 2).toFixed(1).replace('.', ',') + ' %';
+      el('palkkiKorkoNyt').style.width = (eraNyt / maxEra * 100) + '%';
+      el('palkkiKorkoP1').style.width = (eraP1 / maxEra * 100) + '%';
+      el('palkkiKorkoP2').style.width = (eraP2 / maxEra * 100) + '%';
+      el('palkkiKorkoNytArvo').textContent = fmt(eraNyt) + ' / kk';
+      el('palkkiKorkoP1Arvo').textContent = fmt(eraP1) + ' / kk';
+      el('palkkiKorkoP2Arvo').textContent = fmt(eraP2) + ' / kk';
 
       // Vertailutaulukko
       el('vAnnAlku').textContent = fmt(ann.alku); el('vAnnLoppu').textContent = fmt(ann.loppu);
