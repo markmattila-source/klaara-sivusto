@@ -1,0 +1,772 @@
+/* ============================================
+   KLAARA — jaettu tyylitiedosto
+   Kaikki sivut viittaavat tähän samaan tiedostoon.
+   Väri- ja fonttisäännöt: ks. Klaara-brandiohje.md
+   ============================================ */
+
+:root {
+  --tausta: #F2F5F1;
+  --paneeli: #FFFFFF;
+  --muste: #16241F;
+  --muste-hiljainen: #4B5A54;
+  --kuusi: #2F5D50;
+  --kuusi-tumma: #1E3F36;
+  --ruska: #C98A3B;
+  --taivas: #4C6E96;
+  --viiva: #D9DFDA;
+  --virhe: #A34D3C;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--tausta);
+  color: var(--muste);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--kuusi-tumma); }
+
+.kehys {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 20px 80px;
+}
+
+/* ---------- Header / brändimerkki ---------- */
+
+header.brandi {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.merkki {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.merkki-symboli {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.merkki-symboli img,
+.merkki-symboli svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.merkki-nimi {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--muste);
+}
+
+.merkki-tagline {
+  font-size: 13px;
+  color: var(--muste-hiljainen);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ---------- Päänavigaatio ---------- */
+
+.paanavi {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: -28px 0 32px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+}
+
+.paanavi a {
+  color: var(--muste-hiljainen);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+}
+
+.paanavi a:hover,
+.paanavi a.aktiivinen {
+  color: var(--kuusi-tumma);
+  border-bottom-color: var(--kuusi);
+}
+
+/* ---------- Sisältösivun runko (sanasto/UKK-artikkelit) ---------- */
+
+.artikkeli {
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: var(--radius);
+  padding: 30px 32px 34px;
+  max-width: 720px;
+}
+
+.artikkeli p {
+  font-size: 15px;
+  color: var(--muste);
+  line-height: 1.65;
+}
+
+.artikkeli p.ingressi {
+  font-size: 16.5px;
+  color: var(--muste-hiljainen);
+  line-height: 1.6;
+}
+
+.artikkeli h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 17px;
+  margin: 26px 0 10px;
+}
+
+.cta-laskuri {
+  margin-top: 26px;
+  padding: 18px 20px;
+  background: #EDF3EF;
+  border: 1px solid #D3E3D8;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cta-laskuri span {
+  font-size: 14px;
+  color: var(--kuusi-tumma);
+}
+
+.cta-laskuri a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--kuusi);
+  padding: 9px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.muut-termit {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--viiva);
+}
+
+.muut-termit .otsikko {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muste-hiljainen);
+  margin-bottom: 10px;
+}
+
+.muut-termit ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.muut-termit a {
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.muut-termit a:hover { text-decoration: underline; }
+
+/* ---------- Vuosikello ---------- */
+
+.vuosikello-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.kuukausi-kortti {
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: var(--radius);
+  padding: 20px 22px 22px;
+}
+
+.kuukausi-kortti .kuukausi-nimi {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 0 3px;
+}
+
+.kuukausi-kortti .kuukausi-teema {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--kuusi);
+  margin-bottom: 12px;
+}
+
+.kuukausi-kortti ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kuukausi-kortti li {
+  font-size: 13.5px;
+  color: var(--muste-hiljainen);
+  line-height: 1.5;
+}
+
+.kuukausi-kortti li a { font-weight: 500; }
+
+.kuukausi-kortti .tulossa-maininta {
+  font-style: italic;
+  opacity: 0.75;
+}
+
+/* ---------- Hero ---------- */
+
+.hero { margin-bottom: 36px; }
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(28px, 4.2vw, 44px);
+  line-height: 1.12;
+  margin: 0 0 14px;
+  max-width: 720px;
+  letter-spacing: -0.01em;
+}
+
+.hero p {
+  font-size: 16px;
+  color: var(--muste-hiljainen);
+  max-width: 560px;
+  margin: 0;
+}
+
+/* ---------- Etusivun työkalukortit ---------- */
+
+.tyokalu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.tyokalu-kortti {
+  display: block;
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-decoration: none;
+  color: var(--muste);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.tyokalu-kortti:hover { border-color: var(--kuusi); transform: translateY(-2px); }
+
+.tyokalu-kortti .tyokalu-tila {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--kuusi);
+  margin-bottom: 10px;
+}
+
+.tyokalu-kortti h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 19px;
+  margin: 0 0 8px;
+}
+
+.tyokalu-kortti p {
+  font-size: 13.5px;
+  color: var(--muste-hiljainen);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.tyokalu-kortti.tulossa { opacity: 0.55; cursor: default; }
+.tyokalu-kortti.tulossa:hover { border-color: var(--viiva); transform: none; }
+
+/* ---------- Takaisin-linkki työkalusivuilla ---------- */
+
+.takaisin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  color: var(--muste-hiljainen);
+  text-decoration: none;
+  margin-bottom: 18px;
+}
+
+.takaisin:hover { color: var(--kuusi-tumma); }
+
+/* ---------- Lomakerunko (laskurisivut) ---------- */
+
+.runko {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 22px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .runko { grid-template-columns: 1fr; }
+}
+
+.paneeli {
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: var(--radius);
+  padding: 26px 26px 30px;
+}
+
+.paneeli h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.osio-otsikko {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muste-hiljainen);
+  margin: 22px 0 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--viiva);
+}
+
+.osio-otsikko:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+
+.osio-selite {
+  font-size: 12.5px;
+  color: var(--muste-hiljainen);
+  margin: -4px 0 12px;
+}
+
+.kentta { margin-bottom: 14px; }
+
+.kentta label {
+  display: block;
+  font-size: 13.5px;
+  color: var(--muste-hiljainen);
+  margin-bottom: 5px;
+}
+
+.kentta input[type="number"],
+.kentta select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--viiva);
+  border-radius: 9px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  color: var(--muste);
+  background: #FCFCFB;
+  transition: border-color 0.15s ease;
+}
+
+.kentta input[type="number"]:focus,
+.kentta select:focus {
+  outline: 2px solid var(--kuusi);
+  outline-offset: 1px;
+  border-color: var(--kuusi);
+}
+
+.kentta input:disabled,
+.kentta select:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.rivi-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.kytkin-rivi {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 4px;
+}
+
+.kytkin-rivi label { font-size: 13.5px; color: var(--muste); margin: 0; }
+
+.kytkin { position: relative; width: 44px; height: 25px; flex-shrink: 0; }
+.kytkin input { opacity: 0; width: 0; height: 0; }
+
+.liuku {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #C6CDC8;
+  border-radius: 30px;
+  transition: background 0.15s ease;
+}
+
+.liuku::before {
+  content: "";
+  position: absolute;
+  height: 19px;
+  width: 19px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.15s ease;
+}
+
+input:checked + .liuku { background: var(--kuusi); }
+input:checked + .liuku::before { transform: translateX(19px); }
+input:focus-visible + .liuku { outline: 2px solid var(--kuusi); outline-offset: 2px; }
+
+.piilotettu { display: none !important; }
+
+/* Segmentoitu valitsin: käytetään sekä laki- että lainatyyppi-valitsimessa */
+.segmentti-valitsin {
+  display: flex;
+  border: 1px solid var(--viiva);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.segmentti-valitsin button {
+  flex: 1;
+  border: none;
+  background: #FCFCFB;
+  padding: 11px 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--muste-hiljainen);
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.4;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.segmentti-valitsin button + button { border-left: 1px solid var(--viiva); }
+
+.segmentti-valitsin button.aktiivinen { background: var(--kuusi); color: #fff; }
+
+.segmentti-valitsin button .tag-otsikko {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  margin-bottom: 2px;
+}
+
+.info-huomio {
+  font-size: 12px;
+  color: var(--muste-hiljainen);
+  background: #F5F0E6;
+  border: 1px solid #E8DCC2;
+  border-radius: 8px;
+  padding: 9px 11px;
+  margin-top: 8px;
+  line-height: 1.55;
+}
+
+/* ---------- Tulospaneeli ---------- */
+
+.tulos-paneeli { position: sticky; top: 20px; }
+
+.paatulos {
+  background: linear-gradient(160deg, var(--kuusi-tumma), var(--kuusi));
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 26px;
+  margin-bottom: 18px;
+}
+
+.paatulos .label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  opacity: 0.75;
+  margin-bottom: 8px;
+}
+
+.paatulos .summa {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(32px, 5vw, 46px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.paatulos .selite { font-size: 13px; opacity: 0.82; margin-top: 10px; }
+
+.erittely {
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: var(--radius);
+  padding: 6px 24px;
+}
+
+.erittely-rivi {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--viiva);
+  gap: 12px;
+}
+
+.erittely-rivi:last-child { border-bottom: none; }
+
+.erittely-rivi.korostettu .nimi { color: var(--muste); font-weight: 600; }
+.erittely-rivi.korostettu .arvo { font-size: 16.5px; }
+
+.erittely-rivi .nimi { font-size: 14px; color: var(--muste-hiljainen); }
+
+.erittely-rivi .nimi .alaselite {
+  display: block;
+  font-size: 11.5px;
+  color: #8A9590;
+  margin-top: 2px;
+}
+
+.erittely-rivi .arvo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.arvo.positiivinen { color: var(--kuusi-tumma); }
+.arvo.negatiivinen { color: var(--virhe); }
+
+.lainapaneeli {
+  margin-top: 18px;
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: var(--radius);
+  padding: 20px 24px 24px;
+}
+
+.lainapaneeli h3 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muste-hiljainen);
+  margin: 0 0 12px;
+}
+
+.lainatulos-rivi { display: flex; gap: 22px; flex-wrap: wrap; }
+.lainatulos-rivi .osa { flex: 1; min-width: 140px; }
+
+.lainatulos-rivi .osa .pikkulabel {
+  font-size: 11.5px;
+  color: var(--muste-hiljainen);
+  margin-bottom: 3px;
+}
+
+.kuukausierä { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600; }
+
+.ei-lainatarvetta {
+  font-size: 14px;
+  color: var(--kuusi-tumma);
+  background: #EDF3EF;
+  border: 1px solid #D3E3D8;
+  border-radius: 10px;
+  padding: 14px 16px;
+  line-height: 1.55;
+}
+
+.lainapaneeli-jalkihuomautus {
+  font-size: 12px;
+  color: var(--muste-hiljainen);
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--viiva);
+  line-height: 1.5;
+}
+
+/* ---------- Vertailutaulukko ---------- */
+
+.vertailu-otsikko {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muste-hiljainen);
+  margin: 20px 0 10px;
+}
+
+.vertailu-taulukko-kehys { overflow-x: auto; }
+
+table.vertailu-taulukko { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+
+table.vertailu-taulukko th,
+table.vertailu-taulukko td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--viiva);
+  white-space: nowrap;
+}
+
+table.vertailu-taulukko th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  color: var(--muste-hiljainen);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+table.vertailu-taulukko td.arvo-solu { font-family: 'IBM Plex Mono', monospace; }
+
+table.vertailu-taulukko tr.valittu-rivi td { background: #EDF3EF; font-weight: 600; }
+table.vertailu-taulukko tr:last-child td { border-bottom: none; }
+
+/* ---------- Korkovertailupalkit ---------- */
+
+.palkki-vertailu { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+
+.palkki-rivi {
+  display: grid;
+  grid-template-columns: 96px 1fr 88px;
+  align-items: center;
+  gap: 10px;
+}
+
+.palkki-rivi .palkki-nimi { font-size: 12px; color: var(--muste-hiljainen); }
+
+.palkki-tausta { background: #EEF1EE; border-radius: 6px; height: 14px; overflow: hidden; }
+.palkki-tayte { height: 100%; border-radius: 6px; transition: width 0.2s ease; }
+
+.palkki-rivi .palkki-arvo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---------- Sanasto ---------- */
+
+.sanasto {
+  margin-top: 26px;
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: var(--radius);
+  padding: 8px 24px;
+}
+
+.sanasto h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 18px 0 4px;
+  margin: 0;
+}
+
+.sanasto p.sanasto-intro { font-size: 13px; color: var(--muste-hiljainen); margin: 0 0 14px; }
+
+details.termi { border-top: 1px solid var(--viiva); padding: 14px 0; }
+
+details.termi summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--muste);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+details.termi summary::-webkit-details-marker { display: none; }
+
+details.termi summary::after {
+  content: "+";
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  color: var(--kuusi);
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+details.termi[open] summary::after { content: "–"; }
+
+details.termi .termi-teksti {
+  font-size: 13.5px;
+  color: var(--muste-hiljainen);
+  margin-top: 10px;
+  line-height: 1.6;
+  max-width: 680px;
+}
+
+details.termi .termi-teksti strong { color: var(--muste); }
+
+/* ---------- Footer ---------- */
+
+footer.alatunniste {
+  margin-top: 46px;
+  padding-top: 22px;
+  border-top: 1px solid var(--viiva);
+  font-size: 12.5px;
+  color: var(--muste-hiljainen);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.vastuuvapaus {
+  margin-top: 22px;
+  font-size: 12px;
+  color: var(--muste-hiljainen);
+  background: #FAFAF8;
+  border: 1px solid var(--viiva);
+  border-radius: 10px;
+  padding: 12px 15px;
+  line-height: 1.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

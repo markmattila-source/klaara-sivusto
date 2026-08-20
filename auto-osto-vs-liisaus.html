@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auton osto vs. liisaus -laskuri — Klaara</title>
+<meta name="description" content="Vertaile auton ostamista lainalla ja liisausta samalla vertailujaksolla — näet kokonaiskustannuksen ja euromääräisen eron selkeästi.">
+
+<link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/klaara-favicon-48.png">
+<link rel="apple-touch-icon" href="assets/klaara-app-ikoni-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="kehys">
+
+  <header class="brandi">
+    <a class="merkki" href="index.html">
+      <span class="merkki-symboli">
+        <img src="assets/klaara-merkki.svg" alt="Klaara-logo">
+      </span>
+      <span class="merkki-nimi">Klaara</span>
+    </a>
+    <div class="merkki-tagline">arjen laskurit — selkeästi</div>
+  </header>
+
+  <nav class="paanavi">
+    <a href="index.html">Etusivu</a>
+    <a href="talouden-vuosikello.html">Vuosikello</a>
+    <a href="esimerkit.html">Esimerkit</a>
+    <a href="sanasto.html">Sanasto</a>
+    <a href="ukk.html">UKK</a>
+  </nav>
+
+  <div class="hero">
+    <h1>Kannattaako auto ostaa vai liisata?</h1>
+    <p>Syötä auton hinta, rahoitusehdot ja liisaustarjous samalle vertailujaksolle — näet kokonaiskustannuksen molemmista rinnakkain, ei vain kuukausihinnan.</p>
+  </div>
+
+  <div class="runko">
+
+    <!-- INPUTS -->
+    <div class="paneeli">
+      <h2>Syötä tiedot</h2>
+
+      <div class="osio-otsikko">Vertailujakso</div>
+      <div class="osio-selite">Sama ajanjakso molemmille — oletetaan että lainan laina-aika ja liisaussopimus kestävät yhtä pitkään.</div>
+      <div class="kentta">
+        <label for="vertailujakso">Omistus-/sopimusaika (vuotta)</label>
+        <input type="number" id="vertailujakso" value="5" min="1" step="1">
+      </div>
+
+      <div class="osio-otsikko">Osto lainalla</div>
+      <div class="rivi-2">
+        <div class="kentta">
+          <label for="autonHinta">Auton hinta (€)</label>
+          <input type="number" id="autonHinta" value="30000" min="0" step="500">
+        </div>
+        <div class="kentta">
+          <label for="kasiraha">Käsiraha (€)</label>
+          <input type="number" id="kasiraha" value="5000" min="0" step="500">
+        </div>
+      </div>
+      <div class="kentta">
+        <label for="korko">Autolainan korko (%, vuosi)</label>
+        <input type="number" id="korko" value="5.5" min="0" step="0.1">
+      </div>
+
+      <div class="osio-otsikko">Jäännösarvo</div>
+      <div class="osio-selite">Arvioitu jälleenmyyntiarvo vertailujakson lopussa — pienentää oston nettokustannusta, koska auto on silloin omasi.</div>
+      <div class="kentta">
+        <label for="jaannosarvo">Arvioitu jälleenmyyntiarvo (€)</label>
+        <input type="number" id="jaannosarvo" value="12000" min="0" step="500">
+      </div>
+
+      <div class="osio-otsikko">Liisaus</div>
+      <div class="rivi-2">
+        <div class="kentta">
+          <label for="liisausKk">Kuukausivuokra (€)</label>
+          <input type="number" id="liisausKk" value="480" min="0" step="10">
+        </div>
+        <div class="kentta">
+          <label for="liisausAloitus">Aloitusmaksu (€)</label>
+          <input type="number" id="liisausAloitus" value="0" min="0" step="100">
+        </div>
+      </div>
+
+      <div class="info-huomio">
+        Laskuri ei sisällä huoltoa, vakuutuksia tai mahdollisia ylikilometrimaksuja — nämä vaihtelevat sopimuksittain ja kannattaa tarkistaa erikseen. Ei korvaa rahoitusyhtiön tai jälleenmyyjän tarjousta.
+      </div>
+
+    </div>
+
+    <!-- RESULTS -->
+    <div class="tulos-paneeli">
+
+      <div class="paatulos">
+        <div class="label">Ero kahden vaihtoehdon välillä</div>
+        <div class="summa" id="ero">—</div>
+        <div class="selite" id="eroSelite">Nettokustannusten erotus vertailujaksolta</div>
+      </div>
+
+      <div class="vertailu-otsikko">Vertailu vertailujaksolta</div>
+      <div class="vertailu-taulukko-kehys">
+        <table class="vertailu-taulukko">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Osto</th>
+              <th>Liisaus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Käsiraha / aloitusmaksu</td>
+              <td class="arvo-solu" id="vKasiraha">—</td>
+              <td class="arvo-solu" id="vAloitus">—</td>
+            </tr>
+            <tr>
+              <td>Kuukausierä</td>
+              <td class="arvo-solu" id="vOstoKk">—</td>
+              <td class="arvo-solu" id="vLiisausKk">—</td>
+            </tr>
+            <tr>
+              <td>Maksettu yhteensä</td>
+              <td class="arvo-solu" id="vOstoYht">—</td>
+              <td class="arvo-solu" id="vLiisausYht">—</td>
+            </tr>
+            <tr>
+              <td>Jäännösarvo (jää omaksi)</td>
+              <td class="arvo-solu" id="vJaannos">—</td>
+              <td class="arvo-solu">—</td>
+            </tr>
+            <tr class="valittu-rivi">
+              <td>Nettokustannus</td>
+              <td class="arvo-solu" id="vOstoNetto">—</td>
+              <td class="arvo-solu" id="vLiisausNetto">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="palkki-vertailu" style="margin-top:18px;">
+        <div class="palkki-rivi">
+          <div class="palkki-nimi">Osto</div>
+          <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiOsto" style="background: var(--kuusi); width: 0%;"></div></div>
+          <div class="palkki-arvo" id="palkkiOstoArvo">—</div>
+        </div>
+        <div class="palkki-rivi">
+          <div class="palkki-nimi">Liisaus</div>
+          <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiLiisaus" style="background: var(--taivas); width: 0%;"></div></div>
+          <div class="palkki-arvo" id="palkkiLiisausArvo">—</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="artikkeli" style="max-width:100%; margin-top:26px;">
+    <h2>Mitä laskuri ei näytä</h2>
+    <p>Huolto, vakuutukset ja renkaat maksavat kummassakin vaihtoehdossa, mutta niiden sisältyminen sopimukseen vaihtelee — osa liisaussopimuksista sisältää huollon, osa ei. Nämä kannattaa lisätä mukaan itse vertailuun, jos ne eroavat merkittävästi vaihtoehtojen välillä.</p>
+    <h2>Miksi jäännösarvo on epävarmin luku laskurissa</h2>
+    <p>Toisin kuin korko tai kuukausivuokra, jälleenmyyntiarvo on aina arvio — se riippuu automallista, kunnosta, ajetuista kilometreistä ja käytettyjen autojen markkinatilanteesta vertailujakson lopussa. Kannattaa kokeilla laskuria muutamalla eri jäännösarvo-oletuksella nähdäksesi kuinka herkkä lopputulos on tälle luvulle.</p>
+    <h2>Milloin liisaus voi olla parempi vaihtoehto puhtaasta hintavertailusta huolimatta</h2>
+    <p>Liisaus voi olla houkutteleva, vaikka se ei olisi euromääräisesti halvin vaihtoehto — esimerkiksi jos haluaa ennakoitavan kuukausikulun ilman yllätyksiä, vaihtaa autoa useammin, tai välttää huolen jälleenmyynnistä. Tämä laskuri vastaa vain kysymykseen "kumpi on halvempi", ei "kumpi sopii elämäntilanteeseeni".</p>
+  </div>
+
+  <footer class="alatunniste">
+    <span>Klaara — arjen laskurit, selkeästi.</span>
+    <span>Tiedot päivitetty 08/2026</span>
+  </footer>
+
+</div>
+
+<script>
+  const el = id => document.getElementById(id);
+  const fmt = n => new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+
+  function annuiteetti(P, vuosikorko, vuodet) {
+    const kk = vuosikorko / 100 / 12;
+    const N = vuodet * 12;
+    if (P <= 0 || N <= 0) return { era: 0, maksettuYht: 0 };
+    const era = kk === 0 ? P / N : P * kk * Math.pow(1 + kk, N) / (Math.pow(1 + kk, N) - 1);
+    return { era, maksettuYht: era * N };
+  }
+
+  function laske() {
+    const vertailujakso = parseFloat(el('vertailujakso').value) || 0;
+    const autonHinta = parseFloat(el('autonHinta').value) || 0;
+    const kasiraha = Math.min(parseFloat(el('kasiraha').value) || 0, autonHinta);
+    const korko = parseFloat(el('korko').value) || 0;
+    const jaannosarvo = parseFloat(el('jaannosarvo').value) || 0;
+    const liisausKk = parseFloat(el('liisausKk').value) || 0;
+    const liisausAloitus = parseFloat(el('liisausAloitus').value) || 0;
+
+    const rahoitettava = Math.max(0, autonHinta - kasiraha);
+    const { era, maksettuYht } = annuiteetti(rahoitettava, korko, vertailujakso);
+
+    const ostoBrutto = kasiraha + maksettuYht;
+    const ostoNetto = ostoBrutto - jaannosarvo;
+
+    const kkLkm = vertailujakso * 12;
+    const liisausYht = liisausAloitus + liisausKk * kkLkm;
+
+    const ero = ostoNetto - liisausYht;
+    const halvempi = ero < 0 ? 'Osto' : (ero > 0 ? 'Liisaus' : 'Kumpikin yhtä kallis');
+
+    el('ero').textContent = fmt(Math.abs(ero));
+    el('eroSelite').textContent = ero === 0
+      ? 'Vaihtoehdot maksavat yhtä paljon näillä luvuilla'
+      : `${halvempi} on halvempi näillä luvuilla vertailujaksolta`;
+
+    el('vKasiraha').textContent = fmt(kasiraha);
+    el('vAloitus').textContent = fmt(liisausAloitus);
+    el('vOstoKk').textContent = fmt(era) + ' / kk';
+    el('vLiisausKk').textContent = fmt(liisausKk) + ' / kk';
+    el('vOstoYht').textContent = fmt(ostoBrutto);
+    el('vLiisausYht').textContent = fmt(liisausYht);
+    el('vJaannos').textContent = '−' + fmt(jaannosarvo);
+    el('vOstoNetto').textContent = fmt(ostoNetto);
+    el('vLiisausNetto').textContent = fmt(liisausYht);
+
+    document.getElementById('vOstoNetto').closest('tr').classList.toggle('valittu-rivi', false);
+    const rivit = document.querySelectorAll('.vertailu-taulukko tbody tr');
+    rivit[rivit.length - 1].classList.add('valittu-rivi');
+
+    const maxArvo = Math.max(ostoNetto, liisausYht, 1);
+    el('palkkiOsto').style.width = (Math.max(ostoNetto, 0) / maxArvo * 100) + '%';
+    el('palkkiLiisaus').style.width = (Math.max(liisausYht, 0) / maxArvo * 100) + '%';
+    el('palkkiOstoArvo').textContent = fmt(ostoNetto);
+    el('palkkiLiisausArvo').textContent = fmt(liisausYht);
+  }
+
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', laske);
+  });
+
+  laske();
+</script>
+
+</body>
+</html>

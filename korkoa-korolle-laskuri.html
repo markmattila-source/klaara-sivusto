@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Korkoa korolle -laskuri — Klaara</title>
+<meta name="description" content="Laske korkoa korolle -ilmiön vaikutus säästöihisi: alkupääoma, kuukausisäästö ja oma tuotto-oletus yhdessä laskurissa. Näet myös mitä aloittamisen viivyttäminen maksaa.">
+
+<link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/klaara-favicon-48.png">
+<link rel="apple-touch-icon" href="assets/klaara-app-ikoni-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="kehys">
+
+  <header class="brandi">
+    <a class="merkki" href="index.html">
+      <span class="merkki-symboli">
+        <img src="assets/klaara-merkki.svg" alt="Klaara-logo">
+      </span>
+      <span class="merkki-nimi">Klaara</span>
+    </a>
+    <div class="merkki-tagline">arjen laskurit — selkeästi</div>
+  </header>
+
+  <nav class="paanavi">
+    <a href="index.html">Etusivu</a>
+    <a href="talouden-vuosikello.html">Vuosikello</a>
+    <a href="esimerkit.html">Esimerkit</a>
+    <a href="sanasto.html">Sanasto</a>
+    <a href="ukk.html">UKK</a>
+  </nav>
+
+  <div class="hero">
+    <h1>Mitä korkoa korolle -ilmiö oikeasti tekee säästöillesi?</h1>
+    <p>Syötä alkupääoma, kuukausisäästö ja oma tuotto-oletuksesi — näet suoraan kuinka paljosta loppusummasta on omaa panostustasi ja kuinka paljosta korkoa korolle -kasvua.</p>
+  </div>
+
+  <div class="runko">
+
+    <!-- INPUTS -->
+    <div class="paneeli">
+      <h2>Syötä tiedot</h2>
+
+      <div class="osio-otsikko">Lähtötiedot</div>
+
+      <div class="kentta">
+        <label for="alkupaaoma">Alkupääoma (€)</label>
+        <input type="number" id="alkupaaoma" value="5000" min="0" step="100">
+      </div>
+
+      <div class="kentta">
+        <label for="kuukausisaasto">Kuukausisäästö (€)</label>
+        <input type="number" id="kuukausisaasto" value="200" min="0" step="10">
+      </div>
+
+      <div class="osio-otsikko">Oletukset</div>
+      <div class="osio-selite">Tuotto-oletus on täysin oma arviosi — Klaara ei suosittele tai ennusta tuottolukua.</div>
+
+      <div class="rivi-2">
+        <div class="kentta">
+          <label for="tuotto">Oletettu vuosituotto (%)</label>
+          <input type="number" id="tuotto" value="5" min="0" step="0.1">
+        </div>
+        <div class="kentta">
+          <label for="aika">Aika (vuotta)</label>
+          <input type="number" id="aika" value="20" min="1" step="1">
+        </div>
+      </div>
+
+      <div class="info-huomio">
+        Tämä ei ole sijoitusneuvontaa. Todellinen tuotto vaihtelee eikä oletettu tai historiallinen tuotto ole tae tulevasta. Laskuri olettaa kiinteän kuukausittain kertyvän tuottoprosentin koko ajanjaksolle.
+      </div>
+
+    </div>
+
+    <!-- RESULTS -->
+    <div class="tulos-paneeli">
+
+      <div class="paatulos">
+        <div class="label">Loppusumma</div>
+        <div class="summa" id="loppusumma">—</div>
+        <div class="selite" id="loppusummaSelite">Oma säästösumma + korkoa korolle -kasvu</div>
+      </div>
+
+      <div class="erittely">
+        <div class="erittely-rivi">
+          <div class="nimi">Oma säästösumma yhteensä<span class="alaselite">Alkupääoma + kuukausisäästöt</span></div>
+          <div class="arvo" id="omaSaasto">—</div>
+        </div>
+        <div class="erittely-rivi">
+          <div class="nimi">Tuotto<span class="alaselite">Korkoa korolle -kasvu</span></div>
+          <div class="arvo positiivinen" id="tuottoNaytto">—</div>
+        </div>
+        <div class="erittely-rivi korostettu">
+          <div class="nimi">Loppusumma</div>
+          <div class="arvo" id="loppusummaErittely">—</div>
+        </div>
+      </div>
+
+      <div class="vertailu-otsikko">Oma panostus vs. tuotto</div>
+      <div class="palkki-vertailu">
+        <div class="palkki-rivi">
+          <div class="palkki-nimi">Oma säästö</div>
+          <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiOma" style="background: var(--kuusi); width: 0%;"></div></div>
+          <div class="palkki-arvo" id="palkkiOmaArvo">—</div>
+        </div>
+        <div class="palkki-rivi">
+          <div class="palkki-nimi">Tuotto</div>
+          <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiTuotto" style="background: var(--ruska); width: 0%;"></div></div>
+          <div class="palkki-arvo" id="palkkiTuottoArvo">—</div>
+        </div>
+      </div>
+
+      <div class="lainapaneeli">
+        <h3>Mitä 5 vuoden viivyttäminen maksaisi?</h3>
+        <div id="viivytysNaytto">
+          <div class="kuukausierä" id="viivytysEro">—</div>
+          <div class="alaselite" style="margin-top:6px; color: var(--muste-hiljainen); font-size: 12.5px;" id="viivytysSelite">vähemmän loppusummassa, jos sama säästäminen alkaisi 5 vuotta myöhemmin</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="artikkeli" style="max-width:100%; margin-top:26px;">
+    <h2>Mitä korkoa korolle tarkoittaa käytännössä</h2>
+    <p>Korkoa korolle -ilmiössä tuotto lasketaan paitsi alkuperäiselle pääomalle, myös aiemmin kertyneelle tuotolle. Tämä tekee kasvusta ajan myötä yhä nopeampaa — samalla kuukausisäästöllä loppusumma ei kasva suoraviivaisesti, vaan kiihtyvästi, koska joka kuukausi lasketaan tuotto myös edellisten kuukausien tuotolle.</p>
+    <h2>Miksi aloitusajankohta vaikuttaa niin paljon</h2>
+    <p>Koska tuotto kertyy tuotolle, aikaisin sijoitettu euro ehtii kasvaa useamman kierroksen verran kuin myöhään sijoitettu euro — tämä näkyy yllä "mitä viivyttäminen maksaisi" -laskelmassa. Ero ei ole vain menetettyjä kuukausisäästöjä, vaan myös menetettyä kasvua sille rahalle. <a href="sanasto-korkoakorolle.html">Lue tarkempi selitys →</a></p>
+  </div>
+
+  <footer class="alatunniste">
+    <span>Klaara — arjen laskurit, selkeästi.</span>
+    <span>Tiedot päivitetty 08/2026</span>
+  </footer>
+
+</div>
+
+<script>
+  const el = id => document.getElementById(id);
+  const fmt = n => new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+
+  function tulevaArvo(P0, C, vuosituottoProsentti, vuodet) {
+    const rm = vuosituottoProsentti / 100 / 12;
+    const N = vuodet * 12;
+    if (N <= 0) return P0;
+    if (rm === 0) return P0 + C * N;
+    return P0 * Math.pow(1 + rm, N) + C * ((Math.pow(1 + rm, N) - 1) / rm);
+  }
+
+  function laske() {
+    const P0 = parseFloat(el('alkupaaoma').value) || 0;
+    const C = parseFloat(el('kuukausisaasto').value) || 0;
+    const tuottoProsentti = parseFloat(el('tuotto').value) || 0;
+    const vuodet = parseFloat(el('aika').value) || 0;
+
+    const loppusumma = tulevaArvo(P0, C, tuottoProsentti, vuodet);
+    const omaSaasto = P0 + C * vuodet * 12;
+    const tuotto = loppusumma - omaSaasto;
+
+    el('loppusumma').textContent = fmt(loppusumma);
+    el('omaSaasto').textContent = fmt(omaSaasto);
+    el('tuottoNaytto').textContent = '+' + fmt(tuotto);
+    el('loppusummaErittely').textContent = fmt(loppusumma);
+
+    const maxArvo = Math.max(omaSaasto, tuotto, 1);
+    el('palkkiOma').style.width = (Math.max(omaSaasto,0) / maxArvo * 100) + '%';
+    el('palkkiTuotto').style.width = (Math.max(tuotto,0) / maxArvo * 100) + '%';
+    el('palkkiOmaArvo').textContent = fmt(omaSaasto);
+    el('palkkiTuottoArvo').textContent = fmt(tuotto);
+
+    if (vuodet > 5) {
+      const loppusumma5vMyohemmin = tulevaArvo(P0, C, tuottoProsentti, vuodet - 5);
+      const ero = loppusumma - loppusumma5vMyohemmin;
+      el('viivytysEro').textContent = fmt(ero);
+      el('viivytysSelite').textContent = `vähemmän loppusummassa, jos sama säästäminen alkaisi 5 vuotta myöhemmin (${vuodet - 5} vuoden säästöajalla)`;
+    } else {
+      el('viivytysEro').textContent = '—';
+      el('viivytysSelite').textContent = 'vaatii yli 5 vuoden aikajänteen vertailua varten';
+    }
+  }
+
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', laske);
+  });
+
+  laske();
+</script>
+
+</body>
+</html>

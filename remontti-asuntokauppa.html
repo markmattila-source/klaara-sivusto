@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remontti, asuntokauppa & rahoituslaskuri — Klaara</title>
+<meta name="description" content="Laske remontin, varainsiirtoveron, kotitalousvähennyksen ja lainan kokonaisvaikutus — vertaile annuiteetti-, tasalyhennys- ja bullettilainaa.">
+
+<link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/klaara-favicon-48.png">
+<link rel="apple-touch-icon" href="assets/klaara-app-ikoni-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="kehys">
+
+  <header class="brandi">
+    <a class="merkki" href="index.html">
+      <span class="merkki-symboli">
+        <img src="assets/klaara-merkki.svg" alt="Klaara-logo">
+      </span>
+      <span class="merkki-nimi">Klaara</span>
+    </a>
+    <div class="merkki-tagline">arjen laskurit — selkeästi</div>
+  </header>
+
+  <nav class="paanavi">
+    <a href="index.html">Etusivu</a>
+    <a href="talouden-vuosikello.html">Vuosikello</a>
+    <a href="esimerkit.html">Esimerkit</a>
+    <a href="sanasto.html">Sanasto</a>
+    <a href="ukk.html">UKK</a>
+  </nav>
+
+  <a class="takaisin" href="index.html">← Kaikki työkalut</a>
+
+  <div class="hero">
+    <h1>Mitä remontti, asuntokauppa ja rahoitus oikeasti maksavat?</h1>
+    <p>Syötä luvut, näet heti kokonaiskuvan. Vertaile annuiteetti-, tasalyhennys- ja bullettilainaa rinnakkain, ja katso mitä kukin termi tarkoittaa käytännössä.</p>
+  </div>
+
+  <div class="runko">
+
+    <!-- INPUTS -->
+    <div class="paneeli">
+      <h2>Syötä tiedot</h2>
+
+      <div class="osio-otsikko">Asuntokauppa</div>
+      <div class="kytkin-rivi">
+        <label for="sisallytaAsuntokauppa">Sisällytä laskelmaan</label>
+        <div class="kytkin">
+          <input type="checkbox" id="sisallytaAsuntokauppa" checked>
+          <span class="liuku"></span>
+        </div>
+      </div>
+
+      <div id="asuntokauppaKentat">
+        <div class="kentta">
+          <label for="hinta">Velaton kauppahinta (€)</label>
+          <input type="number" id="hinta" value="285000" min="0" step="1000">
+        </div>
+
+        <div class="kentta">
+          <label for="tyyppi">Kohteen tyyppi</label>
+          <select id="tyyppi">
+            <option value="0.015">Asunto-osake (varainsiirtovero 1,5 %)</option>
+            <option value="0.03">Kiinteistö / omakotitalo (varainsiirtovero 3 %)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="osio-otsikko">Remontti</div>
+      <div class="kytkin-rivi">
+        <label for="sisallytaRemontti">Sisällytä laskelmaan</label>
+        <div class="kytkin">
+          <input type="checkbox" id="sisallytaRemontti" checked>
+          <span class="liuku"></span>
+        </div>
+      </div>
+
+      <div id="remonttiKentat">
+        <div class="rivi-2">
+          <div class="kentta">
+            <label for="tyoOsuus">Työn osuus (€, sis. alv)</label>
+            <input type="number" id="tyoOsuus" value="8000" min="0" step="100">
+          </div>
+          <div class="kentta">
+            <label for="materiaali">Materiaalit (€)</label>
+            <input type="number" id="materiaali" value="6000" min="0" step="100">
+          </div>
+        </div>
+
+        <div class="kentta-full">
+          <div class="kytkin-rivi">
+            <label for="pariskunta">Vähennys jaetaan kahden henkilön kesken</label>
+            <div class="kytkin">
+              <input type="checkbox" id="pariskunta">
+              <span class="liuku"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kentta" style="margin-top: 10px;">
+          <label>Kotitalousvähennyksen peruste</label>
+          <div class="segmentti-valitsin" id="lakiValitsin">
+            <button data-laki="nykyinen" class="aktiivinen" type="button">
+              <span class="tag-otsikko">Voimassa oleva laki</span>
+              35 % · enintään 1 600 €/hlö
+            </button>
+            <button data-laki="esitetty" type="button">
+              <span class="tag-otsikko">Esitetty muutos</span>
+              40 % · enintään 2 100 €/hlö
+            </button>
+          </div>
+          <div class="info-huomio" id="lakiHuomio">
+            Voimassa oleva laki (elokuu 2026). Omavastuu 150 €/henkilö.
+          </div>
+        </div>
+      </div>
+
+      <div class="osio-otsikko">Muu kustannus</div>
+      <div class="osio-selite">Esim. muutto, uudet kalusteet tai muu kertaluonteinen kulu — valinnainen.</div>
+      <div class="kentta">
+        <label for="muuKustannus">Muu kertakustannus (€)</label>
+        <input type="number" id="muuKustannus" value="0" min="0" step="100">
+      </div>
+
+      <div class="osio-otsikko">Rahoitus</div>
+
+      <div class="kentta">
+        <label for="omatSaastot">Omat säästöt / käsiraha käytettävissä (€)</label>
+        <input type="number" id="omatSaastot" value="0" min="0" step="500">
+      </div>
+      <div class="osio-selite" id="rahoitusTarveSelite">Vähennetään suoraan kokonaiskustannuksesta ennen lainatarpeen laskemista.</div>
+
+      <div class="kentta">
+        <label>Lainan tyyppi</label>
+        <div class="segmentti-valitsin" id="lainatyyppiValitsin">
+          <button data-tyyppi="annuiteetti" class="aktiivinen" type="button">
+            <span class="tag-otsikko">Annuiteetti</span>
+            Tasainen kuukausierä
+          </button>
+          <button data-tyyppi="tasalyhennys" type="button">
+            <span class="tag-otsikko">Tasalyhennys</span>
+            Erä pienenee ajan myötä
+          </button>
+          <button data-tyyppi="bulletti" type="button">
+            <span class="tag-otsikko">Bulletti</span>
+            Pääoma kerralla lopussa
+          </button>
+        </div>
+        <div class="info-huomio" id="lainatyyppiHuomio"></div>
+      </div>
+
+      <div class="rivi-2">
+        <div class="kentta">
+          <label for="korko">Korko (%, vuosi)</label>
+          <input type="number" id="korko" value="3.6" min="0" step="0.1">
+        </div>
+        <div class="kentta">
+          <label for="lainaAika">Laina-aika (vuotta)</label>
+          <input type="number" id="lainaAika" value="25" min="1" step="1">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RESULTS -->
+    <div class="tulos-paneeli">
+
+      <div class="paatulos">
+        <div class="label">Kokonaiskustannus nyt</div>
+        <div class="summa" id="kokonaisSumma">—</div>
+        <div class="selite" id="kokonaisSelite">Kauppahinta + varainsiirtovero + remontin nettokustannus</div>
+      </div>
+
+      <div class="erittely">
+        <div class="erittely-rivi" id="riviVarainsiirto">
+          <div class="nimi">Varainsiirtovero<span class="alaselite">Maksettava kaupanteon yhteydessä</span></div>
+          <div class="arvo negatiivinen" id="varainsiirto">—</div>
+        </div>
+        <div class="erittely-rivi" id="riviRemonttiBrutto">
+          <div class="nimi">Remontin kokonaishinta<span class="alaselite">Työ + materiaalit</span></div>
+          <div class="arvo negatiivinen" id="remonttiBrutto">—</div>
+        </div>
+        <div class="erittely-rivi" id="riviVahennys">
+          <div class="nimi">Kotitalousvähennys<span class="alaselite" id="vahennysSelite">Palautuu verotuksessa</span></div>
+          <div class="arvo positiivinen" id="vahennys">—</div>
+        </div>
+        <div class="erittely-rivi" id="riviRemonttiNetto">
+          <div class="nimi">Remontin nettokustannus<span class="alaselite">Kokonaishinta − vähennys</span></div>
+          <div class="arvo" id="remonttiNetto">—</div>
+        </div>
+        <div class="erittely-rivi" id="riviMuu">
+          <div class="nimi">Muu kustannus<span class="alaselite">Kertaluonteinen lisäkulu</span></div>
+          <div class="arvo negatiivinen" id="muuNaytto">—</div>
+        </div>
+        <div class="erittely-rivi">
+          <div class="nimi">Omat säästöt käytössä<span class="alaselite">Vähennetään rahoitustarpeesta</span></div>
+          <div class="arvo positiivinen" id="saastotNaytto">—</div>
+        </div>
+        <div class="erittely-rivi korostettu">
+          <div class="nimi">Rahoitettava määrä<span class="alaselite">Kokonaiskustannus − omat säästöt</span></div>
+          <div class="arvo" id="rahoitettava">—</div>
+        </div>
+      </div>
+
+      <div class="lainapaneeli">
+        <h3>Rahoituksen erittely</h3>
+
+        <div id="eiLainatarvetta" class="ei-lainatarvetta piilotettu">
+          Ei rahoitustarvetta — omat säästösi kattavat koko kokonaiskustannuksen.
+        </div>
+
+        <div id="lainaTulokset">
+          <div class="lainatulos-rivi" id="annuiteettiTulos">
+            <div class="osa">
+              <div class="pikkulabel">Kuukausierä (koko laina-ajan)</div>
+              <div class="kuukausierä" id="annKuukausiera">—</div>
+            </div>
+            <div class="osa">
+              <div class="pikkulabel">Korkoa yhteensä</div>
+              <div class="kuukausierä" id="annKorkoYhteensa">—</div>
+            </div>
+          </div>
+
+          <div class="lainatulos-rivi" id="tasalyhennysTulos" style="display:none;">
+            <div class="osa">
+              <div class="pikkulabel">Ensimmäinen erä</div>
+              <div class="kuukausierä" id="talEnsimmainen">—</div>
+            </div>
+            <div class="osa">
+              <div class="pikkulabel">Viimeinen erä</div>
+              <div class="kuukausierä" id="talViimeinen">—</div>
+            </div>
+          </div>
+
+          <div class="lainatulos-rivi" id="bullettiTulos" style="display:none;">
+            <div class="osa">
+              <div class="pikkulabel">Kuukausittainen korko</div>
+              <div class="kuukausierä" id="bulKuukausikorko">—</div>
+            </div>
+            <div class="osa">
+              <div class="pikkulabel">Kertalyhennys eräpäivänä</div>
+              <div class="kuukausierä" id="bulKertalyhennys">—</div>
+            </div>
+          </div>
+
+          <div class="lainapaneeli-jalkihuomautus">
+            Valittu laina: <strong id="valittuYhteensaKorko">—</strong> korkoa yhteensä koko laina-ajalta,
+            takaisin maksettuna yhteensä <strong id="valittuYhteensaMaksettu">—</strong>.
+          </div>
+
+          <div class="vertailu-otsikko">Vertaile lainatyyppejä samalla summalla, korolla ja ajalla</div>
+          <div class="vertailu-taulukko-kehys">
+            <table class="vertailu-taulukko">
+              <thead>
+                <tr>
+                  <th>Tyyppi</th>
+                  <th>Erä alussa</th>
+                  <th>Erä lopussa</th>
+                  <th>Korkoa yht.</th>
+                  <th>Maksettu yht.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="vertailuAnnuiteetti">
+                  <td>Annuiteetti</td>
+                  <td class="arvo-solu" id="vAnnAlku">—</td>
+                  <td class="arvo-solu" id="vAnnLoppu">—</td>
+                  <td class="arvo-solu" id="vAnnKorko">—</td>
+                  <td class="arvo-solu" id="vAnnYht">—</td>
+                </tr>
+                <tr id="vertailuTasalyhennys">
+                  <td>Tasalyhennys</td>
+                  <td class="arvo-solu" id="vTalAlku">—</td>
+                  <td class="arvo-solu" id="vTalLoppu">—</td>
+                  <td class="arvo-solu" id="vTalKorko">—</td>
+                  <td class="arvo-solu" id="vTalYht">—</td>
+                </tr>
+                <tr id="vertailuBulletti">
+                  <td>Bulletti</td>
+                  <td class="arvo-solu" id="vBulAlku">—</td>
+                  <td class="arvo-solu" id="vBulLoppu">—</td>
+                  <td class="arvo-solu" id="vBulKorko">—</td>
+                  <td class="arvo-solu" id="vBulYht">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="vertailu-otsikko">Korkokustannus suhteessa toisiinsa</div>
+          <div class="palkki-vertailu">
+            <div class="palkki-rivi">
+              <div class="palkki-nimi">Annuiteetti</div>
+              <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiAnn" style="background: var(--kuusi); width: 0%;"></div></div>
+              <div class="palkki-arvo" id="palkkiAnnArvo">—</div>
+            </div>
+            <div class="palkki-rivi">
+              <div class="palkki-nimi">Tasalyhennys</div>
+              <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiTal" style="background: var(--taivas); width: 0%;"></div></div>
+              <div class="palkki-arvo" id="palkkiTalArvo">—</div>
+            </div>
+            <div class="palkki-rivi">
+              <div class="palkki-nimi">Bulletti</div>
+              <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiBul" style="background: var(--ruska); width: 0%;"></div></div>
+              <div class="palkki-arvo" id="palkkiBulArvo">—</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sanasto">
+    <h2>Sanasto — mitä nämä termit tarkoittavat?</h2>
+    <p class="sanasto-intro">Avaa termi nähdäksesi lyhyen selityksen. Ei korvaa asiantuntijan neuvontaa.</p>
+
+    <details class="termi">
+      <summary>Annuiteettilaina</summary>
+      <div class="termi-teksti">
+        Kuukausierä pysyy <strong>samana koko laina-ajan</strong> (jos korko ei muutu). Alkuvaiheessa suurin osa erästä menee korkoon ja pieni osa lyhennykseen; loppua kohti suhde kääntyy toisin päin. Yleisin laina-tyyppi asuntolainoissa Suomessa, koska kuukausibudjetti on ennakoitava. <a href="sanasto-annuiteettilaina.html">Lue tarkempi selitys →</a>
+      </div>
+    </details>
+
+    <details class="termi">
+      <summary>Tasalyhennyslaina</summary>
+      <div class="termi-teksti">
+        <strong>Lyhennysosuus pysyy samana</strong> joka kuukausi, mutta korko-osuus pienenee sitä mukaa kun laina lyhenee. Kuukausierä on siis suurimmillaan heti alussa ja pienenee tasaisesti kohti loppua. Kokonaiskorkoa kertyy vähemmän kuin annuiteettilainassa, mutta alun erät ovat raskaammat. <a href="sanasto-tasalyhennyslaina.html">Lue tarkempi selitys →</a>
+      </div>
+    </details>
+
+    <details class="termi">
+      <summary>Bullettilaina (kertalyhenteinen laina)</summary>
+      <div class="termi-teksti">
+        Laina-aikana maksetaan <strong>vain korkoa</strong>, ja koko pääoma erääntyy kerralla laina-ajan lopussa. Kuukausierät ovat pieniä matkan varrella, mutta kokonaiskorkoa kertyy eniten, koska koko pääoma on koko ajan "auki". Harvinainen kuluttajien asuntolainoissa Suomessa — yleisempi esim. sijoitusasunto- tai yritysrahoituksessa. Sisältää riskin: eräpäivänä on kyettävä maksamaan tai uudelleenrahoittamaan koko pääoma kerralla. <a href="sanasto-bullettilaina.html">Lue tarkempi selitys →</a>
+      </div>
+    </details>
+
+    <details class="termi">
+      <summary>Käsiraha / omarahoitusosuus</summary>
+      <div class="termi-teksti">
+        Se osuus kokonaiskustannuksesta, joka katetaan <strong>omista säästöistä</strong> lainan sijaan. Mitä suurempi omarahoitusosuus, sitä pienempi rahoitustarve ja sitä vähemmän korkoa kertyy koko laina-aikana. <a href="sanasto-kasiraha.html">Lue tarkempi selitys →</a>
+      </div>
+    </details>
+
+    <details class="termi">
+      <summary>Varainsiirtovero</summary>
+      <div class="termi-teksti">
+        Kertaluonteinen vero, joka maksetaan asunnon tai kiinteistön kaupan yhteydessä. Asunto-osakkeesta (esim. kerros- tai rivitalohuoneisto) vero on 1,5 % kauppahinnasta, kiinteistöstä (esim. omakotitalo tontteineen) 3 %. Ensiasunnon ostaja voi tietyin ehdoin olla vapautettu verosta — laskuri ei huomioi ensiasunto-vapautusta automaattisesti. <a href="sanasto-varainsiirtovero.html">Lue tarkempi selitys →</a>
+      </div>
+    </details>
+
+    <details class="termi">
+      <summary>Kotitalousvähennys</summary>
+      <div class="termi-teksti">
+        Verohyöty, jonka voi saada kotiin teetetystä remontti- tai kunnossapitotyöstä. Vähennys lasketaan työn osuudesta (ei materiaaleista), siitä vähennetään henkilökohtainen omavastuu, ja jäljelle jäävästä summasta saa prosenttiosuuden takaisin verotuksessa aina enimmäismäärään asti. Edellyttää, että on maksanut riittävästi veroa verovuonna. <a href="sanasto-kotitalousvahennys.html">Lue tarkempi selitys →</a>
+      </div>
+    </details>
+  </div>
+
+  <div class="vastuuvapaus">
+    <strong>Suuntaa-antava laskuri.</strong> Ei korvaa Verohallinnon tai asiantuntijan neuvontaa. Kotitalousvähennyksen käyttö edellyttää riittävästi maksettua veroa verovuonna. Vähennyslaskelma on yksinkertaistettu eikä huomioi kaikkia yksittäistapauksia. Esitetyn lakimuutoksen tiedot perustuvat hallituksen esitykseen (elokuu 2026) eivätkä ole vielä voimassa olevaa lainsäädäntöä. Lainalaskelmat olettavat kiinteän koron koko laina-ajan, eivät sisällä lainan avaus- tai käsittelymaksuja eivätkä huomioi koronvaihteluita, lyhennysvapaita tai muita poikkeuksia. Bullettilainan saatavuus kuluttaja-asuntolainana vaihtelee — tarkista rahoittajalta.
+  </div>
+
+  <footer class="alatunniste">
+    <span>Klaara — arjen laskurit, selkeästi.</span>
+    <span>Tiedot päivitetty 08/2026</span>
+  </footer>
+
+</div>
+
+<script>
+  const el = id => document.getElementById(id);
+  const fmt = n => new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+  const fmt2 = n => new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(n);
+
+  let lakiTila = 'nykyinen';
+  let lainatyyppiTila = 'annuiteetti';
+
+  const lait = {
+    nykyinen: { prosentti: 0.35, max: 1600, omavastuu: 150, kuvaus: 'Voimassa oleva laki (elokuu 2026). Omavastuu 150 €/henkilö.' },
+    esitetty: { prosentti: 0.40, max: 2100, omavastuu: 150, kuvaus: 'Hallituksen esitys — ei vielä voimassa. Voisi tulla voimaan takautuvasti 1.1.2026, jos eduskunta hyväksyy sen. Omavastuu pysyisi 150 €:ssa.' }
+  };
+
+  const lainatyypit = {
+    annuiteetti: 'Kuukausierä pysyy samana koko laina-ajan. Alussa suurin osa erästä on korkoa, loppua kohti suurin osa lyhennystä. Yleisin asuntolainatyyppi Suomessa.',
+    tasalyhennys: 'Lyhennysosuus pysyy samana, korko-osuus pienenee ajan myötä. Erä on suurimmillaan heti alussa ja pienenee tasaisesti — kokonaiskorkoa kertyy vähemmän kuin annuiteetissa.',
+    bulletti: 'Laina-aikana maksetaan vain korkoa, koko pääoma erääntyy kerralla lopussa. Pienimmät kuukausierät matkan varrella, mutta suurin kokonaiskorko ja riski eräpäivänä.'
+  };
+
+  document.querySelectorAll('#lakiValitsin button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#lakiValitsin button').forEach(b => b.classList.remove('aktiivinen'));
+      btn.classList.add('aktiivinen');
+      lakiTila = btn.dataset.laki;
+      el('lakiHuomio').textContent = lait[lakiTila].kuvaus;
+      laske();
+    });
+  });
+
+  document.querySelectorAll('#lainatyyppiValitsin button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#lainatyyppiValitsin button').forEach(b => b.classList.remove('aktiivinen'));
+      btn.classList.add('aktiivinen');
+      lainatyyppiTila = btn.dataset.tyyppi;
+      el('lainatyyppiHuomio').textContent = lainatyypit[lainatyyppiTila];
+      laske();
+    });
+  });
+
+  el('sisallytaAsuntokauppa').addEventListener('change', () => {
+    const paalla = el('sisallytaAsuntokauppa').checked;
+    el('asuntokauppaKentat').classList.toggle('piilotettu', !paalla);
+    el('asuntokauppaKentat').querySelectorAll('input, select').forEach(i => i.disabled = !paalla);
+    laske();
+  });
+
+  el('sisallytaRemontti').addEventListener('change', () => {
+    const paalla = el('sisallytaRemontti').checked;
+    el('remonttiKentat').classList.toggle('piilotettu', !paalla);
+    el('remonttiKentat').querySelectorAll('input, select').forEach(i => i.disabled = !paalla);
+    laske();
+  });
+
+  function laskeVahennys(tyoOsuus, pariskunta) {
+    const laki = lait[lakiTila];
+    const henkilot = pariskunta ? 2 : 1;
+    const tyoPerHenkilo = tyoOsuus / henkilot;
+    let perHenkilo = Math.max(0, (tyoPerHenkilo - laki.omavastuu) * laki.prosentti);
+    perHenkilo = Math.min(perHenkilo, laki.max);
+    return perHenkilo * henkilot;
+  }
+
+  // --- Lainatyyppikohtaiset laskennat: P = pääoma, vuosikorko %, N = kuukausia ---
+
+  function laskeAnnuiteetti(P, vuosikorko, vuodet) {
+    const kk = vuosikorko / 100 / 12;
+    const N = vuodet * 12;
+    if (P <= 0 || N <= 0) return { alku: 0, loppu: 0, korkoYht: 0, maksettuYht: 0 };
+    let era;
+    if (kk === 0) {
+      era = P / N;
+    } else {
+      era = P * kk * Math.pow(1 + kk, N) / (Math.pow(1 + kk, N) - 1);
+    }
+    const maksettuYht = era * N;
+    return { alku: era, loppu: era, korkoYht: maksettuYht - P, maksettuYht };
+  }
+
+  function laskeTasalyhennys(P, vuosikorko, vuodet) {
+    const kk = vuosikorko / 100 / 12;
+    const N = vuodet * 12;
+    if (P <= 0 || N <= 0) return { alku: 0, loppu: 0, korkoYht: 0, maksettuYht: 0 };
+    const lyhennys = P / N;
+    const alku = lyhennys + P * kk;
+    const loppu = lyhennys + lyhennys * kk;
+    const korkoYht = kk * P * (N + 1) / 2;
+    const maksettuYht = P + korkoYht;
+    return { alku, loppu, korkoYht, maksettuYht };
+  }
+
+  function laskeBulletti(P, vuosikorko, vuodet) {
+    const kk = vuosikorko / 100 / 12;
+    const N = vuodet * 12;
+    if (P <= 0 || N <= 0) return { alku: 0, loppu: 0, korkoYht: 0, maksettuYht: 0 };
+    const kuukausikorko = P * kk;
+    const korkoYht = kuukausikorko * N;
+    const maksettuYht = P + korkoYht;
+    // "loppu" = viimeinen erä sisältää koron + koko pääoman kertalyhennyksenä
+    return { alku: kuukausikorko, loppu: kuukausikorko + P, korkoYht, maksettuYht, kuukausikorko };
+  }
+
+  function laske() {
+    const sisallytaAsunto = el('sisallytaAsuntokauppa').checked;
+    const sisallytaRemontti = el('sisallytaRemontti').checked;
+
+    const hinta = sisallytaAsunto ? (parseFloat(el('hinta').value) || 0) : 0;
+    const veroProsentti = parseFloat(el('tyyppi').value) || 0;
+    const varainsiirto = sisallytaAsunto ? hinta * veroProsentti : 0;
+
+    const tyoOsuus = sisallytaRemontti ? (parseFloat(el('tyoOsuus').value) || 0) : 0;
+    const materiaali = sisallytaRemontti ? (parseFloat(el('materiaali').value) || 0) : 0;
+    const pariskunta = el('pariskunta').checked;
+    const remonttiBrutto = sisallytaRemontti ? (tyoOsuus + materiaali) : 0;
+    const vahennys = sisallytaRemontti ? laskeVahennys(tyoOsuus, pariskunta) : 0;
+    const remonttiNetto = remonttiBrutto - vahennys;
+
+    const muuKustannus = parseFloat(el('muuKustannus').value) || 0;
+
+    const kokonais = hinta + varainsiirto + remonttiNetto + muuKustannus;
+
+    const omatSaastot = Math.max(0, parseFloat(el('omatSaastot').value) || 0);
+    const kaytetytSaastot = Math.min(omatSaastot, kokonais);
+    const rahoitettava = Math.max(0, kokonais - omatSaastot);
+
+    const korko = parseFloat(el('korko').value) || 0;
+    const lainaAika = parseFloat(el('lainaAika').value) || 0;
+
+    // --- Näytä/piilota osiot togglien mukaan ---
+    el('riviVarainsiirto').classList.toggle('piilotettu', !sisallytaAsunto);
+    el('riviRemonttiBrutto').classList.toggle('piilotettu', !sisallytaRemontti);
+    el('riviVahennys').classList.toggle('piilotettu', !sisallytaRemontti);
+    el('riviRemonttiNetto').classList.toggle('piilotettu', !sisallytaRemontti);
+    el('riviMuu').classList.toggle('piilotettu', muuKustannus <= 0);
+
+    // --- Ylätulos ja selite ---
+    const seliteOsat = [];
+    if (sisallytaAsunto) seliteOsat.push('kauppahinta', 'varainsiirtovero');
+    if (sisallytaRemontti) seliteOsat.push('remontin nettokustannus');
+    if (muuKustannus > 0) seliteOsat.push('muut kulut');
+    el('kokonaisSelite').textContent = seliteOsat.length ? (seliteOsat.join(' + ').replace(/^./, c => c.toUpperCase())) : 'Ei valittuja kuluja';
+
+    el('varainsiirto').textContent = fmt(varainsiirto);
+    el('remonttiBrutto').textContent = fmt(remonttiBrutto);
+    el('vahennys').textContent = '+' + fmt(vahennys);
+    el('vahennysSelite').textContent = (pariskunta ? '2 henkilöä · ' : '1 henkilö · ') + (lakiTila === 'nykyinen' ? '35 %, enint. 1 600 €/hlö' : '40 %, enint. 2 100 €/hlö');
+    el('remonttiNetto').textContent = fmt(remonttiNetto);
+    el('muuNaytto').textContent = fmt(muuKustannus);
+    el('saastotNaytto').textContent = '−' + fmt(kaytetytSaastot);
+    el('rahoitettava').textContent = fmt(rahoitettava);
+    el('kokonaisSumma').textContent = fmt(kokonais);
+
+    // --- Rahoitusosio ---
+    const eiTarvetta = rahoitettava <= 0;
+    el('eiLainatarvetta').classList.toggle('piilotettu', !eiTarvetta);
+    el('lainaTulokset').classList.toggle('piilotettu', eiTarvetta);
+
+    if (!eiTarvetta) {
+      const ann = laskeAnnuiteetti(rahoitettava, korko, lainaAika);
+      const tal = laskeTasalyhennys(rahoitettava, korko, lainaAika);
+      const bul = laskeBulletti(rahoitettava, korko, lainaAika);
+
+      // Näytä valitun lainatyypin oma tuloskortti
+      el('annuiteettiTulos').style.display = lainatyyppiTila === 'annuiteetti' ? 'flex' : 'none';
+      el('tasalyhennysTulos').style.display = lainatyyppiTila === 'tasalyhennys' ? 'flex' : 'none';
+      el('bullettiTulos').style.display = lainatyyppiTila === 'bulletti' ? 'flex' : 'none';
+
+      el('annKuukausiera').textContent = fmt(ann.alku) + ' / kk';
+      el('annKorkoYhteensa').textContent = fmt(ann.korkoYht);
+
+      el('talEnsimmainen').textContent = fmt(tal.alku) + ' / kk';
+      el('talViimeinen').textContent = fmt(tal.loppu) + ' / kk';
+
+      el('bulKuukausikorko').textContent = fmt(bul.kuukausikorko) + ' / kk';
+      el('bulKertalyhennys').textContent = fmt(rahoitettava);
+
+      const valittu = lainatyyppiTila === 'annuiteetti' ? ann : (lainatyyppiTila === 'tasalyhennys' ? tal : bul);
+      el('valittuYhteensaKorko').textContent = fmt(valittu.korkoYht);
+      el('valittuYhteensaMaksettu').textContent = fmt(valittu.maksettuYht);
+
+      // Vertailutaulukko
+      el('vAnnAlku').textContent = fmt(ann.alku); el('vAnnLoppu').textContent = fmt(ann.loppu);
+      el('vAnnKorko').textContent = fmt(ann.korkoYht); el('vAnnYht').textContent = fmt(ann.maksettuYht);
+
+      el('vTalAlku').textContent = fmt(tal.alku); el('vTalLoppu').textContent = fmt(tal.loppu);
+      el('vTalKorko').textContent = fmt(tal.korkoYht); el('vTalYht').textContent = fmt(tal.maksettuYht);
+
+      el('vBulAlku').textContent = fmt(bul.alku); el('vBulLoppu').textContent = fmt(bul.loppu);
+      el('vBulKorko').textContent = fmt(bul.korkoYht); el('vBulYht').textContent = fmt(bul.maksettuYht);
+
+      document.querySelectorAll('.vertailu-taulukko tbody tr').forEach(r => r.classList.remove('valittu-rivi'));
+      const rivikartta = { annuiteetti: 'vertailuAnnuiteetti', tasalyhennys: 'vertailuTasalyhennys', bulletti: 'vertailuBulletti' };
+      el(rivikartta[lainatyyppiTila]).classList.add('valittu-rivi');
+
+      // Korkovertailupalkit
+      const maxKorko = Math.max(ann.korkoYht, tal.korkoYht, bul.korkoYht, 1);
+      el('palkkiAnn').style.width = (ann.korkoYht / maxKorko * 100) + '%';
+      el('palkkiTal').style.width = (tal.korkoYht / maxKorko * 100) + '%';
+      el('palkkiBul').style.width = (bul.korkoYht / maxKorko * 100) + '%';
+      el('palkkiAnnArvo').textContent = fmt(ann.korkoYht);
+      el('palkkiTalArvo').textContent = fmt(tal.korkoYht);
+      el('palkkiBulArvo').textContent = fmt(bul.korkoYht);
+    }
+  }
+
+  el('lainatyyppiHuomio').textContent = lainatyypit[lainatyyppiTila];
+
+  document.querySelectorAll('input, select').forEach(input => {
+    input.addEventListener('input', laske);
+  });
+
+  laske();
+</script>
+
+</body>
+</html>
