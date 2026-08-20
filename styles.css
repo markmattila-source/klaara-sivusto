@@ -199,6 +199,84 @@ header.brandi {
 
 .muut-termit a:hover { text-decoration: underline; }
 
+/* ---------- Ajankohtaista: uutiskortit ---------- */
+
+.ajankohtaista-intro {
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: var(--muste-hiljainen);
+  line-height: 1.6;
+}
+
+.uutinen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+.uutinen-kortti {
+  display: block;
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-left: 4px solid var(--kuusi);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  text-decoration: none;
+  color: var(--muste);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.uutinen-kortti:hover { transform: translateY(-2px); }
+
+.uutinen-kortti.kat-koti { border-left-color: var(--taivas); }
+.uutinen-kortti.kat-energia { border-left-color: var(--ruska); }
+.uutinen-kortti.kat-raha { border-left-color: var(--kuusi); }
+
+.uutinen-kategoria {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muste-hiljainen);
+  background: var(--tausta);
+  border-radius: 5px;
+  padding: 3px 8px;
+  margin-bottom: 12px;
+}
+
+.uutinen-otsikko {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.3;
+  margin-bottom: 10px;
+  color: var(--muste);
+}
+
+.uutinen-konteksti {
+  font-size: 13px;
+  color: var(--muste-hiljainen);
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+
+.uutinen-lahde {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #8A9590;
+  padding-top: 12px;
+  border-top: 1px solid var(--viiva);
+}
+
 /* ---------- Vuosikello ---------- */
 
 .vuosikello-grid {

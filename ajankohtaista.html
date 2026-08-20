@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajankohtaista — Klaara</title>
+<meta name="description" content="Käsin kuratoitu poiminta ajankohtaisista arjen talousaiheista: asuntolainat, sähkön hinta ja asumiskulut juuri nyt.">
+
+<link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/klaara-favicon-48.png">
+<link rel="apple-touch-icon" href="assets/klaara-app-ikoni-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="kehys">
+
+  <header class="brandi">
+    <a class="merkki" href="index.html">
+      <span class="merkki-symboli">
+        <img src="assets/klaara-merkki.svg" alt="Klaara-logo">
+      </span>
+      <span class="merkki-nimi">Klaara</span>
+    </a>
+    <div class="merkki-tagline">arjen laskurit — selkeästi</div>
+  </header>
+
+  <nav class="paanavi">
+    <a href="index.html">Etusivu</a>
+    <a href="ajankohtaista.html" class="aktiivinen">Ajankohtaista</a>
+    <a href="talouden-vuosikello.html">Vuosikello</a>
+    <a href="esimerkit.html">Esimerkit</a>
+    <a href="sanasto.html">Sanasto</a>
+    <a href="ukk.html">UKK</a>
+  </nav>
+
+  <div class="hero">
+    <h1>Ajankohtaista arjen taloudessa</h1>
+    <p>Poiminta juuri nyt merkityksellisistä uutisista — ei automaattinen syöte, vaan käsin valittu ja lyhyesti kommentoitu, jotta tiedät heti miksi asia koskee sinua.</p>
+  </div>
+
+  <div class="ajankohtaista-intro">
+    <strong>Näin tämä toimii:</strong> Klaara päivittää tämän listan säännöllisesti käsin, kun jokin arjen talouteen liittyvä asia oikeasti muuttuu. Jokainen poiminta linkittää alkuperäiseen, luotettavaan lähteeseen — Klaara ei kopioi tekstiä, vaan kertoo lyhyesti mitä se tarkoittaa käytännössä.
+  </div>
+
+  <div class="uutinen-grid">
+
+    <a class="uutinen-kortti kat-raha" href="https://yle.fi/a/74-20230805" target="_blank" rel="noopener noreferrer">
+      <div class="uutinen-kategoria">Raha & lainat</div>
+      <div class="uutinen-otsikko">40 vuoden asuntolaina pienentää erää, mutta korkopotti kasvaa tuntuvasti</div>
+      <div class="uutinen-konteksti">Kesäkuussa 2026 voimaan tullut lakimuutos nosti asuntolainojen enimmäisajan 30 vuodesta 40 vuoteen. Yle laski vaikutuksen eri laina-ajoilla — kokeile samaa omilla luvuillasi <a href="remontti-asuntokauppa.html" style="color:var(--kuusi-tumma); font-weight:600;">Klaaran laskurissa</a>.</div>
+      <div class="uutinen-lahde"><span>Yle</span><span>Kesäkuu 2026 →</span></div>
+    </a>
+
+    <a class="uutinen-kortti kat-koti" href="https://www.kiinteistolehti.fi/korot-ja-lammitys-kallistuvat-asumisen-kustannukset-kaantyivat-jalleen-kasvuun" target="_blank" rel="noopener noreferrer">
+      <div class="uutinen-kategoria">Koti & asuminen</div>
+      <div class="uutinen-otsikko">Asumiskulut kääntyivät jälleen kasvuun — korot ja lämmitys kallistuvat</div>
+      <div class="uutinen-konteksti">Suomen Kiinteistölehden mukaan asumismenot kasvavat keskimäärin 2,7 %, kun sekä lainakorot että lämmitysenergian hinta nousevat samaan aikaan. Hyvä hetki tarkistaa oma lainansa ja sähkösopimuksensa etukäteen.</div>
+      <div class="uutinen-lahde"><span>Suomen Kiinteistölehti</span><span>18.8.2026 →</span></div>
+    </a>
+
+    <a class="uutinen-kortti kat-energia" href="https://www.helen.fi/artikkelit/2026/sahkon-hintaennuste-2026" target="_blank" rel="noopener noreferrer">
+      <div class="uutinen-kategoria">Energia</div>
+      <div class="uutinen-otsikko">Sähkön hinta herättää nyt erityistä kiinnostusta — eikä syyttä</div>
+      <div class="uutinen-konteksti">Futuurihintojen mukaan sähkö kallistuu selvästi syksyn ja talven aikana verrattuna kesään. Jos sopimuksesi on toistaiseksi voimassa oleva, tämä on hyvä hetki vertailla vaihtoehtoja ennen kulutuspiikkiä.</div>
+      <div class="uutinen-lahde"><span>Helen</span><span>Elokuu 2026 →</span></div>
+    </a>
+
+  </div>
+
+  <div class="artikkeli" style="max-width:100%; margin-top:26px;">
+    <h2>Miksi tämä ei ole automaattinen syöte</h2>
+    <p>Klaara on tarkoituksella palveliton, staattinen sivusto — juuri siksi ylläpito on kevyt eikä vaadi jatkuvia palvelinkuluja. Täysin automaattinen, itsestään päivittyvä uutissyöte vaatisi taustajärjestelmän, joka olisi ristiriidassa tämän periaatteen kanssa. Sen sijaan tämä sivu päivittyy silloin, kun jokin oikeasti muuttuu arjen taloudessa — laatu ennen määrää.</p>
+  </div>
+
+  <footer class="alatunniste">
+    <span>Klaara — arjen laskurit, selkeästi.</span>
+    <span>Poiminnat päivitetty 20.8.2026</span>
+  </footer>
+
+</div>
+</body>
+</html>
