@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auton osto vs. liisaus -laskuri — Klaara</title>
-<meta name="description" content="Vertaile auton ostamista lainalla ja liisausta samalla vertailujaksolla — näet kokonaiskustannuksen ja euromääräisen eron selkeästi.">
+<meta name="description" content="Vertaile auton ostamista lainalla ja liisausta samalla vertailujaksolla — huolto, ylikilometrimaksut ja kustannus per ajettu kilometri mukaan lukien.">
 
 <link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-32.png">
@@ -38,7 +38,7 @@
 
   <div class="hero">
     <h1>Kannattaako auto ostaa vai liisata?</h1>
-    <p>Syötä auton hinta, rahoitusehdot ja liisaustarjous samalle vertailujaksolle — näet kokonaiskustannuksen molemmista rinnakkain, ei vain kuukausihinnan.</p>
+    <p>Syötä auton hinta, rahoitusehdot ja liisaustarjous samalle vertailujaksolle — mukana huolto, ylikilometrimaksut ja kustannus per ajettu kilometri, ei vain kuukausihinta.</p>
   </div>
 
   <div class="runko">
@@ -49,9 +49,15 @@
 
       <div class="osio-otsikko">Vertailujakso</div>
       <div class="osio-selite">Sama ajanjakso molemmille — oletetaan että lainan laina-aika ja liisaussopimus kestävät yhtä pitkään.</div>
-      <div class="kentta">
-        <label for="vertailujakso">Omistus-/sopimusaika (vuotta)</label>
-        <input type="number" id="vertailujakso" value="5" min="1" step="1">
+      <div class="rivi-2">
+        <div class="kentta">
+          <label for="vertailujakso">Omistus-/sopimusaika (vuotta)</label>
+          <input type="number" id="vertailujakso" value="5" min="1" step="1">
+        </div>
+        <div class="kentta">
+          <label for="ajomaara">Arvioitu ajomäärä (km/vuosi)</label>
+          <input type="number" id="ajomaara" value="15000" min="0" step="1000">
+        </div>
       </div>
 
       <div class="osio-otsikko">Osto lainalla</div>
@@ -89,8 +95,32 @@
         </div>
       </div>
 
+      <div class="kentta">
+        <label for="kilometrikatto">Sopimuksen kilometrikatto (km/vuosi)</label>
+        <input type="number" id="kilometrikatto" value="20000" min="0" step="1000">
+      </div>
+      <div class="kentta">
+        <label for="ylikilometrimaksu">Ylikilometrimaksu (€/km)</label>
+        <input type="number" id="ylikilometrimaksu" value="0.08" min="0" step="0.01">
+      </div>
+      <div id="ylikilometriVaroitus" class="info-huomio piilotettu"></div>
+
+      <div class="osio-otsikko">Huolto</div>
+      <div class="kytkin-rivi">
+        <label for="liisausSisaltaaHuollon">Liisaussopimus sisältää huollon</label>
+        <div class="kytkin">
+          <input type="checkbox" id="liisausSisaltaaHuollon">
+          <span class="liuku"></span>
+        </div>
+      </div>
+      <div class="kentta" style="margin-top:10px;">
+        <label for="huoltokulu">Arvioitu huoltokulu omistettuna (€/vuosi)</label>
+        <input type="number" id="huoltokulu" value="400" min="0" step="50">
+      </div>
+      <div class="osio-selite" style="margin-top:-4px;">Sama huoltokulu lisätään myös liisaukseen, ellei yllä oleva kytkin ole päällä.</div>
+
       <div class="info-huomio">
-        Laskuri ei sisällä huoltoa, vakuutuksia tai mahdollisia ylikilometrimaksuja — nämä vaihtelevat sopimuksittain ja kannattaa tarkistaa erikseen. Ei korvaa rahoitusyhtiön tai jälleenmyyjän tarjousta.
+        Vakuutuksia ei ole sisällytetty laskurin lukuihin, koska ne ovat yleensä samansuuruisia riippumatta rahoitustavasta — lisää ne itse laskelmaan jos sopimuksesi eroaa merkittävästi. Ei korvaa rahoitusyhtiön tai jälleenmyyjän tarjousta.
       </div>
 
     </div>
@@ -131,6 +161,16 @@
               <td class="arvo-solu" id="vLiisausYht">—</td>
             </tr>
             <tr>
+              <td>Huolto (koko jaksolta)</td>
+              <td class="arvo-solu" id="vHuoltoOsto">—</td>
+              <td class="arvo-solu" id="vHuoltoLiisaus">—</td>
+            </tr>
+            <tr id="riviYlikilometrit">
+              <td>Ylikilometrimaksu</td>
+              <td class="arvo-solu">—</td>
+              <td class="arvo-solu negatiivinen" id="vYlikilometrit">—</td>
+            </tr>
+            <tr>
               <td>Jäännösarvo (jää omaksi)</td>
               <td class="arvo-solu" id="vJaannos">—</td>
               <td class="arvo-solu">—</td>
@@ -157,12 +197,27 @@
         </div>
       </div>
 
+      <div class="lainapaneeli">
+        <h3>Kustannus per ajettu kilometri</h3>
+        <div class="lainatulos-rivi">
+          <div class="osa">
+            <div class="pikkulabel">Osto</div>
+            <div class="kuukausierä" id="kmOsto">—</div>
+          </div>
+          <div class="osa">
+            <div class="pikkulabel">Liisaus</div>
+            <div class="kuukausierä" id="kmLiisaus">—</div>
+          </div>
+        </div>
+        <div class="osio-selite" style="margin-top:12px; margin-bottom:0;">Normalisoi vertailun ajomäärän mukaan — hyödyllinen jos harkitset myös ajamista enemmän tai vähemmän kuin syöttämäsi arvio.</div>
+      </div>
+
     </div>
   </div>
 
   <div class="artikkeli" style="max-width:100%; margin-top:26px;">
-    <h2>Mitä laskuri ei näytä</h2>
-    <p>Huolto, vakuutukset ja renkaat maksavat kummassakin vaihtoehdossa, mutta niiden sisältyminen sopimukseen vaihtelee — osa liisaussopimuksista sisältää huollon, osa ei. Nämä kannattaa lisätä mukaan itse vertailuun, jos ne eroavat merkittävästi vaihtoehtojen välillä.</p>
+    <h2>Miksi kilometrikatto on syytä ottaa vakavasti</h2>
+    <p>Ylikilometrimaksu on yksi yleisimmistä yllätyksistä liisaussopimuksen päättyessä. Jos arvioitu ajomääräsi ylittää sopimuksen kilometrikaton, ylitys laskutetaan usein euromäärältään yllättävän suurena — kokeile laskurissa nostaa ajomäärää katon yli nähdäksesi vaikutuksen konkreettisesti.</p>
     <h2>Miksi jäännösarvo on epävarmin luku laskurissa</h2>
     <p>Toisin kuin korko tai kuukausivuokra, jälleenmyyntiarvo on aina arvio — se riippuu automallista, kunnosta, ajetuista kilometreistä ja käytettyjen autojen markkinatilanteesta vertailujakson lopussa. Kannattaa kokeilla laskuria muutamalla eri jäännösarvo-oletuksella nähdäksesi kuinka herkkä lopputulos on tälle luvulle.</p>
     <h2>Milloin liisaus voi olla parempi vaihtoehto puhtaasta hintavertailusta huolimatta</h2>
@@ -179,6 +234,7 @@
 <script>
   const el = id => document.getElementById(id);
   const fmt = n => new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+  const fmt3 = n => new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 3 }).format(n);
 
   function annuiteetti(P, vuosikorko, vuodet) {
     const kk = vuosikorko / 100 / 12;
@@ -190,21 +246,31 @@
 
   function laske() {
     const vertailujakso = parseFloat(el('vertailujakso').value) || 0;
+    const ajomaara = parseFloat(el('ajomaara').value) || 0;
     const autonHinta = parseFloat(el('autonHinta').value) || 0;
     const kasiraha = Math.min(parseFloat(el('kasiraha').value) || 0, autonHinta);
     const korko = parseFloat(el('korko').value) || 0;
     const jaannosarvo = parseFloat(el('jaannosarvo').value) || 0;
     const liisausKk = parseFloat(el('liisausKk').value) || 0;
     const liisausAloitus = parseFloat(el('liisausAloitus').value) || 0;
+    const kilometrikatto = parseFloat(el('kilometrikatto').value) || 0;
+    const ylikilometrimaksu = parseFloat(el('ylikilometrimaksu').value) || 0;
+    const huoltokulu = parseFloat(el('huoltokulu').value) || 0;
+    const huoltoSisaltyy = el('liisausSisaltaaHuollon').checked;
 
     const rahoitettava = Math.max(0, autonHinta - kasiraha);
     const { era, maksettuYht } = annuiteetti(rahoitettava, korko, vertailujakso);
 
+    const huoltoOsto = huoltokulu * vertailujakso;
+    const huoltoLiisaus = huoltoSisaltyy ? 0 : (huoltokulu * vertailujakso);
+
     const ostoBrutto = kasiraha + maksettuYht;
-    const ostoNetto = ostoBrutto - jaannosarvo;
+    const ostoNetto = ostoBrutto - jaannosarvo + huoltoOsto;
 
     const kkLkm = vertailujakso * 12;
-    const liisausYht = liisausAloitus + liisausKk * kkLkm;
+    const ylitysKm = Math.max(0, ajomaara - kilometrikatto) * vertailujakso;
+    const ylikilometrikulu = ylitysKm * ylikilometrimaksu;
+    const liisausYht = liisausAloitus + liisausKk * kkLkm + huoltoLiisaus + ylikilometrikulu;
 
     const ero = ostoNetto - liisausYht;
     const halvempi = ero < 0 ? 'Osto' : (ero > 0 ? 'Liisaus' : 'Kumpikin yhtä kallis');
@@ -219,12 +285,23 @@
     el('vOstoKk').textContent = fmt(era) + ' / kk';
     el('vLiisausKk').textContent = fmt(liisausKk) + ' / kk';
     el('vOstoYht').textContent = fmt(ostoBrutto);
-    el('vLiisausYht').textContent = fmt(liisausYht);
+    el('vLiisausYht').textContent = fmt(liisausAloitus + liisausKk * kkLkm);
+    el('vHuoltoOsto').textContent = fmt(huoltoOsto);
+    el('vHuoltoLiisaus').textContent = huoltoSisaltyy ? 'Sisältyy' : fmt(huoltoLiisaus);
     el('vJaannos').textContent = '−' + fmt(jaannosarvo);
     el('vOstoNetto').textContent = fmt(ostoNetto);
     el('vLiisausNetto').textContent = fmt(liisausYht);
 
-    document.getElementById('vOstoNetto').closest('tr').classList.toggle('valittu-rivi', false);
+    if (ylitysKm > 0) {
+      el('vYlikilometrit').textContent = fmt(ylikilometrikulu) + ` (${ylitysKm.toLocaleString('fi-FI')} km)`;
+      el('ylikilometriVaroitus').classList.remove('piilotettu');
+      el('ylikilometriVaroitus').textContent = `Arvioitu ajomääräsi ylittää sopimuksen kilometrikaton yhteensä ${ylitysKm.toLocaleString('fi-FI')} kilometrillä koko jakson aikana — tämä lisää liisauksen kokonaiskustannukseen ${fmt(ylikilometrikulu)}.`;
+    } else {
+      el('vYlikilometrit').textContent = fmt(0);
+      el('ylikilometriVaroitus').classList.add('piilotettu');
+    }
+
+    document.querySelectorAll('.vertailu-taulukko tbody tr').forEach(r => r.classList.remove('valittu-rivi'));
     const rivit = document.querySelectorAll('.vertailu-taulukko tbody tr');
     rivit[rivit.length - 1].classList.add('valittu-rivi');
 
@@ -233,6 +310,15 @@
     el('palkkiLiisaus').style.width = (Math.max(liisausYht, 0) / maxArvo * 100) + '%';
     el('palkkiOstoArvo').textContent = fmt(ostoNetto);
     el('palkkiLiisausArvo').textContent = fmt(liisausYht);
+
+    const kokonaisKm = ajomaara * vertailujakso;
+    if (kokonaisKm > 0) {
+      el('kmOsto').textContent = fmt3(ostoNetto / kokonaisKm) + '/km';
+      el('kmLiisaus').textContent = fmt3(liisausYht / kokonaisKm) + '/km';
+    } else {
+      el('kmOsto').textContent = '—';
+      el('kmLiisaus').textContent = '—';
+    }
   }
 
   document.querySelectorAll('input').forEach(input => {
