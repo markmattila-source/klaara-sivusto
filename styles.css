@@ -27,6 +27,7 @@ body {
   font-family: 'Inter', sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 a { color: var(--kuusi-tumma); }
@@ -345,6 +346,7 @@ header.brandi {
   grid-template-columns: 1.05fr 0.95fr;
   gap: 22px;
   align-items: start;
+  min-width: 0;
 }
 
 @media (max-width: 860px) {
@@ -356,6 +358,7 @@ header.brandi {
   border: 1px solid var(--viiva);
   border-radius: var(--radius);
   padding: 26px 26px 30px;
+  min-width: 0;
 }
 
 .paneeli h2 {
@@ -509,7 +512,7 @@ input:focus-visible + .liuku { outline: 2px solid var(--kuusi); outline-offset: 
 
 /* ---------- Tulospaneeli ---------- */
 
-.tulos-paneeli { position: sticky; top: 20px; }
+.tulos-paneeli { position: sticky; top: 20px; min-width: 0; }
 
 .paatulos {
   background: linear-gradient(160deg, var(--kuusi-tumma), var(--kuusi));
