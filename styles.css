@@ -16,6 +16,9 @@
   --viiva: #D9DFDA;
   --virhe: #A34D3C;
   --radius: 14px;
+  --tuore-kuusi: #1FA24E;
+  --koralli: #FF6B35;
+  --tumma-kuusi-uusi: #0F3D26;
 }
 
 * { box-sizing: border-box; }
@@ -352,6 +355,49 @@ header.brandi {
   max-width: 560px;
   margin: 0;
 }
+
+/* ---------- FRESH-prototyyppi: rohkeampi hero (testissä vain etusivulla) ---------- */
+
+.hero-fresh {
+  background: var(--tumma-kuusi-uusi);
+  border-radius: var(--radius);
+  padding: 44px 36px;
+  margin-bottom: 28px;
+}
+
+.hero-fresh h1 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(28px, 4.5vw, 46px);
+  line-height: 1.15;
+  color: #fff;
+  margin: 0 0 16px;
+  max-width: 620px;
+  letter-spacing: -0.01em;
+}
+
+.hero-fresh p {
+  font-size: 16px;
+  color: rgba(255,255,255,0.82);
+  max-width: 500px;
+  margin: 0 0 22px;
+}
+
+.fresh-badge {
+  display: inline-block;
+  background: var(--koralli);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  padding: 9px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.tyokalu-tila.fresh { color: var(--koralli); }
 
 /* ---------- Etusivun työkalukortit ---------- */
 
