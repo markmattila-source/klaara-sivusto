@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sähkösopimuksen vertailulaskuri — Klaara</title>
+<meta name="description" content="Vertaile kiinteää ja pörssisähköä oman kulutusprofiilisi mukaan — kuukausikohtainen hintaennuste ja paras/pahin-haarukka, ei vain vuosikeskiarvo.">
+
+<link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/klaara-favicon-48.png">
+<link rel="apple-touch-icon" href="assets/klaara-app-ikoni-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="kehys">
+
+  <header class="brandi">
+    <a class="merkki" href="index.html">
+      <span class="merkki-symboli">
+        <img src="assets/klaara-merkki.svg" alt="Klaara-logo">
+      </span>
+      <span class="merkki-nimi">Klaara</span>
+    </a>
+    <div class="merkki-tagline">arjen laskurit — selkeästi</div>
+  </header>
+
+  <nav class="paanavi">
+    <a href="index.html">Etusivu</a>
+    <a href="ajankohtaista.html">Ajankohtaista</a>
+    <a href="talouden-vuosikello.html">Vuosikello</a>
+    <a href="esimerkit.html">Esimerkit</a>
+    <a href="sanasto.html">Sanasto</a>
+    <a href="ukk.html">UKK</a>
+  </nav>
+
+  <div class="hero">
+    <h1>Kiinteä vai pörssisähkö — kumpi sopii sinulle?</h1>
+    <p>Tavallinen vertailu käyttää yhtä vuosikeskiarvoa. Tämä laskuri huomioi <em>milloin</em> kulutat sähköä — talvipainotteinen kulutus kohtaa juuri niitä kuukausia, joina pörssisähkö on kalleimmillaan.</p>
+  </div>
+
+  <div class="runko">
+
+    <!-- INPUTS -->
+    <div class="paneeli">
+      <h2>Syötä tiedot</h2>
+
+      <div class="osio-otsikko">Kulutus</div>
+      <div class="kentta">
+        <label for="vuosikulutus">Vuosikulutus (kWh/vuosi)</label>
+        <input type="number" id="vuosikulutus" value="8000" min="0" step="500">
+      </div>
+      <div class="osio-selite" style="margin-top:-8px;">Tyypillinen kerrostaloasunto ~2 000 kWh, sähkölämmitteinen pientalo ~15 000–20 000 kWh.</div>
+
+      <div class="kentta">
+        <label>Kulutusprofiili</label>
+        <div class="segmentti-valitsin" id="profiiliValitsin">
+          <button data-profiili="tasainen" class="aktiivinen" type="button">
+            <span class="tag-otsikko">Tasainen</span>
+            Sama joka kuukausi
+          </button>
+          <button data-profiili="talvi" type="button">
+            <span class="tag-otsikko">Talvipainotteinen</span>
+            Sähkölämmitys / lämpöpumppu
+          </button>
+        </div>
+      </div>
+
+      <div class="osio-otsikko">Kiinteä sopimus</div>
+      <div class="rivi-2">
+        <div class="kentta">
+          <label for="kiinteaHinta">Hinta (snt/kWh)</label>
+          <input type="number" id="kiinteaHinta" value="8.5" min="0" step="0.1">
+        </div>
+        <div class="kentta">
+          <label for="kiinteaPerusmaksu">Perusmaksu (€/kk)</label>
+          <input type="number" id="kiinteaPerusmaksu" value="5" min="0" step="0.5">
+        </div>
+      </div>
+
+      <div class="osio-otsikko">Pörssisähkö</div>
+      <div class="rivi-2">
+        <div class="kentta">
+          <label for="marginaali">Myyjän marginaali (snt/kWh)</label>
+          <input type="number" id="marginaali" value="0.5" min="0" step="0.1">
+        </div>
+        <div class="kentta">
+          <label for="porssiPerusmaksu">Perusmaksu (€/kk)</label>
+          <input type="number" id="porssiPerusmaksu" value="3" min="0" step="0.5">
+        </div>
+      </div>
+
+      <div class="info-huomio">
+        <strong>Kuukausikohtainen hintaennuste (snt/kWh, ei sis. marginaalia):</strong><br>
+        Elokuu 5,97 · Syyskuu 9,75 · Lokakuu 11,72 — <strong>vahvistettu Helenin ennusteesta (elokuu 2026).</strong><br>
+        Muut kuukaudet ovat Klaaran arvio tyypillisestä kausivaihtelusta, ei vahvistettu ennuste. <a href="sanasto.html">Katso koko taulukko alta →</a>
+      </div>
+
+    </div>
+
+    <!-- RESULTS -->
+    <div class="tulos-paneeli">
+
+      <div class="paatulos">
+        <div class="label">Ero (keskimääräisellä pörssihinnalla)</div>
+        <div class="summa" id="ero">—</div>
+        <div class="selite" id="eroSelite">Kiinteä vs. pörssisähkö vuositasolla</div>
+      </div>
+
+      <div class="vertailu-otsikko">Vuosikustannus</div>
+      <div class="erittely" style="padding: 6px 24px;">
+        <div class="erittely-rivi">
+          <div class="nimi">Kiinteä sopimus<span class="alaselite">Varma hinta koko vuodelle</span></div>
+          <div class="arvo" id="kiinteaYht">—</div>
+        </div>
+        <div class="erittely-rivi">
+          <div class="nimi">Pörssisähkö — paras tapaus<span class="alaselite">Jos hinnat ennustettua alempia</span></div>
+          <div class="arvo positiivinen" id="porssiParas">—</div>
+        </div>
+        <div class="erittely-rivi korostettu">
+          <div class="nimi">Pörssisähkö — keskimäärin<span class="alaselite">Ennusteen mukainen arvio</span></div>
+          <div class="arvo" id="porssiKeski">—</div>
+        </div>
+        <div class="erittely-rivi">
+          <div class="nimi">Pörssisähkö — pahin tapaus<span class="alaselite">Jos hinnat ennustettua korkeampia</span></div>
+          <div class="arvo negatiivinen" id="porssiPahin">—</div>
+        </div>
+      </div>
+
+      <div class="palkki-vertailu" style="margin-top:18px;">
+        <div class="palkki-rivi">
+          <div class="palkki-nimi">Kiinteä</div>
+          <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiKiintea" style="background: var(--kuusi); width: 0%;"></div></div>
+          <div class="palkki-arvo" id="palkkiKiinteaArvo">—</div>
+        </div>
+        <div class="palkki-rivi">
+          <div class="palkki-nimi">Pörssi (keskim.)</div>
+          <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiPorssi" style="background: var(--taivas); width: 0%;"></div></div>
+          <div class="palkki-arvo" id="palkkiPorssiArvo">—</div>
+        </div>
+      </div>
+
+      <div class="lainapaneeli">
+        <h3>Mitä tämä tarkoittaa</h3>
+        <div id="tulkintaTeksti" style="font-size:13.5px; color:var(--muste); line-height:1.6;">—</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="artikkeli" style="max-width:100%; margin-top:26px;">
+    <h2>Kuukausikohtainen hintaennuste kokonaisuudessaan</h2>
+    <table class="vertailu-taulukko" style="width:100%; margin-top:10px;">
+      <thead><tr><th>Kuukausi</th><th>Arvio (snt/kWh)</th><th>Lähde</th></tr></thead>
+      <tbody id="hintataulukko"></tbody>
+    </table>
+    <p style="margin-top:14px;">Kolme kuukautta (elo–loka 2026) perustuu Helenin julkaisemaan hintaennusteeseen. Loput kuukaudet on rakennettu tyypillisen pohjoismaisen sähkön kausivaihtelun mukaan (talvi kalliimpi, kesä halvempi) — nämä ovat Klaaran arvioita, ei vahvistettuja ennusteita, ja niitä päivitetään sitä mukaa kun uutta dataa julkaistaan.</p>
+
+    <h2>Miksi kulutusprofiililla on väliä</h2>
+    <p>Vuosikeskiarvo kertoo vain osan totuudesta. Jos suurin osa kulutuksestasi ajoittuu talveen (sähkölämmitys, lämpöpumppu pakkasella), maksat suhteessa enemmän juuri niinä kuukausina jolloin pörssisähkö on kalleimmillaan — tasainen ympärivuotinen kulutus taas hyötyy kesän halvoista kuukausista yhtä paljon kuin kärsii talven kalliista. Tämä on syy, miksi kaksi kotitaloutta samalla vuosikulutuksella voivat päätyä hyvin eri lopputulokseen.</p>
+
+    <h2>Miksi kiinteä sopimus on "vakuutus", ei vain vaihtoehto</h2>
+    <p>Kiinteä hinta ei ole koskaan varmasti halvin — mutta se on aina varma. Pörssisähkön paras/pahin-haarukka yllä havainnollistaa mitä maksat riskin ottamisesta: jos hinnat pysyvät ennustettua alempina, säästät; jos ne nousevat ennustettua enemmän, maksat enemmän kuin kiinteällä. Kumpi on parempi, riippuu siitä kuinka paljon arvostat ennakoitavuutta.
+  </div>
+
+  <div class="vastuuvapaus">
+    <strong>Suuntaa-antava laskuri.</strong> Ei korvaa sähköyhtiön tarjousta. Pörssisähkön hintaennusteet perustuvat osittain vahvistettuun (Helen, elokuu 2026) ja osittain arvioituun kausivaihteluun — todellinen toteuma voi poiketa merkittävästi. Laskuri ei sisällä sähkön siirtomaksuja, jotka maksetaan aina erikseen verkkoyhtiölle riippumatta sopimustyypistä.
+  </div>
+
+  <footer class="alatunniste">
+    <span>Klaara — arjen laskurit, selkeästi.</span>
+    <span>Hintaennuste päivitetty 20.8.2026</span>
+  </footer>
+
+</div>
+
+<script>
+  const el = id => document.getElementById(id);
+  const fmt = n => new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+
+  const hinnat = {
+    'Tammikuu': 13.0, 'Helmikuu': 12.5, 'Maaliskuu': 10.5, 'Huhtikuu': 8.5,
+    'Toukokuu': 6.5, 'Kesäkuu': 5.0, 'Heinäkuu': 5.0, 'Elokuu': 5.97,
+    'Syyskuu': 9.75, 'Lokakuu': 11.72, 'Marraskuu': 12.5, 'Joulukuu': 13.0
+  };
+  const vahvistetut = new Set(['Elokuu', 'Syyskuu', 'Lokakuu']);
+
+  const profiilit = {
+    tasainen: Object.fromEntries(Object.keys(hinnat).map(k => [k, 100/12])),
+    talvi: {
+      'Tammikuu':14,'Helmikuu':13,'Maaliskuu':11,'Huhtikuu':7,'Toukokuu':5,'Kesäkuu':3,
+      'Heinäkuu':3,'Elokuu':3,'Syyskuu':5,'Lokakuu':9,'Marraskuu':12,'Joulukuu':15
+    }
+  };
+
+  let profiiliTila = 'tasainen';
+
+  document.querySelectorAll('#profiiliValitsin button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#profiiliValitsin button').forEach(b => b.classList.remove('aktiivinen'));
+      btn.classList.add('aktiivinen');
+      profiiliTila = btn.dataset.profiili;
+      laske();
+    });
+  });
+
+  function laskePorssi(vuosikulutus, profiili, marginaali, perusmaksuKk, kerroin) {
+    let yht = 0;
+    for (const [kk, osuus] of Object.entries(profiili)) {
+      const kulutusKk = vuosikulutus * (osuus / 100);
+      const hinta = (hinnat[kk] * kerroin) + marginaali;
+      yht += kulutusKk * hinta / 100;
+    }
+    return yht + perusmaksuKk * 12;
+  }
+
+  function taytaHintataulukko() {
+    const tbody = el('hintataulukko');
+    tbody.innerHTML = '';
+    for (const [kk, hinta] of Object.entries(hinnat)) {
+      const tr = document.createElement('tr');
+      const lahde = vahvistetut.has(kk) ? 'Vahvistettu (Helen)' : 'Klaaran arvio';
+      tr.innerHTML = `<td>${kk}</td><td class="arvo-solu">${hinta.toFixed(2).replace('.', ',')}</td><td>${lahde}</td>`;
+      tbody.appendChild(tr);
+    }
+  }
+
+  function laske() {
+    const vuosikulutus = parseFloat(el('vuosikulutus').value) || 0;
+    const kiinteaHinta = parseFloat(el('kiinteaHinta').value) || 0;
+    const kiinteaPerusmaksu = parseFloat(el('kiinteaPerusmaksu').value) || 0;
+    const marginaali = parseFloat(el('marginaali').value) || 0;
+    const porssiPerusmaksu = parseFloat(el('porssiPerusmaksu').value) || 0;
+
+    const profiili = profiilit[profiiliTila];
+
+    const kiinteaYht = vuosikulutus * kiinteaHinta / 100 + kiinteaPerusmaksu * 12;
+    const porssiKeski = laskePorssi(vuosikulutus, profiili, marginaali, porssiPerusmaksu, 1.0);
+    const porssiParas = laskePorssi(vuosikulutus, profiili, marginaali, porssiPerusmaksu, 0.75);
+    const porssiPahin = laskePorssi(vuosikulutus, profiili, marginaali, porssiPerusmaksu, 1.25);
+
+    el('kiinteaYht').textContent = fmt(kiinteaYht);
+    el('porssiParas').textContent = fmt(porssiParas);
+    el('porssiKeski').textContent = fmt(porssiKeski);
+    el('porssiPahin').textContent = fmt(porssiPahin);
+
+    const ero = kiinteaYht - porssiKeski;
+    el('ero').textContent = fmt(Math.abs(ero));
+    const halvempi = ero < 0 ? 'Kiinteä' : (ero > 0 ? 'Pörssi (keskimäärin)' : 'Kumpikin yhtä kallis');
+    el('eroSelite').textContent = ero === 0 ? 'Vaihtoehdot maksavat yhtä paljon näillä luvuilla' : `${halvempi} on halvempi näillä luvuilla`;
+
+    const maxArvo = Math.max(kiinteaYht, porssiKeski, 1);
+    el('palkkiKiintea').style.width = (kiinteaYht / maxArvo * 100) + '%';
+    el('palkkiPorssi').style.width = (porssiKeski / maxArvo * 100) + '%';
+    el('palkkiKiinteaArvo').textContent = fmt(kiinteaYht);
+    el('palkkiPorssiArvo').textContent = fmt(porssiKeski);
+
+    const profiiliTeksti = profiiliTila === 'talvi'
+      ? 'Koska kulutuksesi painottuu talveen, kohtaat pörssisähkössä juuri kalleimmat kuukaudet suhteessa enemmän — tämä nostaa pörssin keskimääräistä kustannusta verrattuna tasaiseen kulutukseen samalla vuosimäärällä.'
+      : 'Koska kulutuksesi jakautuu tasaisesti, hyödyt kesän halvoista kuukausista suunnilleen yhtä paljon kuin kärsit talven kalliista — pörssin vuosikeskiarvo vastaa kohtalaisen hyvin yksinkertaista keskihintaa.';
+    el('tulkintaTeksti').textContent = `${profiiliTeksti} Haarukka (${fmt(porssiParas)}–${fmt(porssiPahin)}) näyttää mitä hintariski tarkoittaa euroissa — kiinteä sopimus poistaa tämän epävarmuuden kokonaan.`;
+  }
+
+  taytaHintataulukko();
+  document.querySelectorAll('input').forEach(input => input.addEventListener('input', laske));
+  laske();
+</script>
+
+</body>
+</html>
