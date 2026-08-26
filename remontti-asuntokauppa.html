@@ -51,6 +51,43 @@
     <div class="paneeli">
       <h2>Syötä tiedot</h2>
 
+      <div class="osio-otsikko">Nykyinen tilanne</div>
+      <div class="kytkin-rivi">
+        <label for="myynVanhan">Myyn nykyisen asuntoni tämän kaupan yhteydessä</label>
+        <div class="kytkin">
+          <input type="checkbox" id="myynVanhan">
+          <span class="liuku"></span>
+        </div>
+      </div>
+
+      <div id="vanhaAsuntoKentat" class="piilotettu">
+        <div class="rivi-2" style="margin-top:10px;">
+          <div class="kentta">
+            <label for="vanhaMyyntihinta">Arvioitu myyntihinta (€)</label>
+            <input type="number" id="vanhaMyyntihinta" value="280000" min="0" step="1000">
+          </div>
+          <div class="kentta">
+            <label for="vanhaLaina">Nykyisen asuntolainan saldo (€)</label>
+            <input type="number" id="vanhaLaina" value="150000" min="0" step="1000">
+          </div>
+        </div>
+
+        <div class="kentta">
+          <label for="muutLainat">Muut lainat yhteensä (€)<span style="font-weight:400; color:var(--muste-hiljainen);"> — esim. autolaina, kulutusluotto</span></label>
+          <input type="number" id="muutLainat" value="0" min="0" step="500">
+        </div>
+
+        <div class="kytkin-rivi">
+          <label for="maksaMuutPois">Muut lainat maksetaan pois myynnin yhteydessä</label>
+          <div class="kytkin">
+            <input type="checkbox" id="maksaMuutPois">
+            <span class="liuku"></span>
+          </div>
+        </div>
+
+        <div class="info-huomio" id="nettotuottoHuomio" style="margin-top:10px;">—</div>
+      </div>
+
       <div class="osio-otsikko">Asuntokauppa</div>
       <div class="kytkin-rivi">
         <label for="sisallytaAsuntokauppa">Sisällytä laskelmaan</label>
@@ -212,12 +249,16 @@
           <div class="nimi">Muu kustannus<span class="alaselite">Kertaluonteinen lisäkulu</span></div>
           <div class="arvo negatiivinen" id="muuNaytto">—</div>
         </div>
+        <div class="erittely-rivi piilotettu" id="riviNettotuotto">
+          <div class="nimi">Vanhan asunnon nettotuotto<span class="alaselite">Myyntihinta − asuntolaina (− muut lainat jos valittu)</span></div>
+          <div class="arvo" id="nettotuottoNaytto">—</div>
+        </div>
         <div class="erittely-rivi">
           <div class="nimi">Omat säästöt käytössä<span class="alaselite">Vähennetään rahoitustarpeesta</span></div>
           <div class="arvo positiivinen" id="saastotNaytto">—</div>
         </div>
         <div class="erittely-rivi korostettu">
-          <div class="nimi">Rahoitettava määrä<span class="alaselite">Kokonaiskustannus − omat säästöt</span></div>
+          <div class="nimi">Rahoitettava määrä<span class="alaselite">Kokonaiskustannus − omat säästöt − nettotuotto</span></div>
           <div class="arvo" id="rahoitettava">—</div>
         </div>
       </div>
@@ -535,9 +576,29 @@
 
     const kokonais = hinta + varainsiirto + remonttiNetto + muuKustannus;
 
+    // --- Vanhan asunnon myynti ---
+    const myynVanhan = el('myynVanhan').checked;
+    el('vanhaAsuntoKentat').classList.toggle('piilotettu', !myynVanhan);
+    let nettotuotto = 0;
+    if (myynVanhan) {
+      const vanhaMyyntihinta = parseFloat(el('vanhaMyyntihinta').value) || 0;
+      const vanhaLaina = parseFloat(el('vanhaLaina').value) || 0;
+      const muutLainat = parseFloat(el('muutLainat').value) || 0;
+      const maksaMuutPois = el('maksaMuutPois').checked;
+      nettotuotto = vanhaMyyntihinta - vanhaLaina - (maksaMuutPois ? muutLainat : 0);
+
+      el('nettotuottoHuomio').textContent = nettotuotto >= 0
+        ? `Myynnin nettotuotto: ${fmt(nettotuotto)} — tämä lisätään käytettävissä olevaan rahaan uuden asunnon rahoituksessa.`
+        : `Huom: nykyinen laina (${maksaMuutPois ? '+ muut lainat' : ''}) on suurempi kuin arvioitu myyntihinta — myynti ei tuota rahaa, vaan lisää rahoitustarvetta ${fmt(Math.abs(nettotuotto))} verran.`;
+    }
+    el('riviNettotuotto').classList.toggle('piilotettu', !myynVanhan);
+    el('nettotuottoNaytto').textContent = (nettotuotto >= 0 ? '+' : '') + fmt(nettotuotto);
+    el('nettotuottoNaytto').className = 'arvo ' + (nettotuotto >= 0 ? 'positiivinen' : 'negatiivinen');
+
     const omatSaastot = Math.max(0, parseFloat(el('omatSaastot').value) || 0);
-    const kaytetytSaastot = Math.min(omatSaastot, kokonais);
-    const rahoitettava = Math.max(0, kokonais - omatSaastot);
+    const kaytettavissaYhteensa = omatSaastot + nettotuotto;
+    const kaytetytSaastot = Math.min(Math.max(kaytettavissaYhteensa, 0), kokonais);
+    const rahoitettava = Math.max(0, kokonais - kaytettavissaYhteensa);
 
     const korko = parseFloat(el('korko').value) || 0;
     const lainaAika = parseFloat(el('lainaAika').value) || 0;
