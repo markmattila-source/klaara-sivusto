@@ -490,6 +490,7 @@
             <div class="palkki-arvo" id="palkkiYlitys30Arvo">—</div>
           </div>
         </div>
+        <div class="info-huomio" id="ylitysvaraSelitys" style="margin-top:10px;">—</div>
       </div>
 
       <div style="margin-top:18px; text-align:center;">
@@ -894,11 +895,15 @@
         const matK = materiaali * kerroin;
         const vahennysK = laskeVahennys(tyoK, pariskunta);
         const remonttiNettoK = (tyoK + matK) - vahennysK;
-        return hinta + varainsiirto + remonttiNettoK + muuKustannus + yhtiolainaKertaluontoinen;
+        return {
+          kokonais: hinta + varainsiirto + remonttiNettoK + muuKustannus + yhtiolainaKertaluontoinen,
+          remonttiNetto: remonttiNettoK
+        };
       }
-      const y0 = remontinKokonaisKerroin(1.0);
-      const y15 = remontinKokonaisKerroin(1.15);
-      const y30 = remontinKokonaisKerroin(1.30);
+      const s0 = remontinKokonaisKerroin(1.0);
+      const s15 = remontinKokonaisKerroin(1.15);
+      const s30 = remontinKokonaisKerroin(1.30);
+      const y0 = s0.kokonais, y15 = s15.kokonais, y30 = s30.kokonais;
       const maxY = Math.max(y0, y15, y30, 1);
       el('palkkiYlitys0').style.width = (y0 / maxY * 100) + '%';
       el('palkkiYlitys15').style.width = (y15 / maxY * 100) + '%';
@@ -906,6 +911,10 @@
       el('palkkiYlitys0Arvo').textContent = fmt(y0);
       el('palkkiYlitys15Arvo').textContent = fmt(y15);
       el('palkkiYlitys30Arvo').textContent = fmt(y30);
+
+      const remonttiOsuusProsentti = (s0.remonttiNetto / y0) * 100;
+      const remontinNousuProsentti = ((s30.remonttiNetto - s0.remonttiNetto) / s0.remonttiNetto) * 100;
+      el('ylitysvaraSelitys').textContent = `Remontti on tässä laskelmassa vain ${remonttiOsuusProsentti.toFixed(1)} % kokonaissummasta, joten 30 %:n remonttiylitys näkyy kokonaissummassa pienenä muutoksena — vaikka remontin oma nettokustannus nousisi ${fmt(s0.remonttiNetto)} → ${fmt(s30.remonttiNetto)} (+${remontinNousuProsentti.toFixed(0)} %).`;
     }
   }
 
@@ -942,7 +951,8 @@
         .replace(/<[^>]+>/g, '')
         .replace(/&nbsp;/g, ' ')
         .replace(/&amp;/g, '&')
-        .replace(/€/g, 'EUR');
+        .replace(/€/g, 'EUR')
+        .replace(/→/g, '->');
     }
 
     function sivunAlatunniste() {
@@ -1152,6 +1162,13 @@
       taulukkoRivi(['Arvioitu', eur(el('palkkiYlitys0Arvo').textContent)], xr, true);
       taulukkoRivi(['+15 %', eur(el('palkkiYlitys15Arvo').textContent)], xr, false);
       taulukkoRivi(['+30 %', eur(el('palkkiYlitys30Arvo').textContent)], xr, false);
+      y += 3;
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(8.5);
+      doc.setTextColor(...harmaa);
+      const ylitysSelitysPdf = doc.splitTextToSize(siisti(el('ylitysvaraSelitys').textContent), 165);
+      doc.text(ylitysSelitysPdf, vasen, y);
+      y += ylitysSelitysPdf.length * 4.5;
     }
 
     if (eiLainatarvettaNyt && !el('sisallytaRemontti').checked) {
