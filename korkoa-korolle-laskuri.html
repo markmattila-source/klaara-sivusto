@@ -79,6 +79,10 @@
         Tämä ei ole sijoitusneuvontaa. Todellinen tuotto vaihtelee eikä oletettu tai historiallinen tuotto ole tae tulevasta. Laskuri olettaa kiinteän kuukausittain kertyvän tuottoprosentin koko ajanjaksolle.
       </div>
 
+      <div class="info-huomio" style="background:#EDF3EF; border-color:#D3E3D8;">
+        <strong>72:n sääntö:</strong> <span id="seitsemankaksi">—</span>
+      </div>
+
     </div>
 
     <!-- RESULTS -->
@@ -88,6 +92,24 @@
         <div class="label">Loppusumma</div>
         <div class="summa" id="loppusumma">—</div>
         <div class="selite" id="loppusummaSelite">Oma säästösumma + korkoa korolle -kasvu</div>
+      </div>
+
+      <div class="erittely" style="padding: 18px 24px;">
+        <div class="vertailu-otsikko" style="margin: 0 0 12px;">Kasvu ajan mittaan</div>
+        <svg id="kasvukayraSvg" viewBox="0 0 640 250" style="width:100%; height:auto; display:block;">
+          <line x1="40" y1="210" x2="620" y2="210" stroke="var(--viiva)" stroke-width="1"/>
+          <path id="kayraAlueTuotto" fill="var(--ruska)" fill-opacity="0.35" stroke="none"></path>
+          <path id="kayraAlueOma" fill="var(--kuusi)" fill-opacity="0.55" stroke="none"></path>
+          <path id="kayraViivaKok" fill="none" stroke="var(--ruska)" stroke-width="2"></path>
+          <path id="kayraViivaOma" fill="none" stroke="var(--kuusi-tumma)" stroke-width="2"></path>
+          <text id="kayraLabel0" x="40" y="228" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muste-hiljainen)" text-anchor="start">0</text>
+          <text id="kayraLabelPuoli" x="330" y="228" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muste-hiljainen)" text-anchor="middle">—</text>
+          <text id="kayraLabelLoppu" x="620" y="228" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muste-hiljainen)" text-anchor="end">—</text>
+        </svg>
+        <div style="display:flex; gap:18px; margin-top:10px; font-size:12px; color:var(--muste-hiljainen);">
+          <span><span style="display:inline-block; width:10px; height:10px; background:var(--kuusi); border-radius:2px; margin-right:5px;"></span>Oma säästö</span>
+          <span><span style="display:inline-block; width:10px; height:10px; background:var(--ruska); border-radius:2px; margin-right:5px;"></span>Tuotto</span>
+        </div>
       </div>
 
       <div class="erittely">
@@ -186,6 +208,39 @@
       el('viivytysEro').textContent = '—';
       el('viivytysSelite').textContent = 'vaatii yli 5 vuoden aikajänteen vertailua varten';
     }
+
+    // --- 72:n sääntö ---
+    if (tuottoProsentti > 0) {
+      const tuplausaika = 72 / tuottoProsentti;
+      el('seitsemankaksi').textContent = `${tuottoProsentti}%:n vuosituotolla rahasi tuplaantuu suunnilleen ${tuplausaika.toFixed(1)} vuodessa (karkea nyrkkisääntö: 72 ÷ tuottoprosentti).`;
+    } else {
+      el('seitsemankaksi').textContent = 'Tuottoprosentti pitää olla suurempi kuin 0, jotta tuplaantumisaikaa voi arvioida.';
+    }
+
+    // --- Kasvukäyrä ---
+    const aikaKokonaisluku = Math.max(1, Math.round(vuodet));
+    const pisteet = [];
+    for (let v = 0; v <= aikaKokonaisluku; v++) {
+      pisteet.push({ v, oma: P0 + C * 12 * v, kok: tulevaArvo(P0, C, tuottoProsentti, v) });
+    }
+    const maxArvoKayra = Math.max(pisteet[pisteet.length - 1].kok, 1);
+    const x0 = 40, x1 = 620, y0 = 20, y1 = 210;
+    const xPikseli = v => x0 + (v / aikaKokonaisluku) * (x1 - x0);
+    const yPikseli = arvo => y1 - (Math.max(arvo, 0) / maxArvoKayra) * (y1 - y0);
+
+    const omaPisteet = pisteet.map(p => `${xPikseli(p.v)},${yPikseli(p.oma)}`);
+    const kokPisteet = pisteet.map(p => `${xPikseli(p.v)},${yPikseli(p.kok)}`);
+    const kokPisteetKaanteinen = [...pisteet].reverse().map(p => `${xPikseli(p.v)},${yPikseli(p.kok)}`);
+    const omaPisteetKaanteinen = [...pisteet].reverse().map(p => `${xPikseli(p.v)},${yPikseli(p.oma)}`);
+
+    el('kayraViivaOma').setAttribute('d', `M${omaPisteet.join(' L')}`);
+    el('kayraViivaKok').setAttribute('d', `M${kokPisteet.join(' L')}`);
+    el('kayraAlueOma').setAttribute('d', `M${xPikseli(0)},${y1} L${omaPisteet.join(' L')} L${xPikseli(aikaKokonaisluku)},${y1} Z`);
+    el('kayraAlueTuotto').setAttribute('d', `M${omaPisteet.join(' L')} L${kokPisteetKaanteinen.join(' L')} Z`);
+
+    el('kayraLabelLoppu').textContent = aikaKokonaisluku + ' v';
+    el('kayraLabelPuoli').textContent = Math.round(aikaKokonaisluku / 2) + ' v';
+    el('kayraLabelPuoli').setAttribute('x', xPikseli(aikaKokonaisluku / 2));
   }
 
   document.querySelectorAll('input').forEach(input => {
