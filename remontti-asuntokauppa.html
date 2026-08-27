@@ -922,38 +922,51 @@
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const vasen = 20;
+    const oikea = 190;
     let y = 20;
+    let sivu = 1;
+    const SIVUJA_YHT = 4;
 
     const vihrea = [31, 162, 78];
     const tummaVihrea = [15, 61, 38];
+    const koralli = [255, 107, 53];
     const musta = [22, 36, 31];
     const harmaa = [75, 90, 84];
+    const vaaleaTausta = [237, 243, 239];
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(20);
-    doc.setTextColor(...tummaVihrea);
-    doc.text('Klaara', vasen, y);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.setTextColor(...harmaa);
-    doc.text('arjen laskurit — selkeästi', vasen, y + 6);
-    y += 18;
+    function eur(teksti) {
+      return String(teksti || '—').replace(/€/g, 'EUR').replace(/\s+EUR/, ' EUR');
+    }
+    function siisti(html) {
+      return String(html || '')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
+        .replace(/€/g, 'EUR');
+    }
 
-    doc.setDrawColor(...vihrea);
-    doc.setLineWidth(0.5);
-    doc.line(vasen, y, 190, y);
-    y += 10;
+    function sivunAlatunniste() {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(...harmaa);
+      doc.text(`Klaara — klaaralaskuri.fi  •  Sivu ${sivu}/${SIVUJA_YHT}`, vasen, 285);
+      doc.text(new Date().toLocaleDateString('fi-FI'), oikea, 285, { align: 'right' });
+    }
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(15);
-    doc.setTextColor(...musta);
-    doc.text('Remontti & asuntokauppa — laskelma', vasen, y);
-    y += 6;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.setTextColor(...harmaa);
-    doc.text('Luotu: ' + new Date().toLocaleDateString('fi-FI') + '  |  klaaralaskuri.fi', vasen, y);
-    y += 12;
+    function ylatunniste(otsikkoTeksti) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(...tummaVihrea);
+      doc.text('Klaara', vasen, 16);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(...harmaa);
+      doc.text(otsikkoTeksti, oikea, 16, { align: 'right' });
+      doc.setDrawColor(...vihrea);
+      doc.setLineWidth(0.4);
+      doc.line(vasen, 20, oikea, 20);
+      y = 32;
+    }
 
     function otsikko(teksti) {
       doc.setFont('helvetica', 'bold');
@@ -970,9 +983,100 @@
       doc.text(nimi, vasen, y);
       doc.setFont('courier', 'bold');
       doc.setTextColor(...tummaVihrea);
-      doc.text(String(arvo).replace(/€/g, 'EUR').replace(/\s+EUR/, ' EUR'), 190, y, { align: 'right' });
+      doc.text(eur(arvo), oikea, y, { align: 'right' });
       y += 6.5;
     }
+
+    function taulukkoOtsikkoRivi(sarakkeet, xKohdat) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(...harmaa);
+      sarakkeet.forEach((s, i) => doc.text(s, xKohdat[i], y, { align: i === 0 ? 'left' : 'right' }));
+      y += 5.5;
+      doc.setDrawColor(220, 220, 220);
+      doc.line(vasen, y - 4, oikea, y - 4);
+    }
+
+    function taulukkoRivi(arvot, xKohdat, korosta) {
+      doc.setFont('helvetica', korosta ? 'bold' : 'normal');
+      doc.setFontSize(9.5);
+      doc.setTextColor(...(korosta ? tummaVihrea : musta));
+      arvot.forEach((a, i) => doc.text(String(a), xKohdat[i], y, { align: i === 0 ? 'left' : 'right' }));
+      y += 6.5;
+    }
+
+    function uusiSivu(otsikkoTeksti) {
+      sivunAlatunniste();
+      doc.addPage();
+      sivu++;
+      ylatunniste(otsikkoTeksti);
+    }
+
+    // ============ SIVU 1: YHTEENVETO ============
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(...tummaVihrea);
+    doc.text('Klaara', vasen, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...harmaa);
+    doc.text('arjen laskurit — selkeästi', vasen, y + 6);
+    y += 18;
+    doc.setDrawColor(...vihrea);
+    doc.setLineWidth(0.5);
+    doc.line(vasen, y, oikea, y);
+    y += 10;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(...musta);
+    doc.text('Asuntokaupan & remontin kokonaiskustannuslaskelma', vasen, y, { maxWidth: 170 });
+    y += 11;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...harmaa);
+    doc.text('Luotu: ' + new Date().toLocaleDateString('fi-FI') + '  |  klaaralaskuri.fi', vasen, y);
+    y += 14;
+
+    // Kolme isoa lukua laatikoissa
+    const laatikkoLeveys = 54, laatikkoKorkeus = 26, valiT = 4;
+    const laatikot = [
+      ['Kokonaiskustannus nyt', el('kokonaisSumma').textContent],
+      ['Kuukausierä', lainatyyppiTila === 'annuiteetti' ? el('annKuukausiera').textContent : lainatyyppiTila === 'tasalyhennys' ? el('talEnsimmainen').textContent : el('bulKuukausikorko').textContent],
+      ['Korkoa yhteensä laina-ajalta', el('valittuYhteensaKorko').textContent]
+    ];
+    laatikot.forEach((lk, i) => {
+      const x = vasen + i * (laatikkoLeveys + valiT);
+      doc.setFillColor(...vaaleaTausta);
+      doc.roundedRect(x, y, laatikkoLeveys, laatikkoKorkeus, 2, 2, 'F');
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(...harmaa);
+      doc.text(lk[0], x + 4, y + 7, { maxWidth: laatikkoLeveys - 8 });
+      doc.setFont('courier', 'bold');
+      doc.setFontSize(12.5);
+      doc.setTextColor(...tummaVihrea);
+      doc.text(eur(lk[1]), x + 4, y + 19, { maxWidth: laatikkoLeveys - 8 });
+    });
+    y += laatikkoKorkeus + 14;
+
+    otsikko('Tärkeimmät havainnot');
+    y += 1;
+    const havainnot = ['insightRemontti', 'insightVahennys', 'insightVero']
+      .filter(id => el(id).style.display !== 'none')
+      .map(id => siisti(el(id).innerHTML));
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(...musta);
+    havainnot.forEach(h => {
+      const rivitetty = doc.splitTextToSize('•  ' + h, 165);
+      doc.text(rivitetty, vasen, y);
+      y += rivitetty.length * 5.5 + 2;
+    });
+
+    // ============ SIVU 2: YKSITYISKOHTAINEN ERITTELY ============
+    uusiSivu('Yksityiskohtainen erittely');
 
     otsikko('Syötetyt tiedot');
     if (el('sisallytaAsuntokauppa').checked) {
@@ -1007,27 +1111,106 @@
     }
     rivi('Kokonaiskustannus', el('kokonaisSumma').textContent);
     rivi('Rahoitettava määrä', el('rahoitettava').textContent);
-    y += 2;
-    doc.setDrawColor(220, 220, 220);
-    doc.line(vasen, y, 190, y);
+    y += 6;
+
+    if (el('eiLainatarvetta').classList.contains('piilotettu')) {
+      otsikko('Lainatyyppien vertailu (sama summa, korko ja aika)');
+      const xt = [vasen, 105, 135, 165, oikea];
+      taulukkoOtsikkoRivi(['Tyyppi', 'Erä alussa', 'Erä lopussa', 'Korkoa yht.', 'Maksettu yht.'], xt);
+      taulukkoRivi(['Annuiteetti', eur(el('vAnnAlku').textContent), eur(el('vAnnLoppu').textContent), eur(el('vAnnKorko').textContent), eur(el('vAnnYht').textContent)], xt, lainatyyppiTila === 'annuiteetti');
+      taulukkoRivi(['Tasalyhennys', eur(el('vTalAlku').textContent), eur(el('vTalLoppu').textContent), eur(el('vTalKorko').textContent), eur(el('vTalYht').textContent)], xt, lainatyyppiTila === 'tasalyhennys');
+      taulukkoRivi(['Bulletti', eur(el('vBulAlku').textContent), eur(el('vBulLoppu').textContent), eur(el('vBulKorko').textContent), eur(el('vBulYht').textContent)], xt, lainatyyppiTila === 'bulletti');
+    }
+
+    // ============ SIVU 3: SKENAARIOT & HERKKYYS ============
+    uusiSivu('Skenaariot & herkkyysanalyysi');
+
+    const eiLainatarvettaNyt = !el('eiLainatarvetta').classList.contains('piilotettu');
+
+    if (!eiLainatarvettaNyt) {
+      otsikko('Korkoriski — mitä jos korko nousisi?');
+      const xk = [vasen, oikea];
+      taulukkoOtsikkoRivi(['Korko', 'Kuukausierä'], xk);
+      const erot = [el('palkkiKorkoNytArvo').textContent, el('palkkiKorkoP1Arvo').textContent, el('palkkiKorkoP2Arvo').textContent];
+      const nimet = [el('korkoriskiNimi1').textContent, el('korkoriskiNimi2').textContent, el('korkoriskiNimi3').textContent];
+      nimet.forEach((n, i) => taulukkoRivi([n, eur(erot[i])], xk, i === 0));
+      y += 8;
+
+      otsikko('Laina-ajan vaikutus kuukausierään');
+      const xl = [vasen, 100, oikea];
+      taulukkoOtsikkoRivi(['Laina-aika', 'Kuukausierä'], xl);
+      taulukkoRivi(['20 vuotta', eur(el('palkkiAika20Arvo').textContent)], xl, el('lainaAika').value === '20');
+      taulukkoRivi(['25 vuotta', eur(el('palkkiAika25Arvo').textContent)], xl, el('lainaAika').value === '25');
+      taulukkoRivi(['30 vuotta', eur(el('palkkiAika30Arvo').textContent)], xl, el('lainaAika').value === '30');
+      y += 8;
+    }
+
+    if (el('sisallytaRemontti').checked) {
+      otsikko('Remonttiriski — mitä jos remontti maksaakin enemmän?');
+      const xr = [vasen, 100, oikea];
+      taulukkoOtsikkoRivi(['Skenaario', 'Kokonaiskustannus'], xr);
+      taulukkoRivi(['Arvioitu', eur(el('palkkiYlitys0Arvo').textContent)], xr, true);
+      taulukkoRivi(['+15 %', eur(el('palkkiYlitys15Arvo').textContent)], xr, false);
+      taulukkoRivi(['+30 %', eur(el('palkkiYlitys30Arvo').textContent)], xr, false);
+    }
+
+    if (eiLainatarvettaNyt && !el('sisallytaRemontti').checked) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(...harmaa);
+      doc.text('Tässä laskelmassa ei ole rahoitustarvetta eikä remonttia, joten herkkyysanalyysiä ei tarvita.', vasen, y);
+    }
+
+    // ============ SIVU 4: YLEISTÄ TIETOA ============
+    uusiSivu('Yleistä tietoa');
+
+    otsikko('Hyödyllistä tietoa prosessista');
+    const vinkit = [
+      'Useamman lainatarjouksen pyytäminen eri pankeista on yleinen tapa löytää kilpailukykyisempi korkomarginaali.',
+      'Kotitalousvähennys saadaan vasta seuraavan vuoden verotuksessa — se ei pienennä kaupanteon hetken kassatarvetta.',
+      'Remonttibudjetit ylittyvät tyypillisesti — tämän laskelman sivun 3 herkkyysanalyysi näyttää vaikutuksen euroissa.',
+      'Varainsiirtovero maksetaan viimeistään kuuden kuukauden kuluessa kaupasta, ellei kauppakirjassa muuta sovita.'
+    ];
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(...musta);
+    vinkit.forEach(v => {
+      const rivitetty = doc.splitTextToSize('•  ' + v, 165);
+      doc.text(rivitetty, vasen, y);
+      y += rivitetty.length * 5.5 + 3;
+    });
+    y += 6;
+
+    otsikko('Sanasto');
+    const sanasto = [
+      ['Annuiteettilaina', 'Kuukausierä pysyy samana koko laina-ajan.'],
+      ['Tasalyhennyslaina', 'Lyhennysosuus pysyy samana, erä pienenee ajan myötä.'],
+      ['Kotitalousvähennys', 'Verohyöty kotiin teetetystä työstä, ei materiaaleista.'],
+      ['Varainsiirtovero', 'Kertaluonteinen vero asunnon tai kiinteistön kaupasta.']
+    ];
+    doc.setFontSize(9);
+    sanasto.forEach(([termi, selitys]) => {
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...tummaVihrea);
+      doc.text(termi + ':', vasen, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(...musta);
+      doc.text(selitys, vasen + 42, y, { maxWidth: 128 });
+      y += 6.5;
+    });
     y += 8;
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(12);
-    doc.setTextColor(...tummaVihrea);
-    doc.text('Kuukausierä (valittu lainatyyppi)', vasen, y);
-    y += 7;
-    doc.setFont('courier', 'bold');
-    doc.setFontSize(16);
-    doc.text(String(el('valittuYhteensaKorko').textContent ? (lainatyyppiTila === 'annuiteetti' ? el('annKuukausiera').textContent : lainatyyppiTila === 'tasalyhennys' ? el('talEnsimmainen').textContent : el('bulKuukausikorko').textContent) : '—').replace(/€/g, 'EUR'), vasen, y);
-    y += 14;
-
+    doc.setDrawColor(220, 220, 220);
+    doc.line(vasen, y, oikea, y);
+    y += 8;
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(8);
     doc.setTextColor(...harmaa);
-    const vastuuvapaus = 'Suuntaa-antava laskelma. Ei korvaa Verohallinnon tai asiantuntijan neuvontaa. Esitetyn lakimuutoksen tiedot perustuvat hallituksen esitykseen eivätkä ole vielä voimassa olevaa lainsäädäntöä.';
-    const rivitetty = doc.splitTextToSize(vastuuvapaus, 170);
-    doc.text(rivitetty, vasen, y);
+    const vastuuvapaus = 'Suuntaa-antava laskelma, ei sido pankkia tai viranomaista. Ei korvaa Verohallinnon tai asiantuntijan neuvontaa. Esitetyn lakimuutoksen tiedot perustuvat hallituksen esitykseen eivätkä ole vielä voimassa olevaa lainsäädäntöä.';
+    const rivitettyVastuu = doc.splitTextToSize(vastuuvapaus, 170);
+    doc.text(rivitettyVastuu, vasen, y);
+
+    sivunAlatunniste();
 
     doc.save('klaara-remonttilaskelma.pdf');
   }
