@@ -894,6 +894,93 @@ footer.alatunniste {
   line-height: 1.55;
 }
 
+/* ---------- Lisäasetukset (collapsible) ---------- */
+
+details.lisaasetukset {
+  margin-top: 20px;
+  border-top: 1px solid var(--viiva);
+  padding-top: 16px;
+}
+details.lisaasetukset summary {
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muste-hiljainen);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+details.lisaasetukset summary::-webkit-details-marker { display: none; }
+details.lisaasetukset summary::before {
+  content: "+";
+  font-size: 15px;
+  color: var(--koralli);
+  flex-shrink: 0;
+}
+details.lisaasetukset[open] summary::before { content: "\2212"; }
+details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
+
+/* ---------- Esimerkkilaskelma-nappi ---------- */
+
+.esimerkki-nappi {
+  display: block;
+  width: 100%;
+  background: var(--tausta);
+  border: 1.5px dashed var(--kuusi);
+  color: var(--kuusi-tumma);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 22px;
+  text-align: center;
+  transition: background 0.15s ease;
+}
+.esimerkki-nappi:hover { background: #EDF3EF; }
+
+/* ---------- Insight-kortit ---------- */
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.insight-kortti {
+  background: #FFF7ED;
+  border: 1px solid #FBE4CC;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 12.5px;
+  color: var(--muste);
+  line-height: 1.5;
+}
+.insight-kortti strong { color: var(--kuusi-tumma); }
+
+/* ---------- Jaa laskelma -nappi ---------- */
+
+.jaa-nappi {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--viiva);
+  color: var(--muste-hiljainen);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.jaa-nappi:hover { border-color: var(--kuusi); color: var(--kuusi-tumma); }
+.jaa-nappi.kopioitu { border-color: var(--kuusi); color: var(--kuusi-tumma); }
+
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }

@@ -52,6 +52,8 @@
     <div class="paneeli">
       <h2>Syötä tiedot</h2>
 
+      <button type="button" class="esimerkki-nappi" id="esimerkkiNappi">✨ Täytä esimerkkilaskelma — kokeile kaikkia ominaisuuksia yhdellä klikkauksella</button>
+
       <div class="osio-otsikko">Nykyinen tilanne</div>
       <div class="kytkin-rivi">
         <label for="myynVanhan">Myyn nykyisen asuntoni tämän kaupan yhteydessä</label>
@@ -122,27 +124,6 @@
           <input type="number" id="vastike" value="250" min="0" step="10">
           <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Vain asunto-osakkeille — kiinteistöllä/omakotitalolla ei ole yhtiövastiketta, vaan omat erilliset ylläpitokulut.</div>
         </div>
-
-        <div class="kentta" id="yhtiolainaKentta">
-          <label for="yhtiolaina">Osakkeeseen kohdistuva yhtiölainaosuus (€)</label>
-          <input type="number" id="yhtiolaina" value="0" min="0" step="500">
-          <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Jätä 0, jos kohteella ei ole yhtiölainaa tai velaton hinta jo sisältää sen.</div>
-        </div>
-
-        <div id="yhtiolainaLisakentat" class="piilotettu">
-          <div class="kytkin-rivi">
-            <label for="maksaYhtiolainaPois">Maksetaan pois kaupanteon yhteydessä</label>
-            <label class="kytkin">
-              <input type="checkbox" id="maksaYhtiolainaPois" checked>
-              <span class="liuku"></span>
-            </label>
-          </div>
-          <div class="kentta piilotettu" id="rahoitusvastikeKentta" style="margin-top:10px;">
-            <label for="rahoitusvastike">Kuukausittainen rahoitusvastike (€/kk)</label>
-            <input type="number" id="rahoitusvastike" value="0" min="0" step="10">
-            <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Jos yhtiölainaosuutta ei makseta pois, se jatkuu yleensä kuukausittaisena rahoitusvastikkeena — syötä pankilta/isännöitsijältä saatu arvio.</div>
-          </div>
-        </div>
       </div>
 
       <div class="osio-otsikko">Remontti</div>
@@ -194,13 +175,6 @@
         </div>
       </div>
 
-      <div class="osio-otsikko">Muu kustannus</div>
-      <div class="osio-selite">Esim. muutto, uudet kalusteet tai muu kertaluonteinen kulu — valinnainen.</div>
-      <div class="kentta">
-        <label for="muuKustannus">Muu kertakustannus (€)</label>
-        <input type="number" id="muuKustannus" value="0" min="0" step="100">
-      </div>
-
       <div class="osio-otsikko">Rahoitus</div>
 
       <div class="kentta">
@@ -239,15 +213,48 @@
         </div>
       </div>
 
-      <div class="kentta">
-        <label for="avausmaksu">Lainan avaus-/järjestelymaksu (€) — valinnainen</label>
-        <input type="number" id="avausmaksu" value="0" min="0" step="10">
-      </div>
+      <details class="lisaasetukset" id="lisaasetuksetDetails">
+        <summary>Lisäasetukset (yhtiölaina, muut kulut, vakuutus)</summary>
+        <div class="lisaasetukset-sisalto">
 
-      <div class="kentta">
-        <label for="vakuutus">Koti-/kiinteistövakuutus (€/kk) — valinnainen</label>
-        <input type="number" id="vakuutus" value="25" min="0" step="5">
-      </div>
+          <div class="kentta" id="yhtiolainaKentta">
+            <label for="yhtiolaina">Osakkeeseen kohdistuva yhtiölainaosuus (€)</label>
+            <input type="number" id="yhtiolaina" value="0" min="0" step="500">
+            <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Jätä 0, jos kohteella ei ole yhtiölainaa tai velaton hinta jo sisältää sen.</div>
+          </div>
+
+          <div id="yhtiolainaLisakentat" class="piilotettu">
+            <div class="kytkin-rivi">
+              <label for="maksaYhtiolainaPois">Maksetaan pois kaupanteon yhteydessä</label>
+              <label class="kytkin">
+                <input type="checkbox" id="maksaYhtiolainaPois" checked>
+                <span class="liuku"></span>
+              </label>
+            </div>
+            <div class="kentta piilotettu" id="rahoitusvastikeKentta" style="margin-top:10px;">
+              <label for="rahoitusvastike">Kuukausittainen rahoitusvastike (€/kk)</label>
+              <input type="number" id="rahoitusvastike" value="0" min="0" step="10">
+              <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Jos yhtiölainaosuutta ei makseta pois, se jatkuu yleensä kuukausittaisena rahoitusvastikkeena.</div>
+            </div>
+          </div>
+
+          <div class="kentta" style="margin-top:14px;">
+            <label for="muuKustannus">Muu kertakustannus (€)<span style="font-weight:400; color:var(--muste-hiljainen);"> — esim. muutto, uudet kalusteet</span></label>
+            <input type="number" id="muuKustannus" value="0" min="0" step="100">
+          </div>
+
+          <div class="kentta">
+            <label for="avausmaksu">Lainan avaus-/järjestelymaksu (€)</label>
+            <input type="number" id="avausmaksu" value="0" min="0" step="10">
+          </div>
+
+          <div class="kentta">
+            <label for="vakuutus">Koti-/kiinteistövakuutus (€/kk)</label>
+            <input type="number" id="vakuutus" value="25" min="0" step="5">
+          </div>
+
+        </div>
+      </details>
 
     </div>
 
@@ -258,6 +265,16 @@
         <div class="label">Kokonaiskustannus nyt</div>
         <div class="summa" id="kokonaisSumma">—</div>
         <div class="selite" id="kokonaisSelite">Kauppahinta + varainsiirtovero + remontin nettokustannus</div>
+      </div>
+
+      <div style="text-align:right; margin-bottom:14px;">
+        <button type="button" class="jaa-nappi" id="jaaNappi">🔗 Jaa laskelma</button>
+      </div>
+
+      <div class="insight-grid" id="insightGrid">
+        <div class="insight-kortti" id="insightRemontti">—</div>
+        <div class="insight-kortti" id="insightVahennys">—</div>
+        <div class="insight-kortti" id="insightVero">—</div>
       </div>
 
       <div class="erittely">
@@ -429,6 +446,28 @@
           </div>
         </div>
 
+      </div>
+
+      <div id="lainaAikaVertailuOsio" style="margin-top:18px;">
+        <h3 style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muste-hiljainen); margin: 0 0 8px;">Laina-ajan vaikutus kuukausierään</h3>
+        <div class="osio-selite" style="margin-top:-4px;">Sama rahoitettava summa ja korko, kolme yleisintä laina-aikaa vertailtuna.</div>
+        <div class="palkki-vertailu" style="margin-top:10px;">
+          <div class="palkki-rivi">
+            <div class="palkki-nimi">20 vuotta</div>
+            <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiAika20" style="background: var(--kuusi); width: 0%;"></div></div>
+            <div class="palkki-arvo" id="palkkiAika20Arvo">—</div>
+          </div>
+          <div class="palkki-rivi">
+            <div class="palkki-nimi">25 vuotta</div>
+            <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiAika25" style="background: var(--taivas); width: 0%;"></div></div>
+            <div class="palkki-arvo" id="palkkiAika25Arvo">—</div>
+          </div>
+          <div class="palkki-rivi">
+            <div class="palkki-nimi">30 vuotta</div>
+            <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiAika30" style="background: var(--ruska); width: 0%;"></div></div>
+            <div class="palkki-arvo" id="palkkiAika30Arvo">—</div>
+          </div>
+        </div>
       </div>
 
       <div id="ylitysvaraOsio" style="margin-top:18px;">
@@ -707,6 +746,22 @@
     el('rahoitettava').textContent = fmt(rahoitettava);
     el('kokonaisSumma').textContent = fmt(kokonais);
 
+    // --- Insight-kortit 2 ja 3 (eivät riipu lainasta) ---
+    if (sisallytaRemontti && vahennys > 0) {
+      el('insightVahennys').innerHTML = `<strong>Kotitalousvähennys säästää sinulle ${fmt(vahennys)}</strong> tässä remontissa.`;
+      el('insightVahennys').style.display = 'block';
+    } else {
+      el('insightVahennys').style.display = 'none';
+    }
+
+    if (hinta > 0) {
+      const veroJaKertaProsentti = ((varainsiirto + (sisallytaRemontti ? remonttiBrutto : 0)) / hinta) * 100;
+      el('insightVero').innerHTML = `<strong>Varainsiirtovero${sisallytaRemontti ? ' + remontti' : ''} = ${veroJaKertaProsentti.toFixed(1)} %</strong> kauppahinnasta.`;
+      el('insightVero').style.display = 'block';
+    } else {
+      el('insightVero').style.display = 'none';
+    }
+
     // --- Rahoitusosio ---
     const eiTarvetta = rahoitettava <= 0;
     el('eiLainatarvetta').classList.toggle('piilotettu', !eiTarvetta);
@@ -720,7 +775,9 @@
       if (vakuutus > 0) osatLista2.push(`vakuutus ${fmt(vakuutus)}`);
       if (rahoitusvastike > 0) osatLista2.push(`rahoitusvastike ${fmt(rahoitusvastike)}`);
       el('kuukausiKokonaisSelite').textContent = osatLista2.length > 1 ? osatLista2.join(' + ') : 'Ei lainaa eikä muita kuukausikuluja';
+      el('insightRemontti').style.display = 'none';
     }
+    el('lainaAikaVertailuOsio').classList.toggle('piilotettu', eiTarvetta);
 
     if (!eiTarvetta) {
       const ann = laskeAnnuiteetti(rahoitettava, korko, lainaAika);
@@ -760,6 +817,11 @@
         if (lainatyyppiTila === 'tasalyhennys') return laskeTasalyhennys(rahoitettava, k, lainaAika).alku;
         return laskeBulletti(rahoitettava, k, lainaAika).alku;
       }
+      function eraValitulla2(P, k, v) {
+        if (lainatyyppiTila === 'annuiteetti') return laskeAnnuiteetti(P, k, v).alku;
+        if (lainatyyppiTila === 'tasalyhennys') return laskeTasalyhennys(P, k, v).alku;
+        return laskeBulletti(P, k, v).alku;
+      }
       const eraNyt = eraValitulla(korko);
       const eraP1 = eraValitulla(korko + 1);
       const eraP2 = eraValitulla(korko + 2);
@@ -773,6 +835,32 @@
       el('palkkiKorkoNytArvo').textContent = fmt(eraNyt) + ' / kk';
       el('palkkiKorkoP1Arvo').textContent = fmt(eraP1) + ' / kk';
       el('palkkiKorkoP2Arvo').textContent = fmt(eraP2) + ' / kk';
+
+      // --- Laina-ajan vertailu: 20 / 25 / 30 vuotta, sama korko ---
+      function eraAjalla(v) {
+        if (lainatyyppiTila === 'annuiteetti') return laskeAnnuiteetti(rahoitettava, korko, v).alku;
+        if (lainatyyppiTila === 'tasalyhennys') return laskeTasalyhennys(rahoitettava, korko, v).alku;
+        return laskeBulletti(rahoitettava, korko, v).alku;
+      }
+      const era20 = eraAjalla(20), era25 = eraAjalla(25), era30 = eraAjalla(30);
+      const maxEraAika = Math.max(era20, era25, era30, 1);
+      el('palkkiAika20').style.width = (era20 / maxEraAika * 100) + '%';
+      el('palkkiAika25').style.width = (era25 / maxEraAika * 100) + '%';
+      el('palkkiAika30').style.width = (era30 / maxEraAika * 100) + '%';
+      el('palkkiAika20Arvo').textContent = fmt(era20) + ' / kk';
+      el('palkkiAika25Arvo').textContent = fmt(era25) + ' / kk';
+      el('palkkiAika30Arvo').textContent = fmt(era30) + ' / kk';
+
+      // --- Insight 1: remontin vaikutus kuukausierään ---
+      if (sisallytaRemontti && remonttiNetto > 0) {
+        const rahoitettavaIlmanRemonttia = Math.max(0, rahoitettava - remonttiNetto);
+        const eraIlmanRemonttia = eraValitulla2(rahoitettavaIlmanRemonttia, korko, lainaAika);
+        const eroKk = valittu.alku - eraIlmanRemonttia;
+        el('insightRemontti').innerHTML = `<strong>Remontti nostaa kuukausierääsi noin +${fmt(eroKk)}/kk</strong> verrattuna siihen, että ostaisit ilman remonttia.`;
+        el('insightRemontti').style.display = 'block';
+      } else {
+        el('insightRemontti').style.display = 'none';
+      }
 
       // Vertailutaulukko
       el('vAnnAlku').textContent = fmt(ann.alku); el('vAnnLoppu').textContent = fmt(ann.loppu);
@@ -945,6 +1033,97 @@
   }
 
   el('lataaPdfNappi').addEventListener('click', lataaPdf);
+
+  // --- Esimerkkilaskelma ---
+  el('esimerkkiNappi').addEventListener('click', () => {
+    el('myynVanhan').checked = true;
+    el('vanhaMyyntihinta').value = 220000;
+    el('vanhaLaina').value = 95000;
+    el('muutLainat').value = 3000;
+    el('valittajanPalkkio').value = 5280;
+    el('maksaMuutPois').checked = true;
+
+    el('hinta').value = 285000;
+    el('tyyppi').value = '0.015';
+    el('vastike').value = 250;
+    el('yhtiolaina').value = 8000;
+    el('maksaYhtiolainaPois').checked = false;
+    el('rahoitusvastike').value = 85;
+
+    el('sisallytaRemontti').checked = true;
+    el('remonttiKentat').classList.remove('piilotettu');
+    el('remonttiKentat').querySelectorAll('input, select').forEach(i => i.disabled = false);
+    el('tyoOsuus').value = 8000;
+    el('materiaali').value = 6000;
+    el('pariskunta').checked = true;
+
+    el('muuKustannus').value = 1500;
+    el('omatSaastot').value = 15000;
+    el('korko').value = 3.2;
+    el('lainaAika').value = 25;
+    el('avausmaksu').value = 150;
+    el('vakuutus').value = 25;
+
+    el('lisaasetuksetDetails').open = true;
+
+    laske();
+    el('esimerkkiNappi').textContent = '✓ Esimerkki täytetty — muokkaa lukuja vapaasti';
+  });
+
+  // --- Jaa laskelma (URL-parametrit, ei backendia) ---
+  const jaettavatKentat = [
+    ['h', 'hinta'], ['ty', 'tyyppi'], ['va', 'vastike'],
+    ['to', 'tyoOsuus'], ['ma', 'materiaali'],
+    ['mk', 'muuKustannus'], ['os', 'omatSaastot'],
+    ['ko', 'korko'], ['la', 'lainaAika'], ['am', 'avausmaksu'], ['vk', 'vakuutus'],
+    ['yl', 'yhtiolaina'], ['rv', 'rahoitusvastike'],
+    ['vm', 'vanhaMyyntihinta'], ['vl', 'vanhaLaina'], ['ml', 'muutLainat'], ['vp', 'valittajanPalkkio']
+  ];
+  const jaettavatKytkimet = [
+    ['sr', 'sisallytaRemontti'], ['sa', 'sisallytaAsuntokauppa'], ['pa', 'pariskunta'],
+    ['mv', 'myynVanhan'], ['mmp', 'maksaMuutPois'], ['ylp', 'maksaYhtiolainaPois']
+  ];
+
+  function rakennaJakoLinkki() {
+    const params = new URLSearchParams();
+    jaettavatKentat.forEach(([p, id]) => params.set(p, el(id).value));
+    jaettavatKytkimet.forEach(([p, id]) => params.set(p, el(id).checked ? '1' : '0'));
+    params.set('lk', lakiTila);
+    params.set('lt', lainatyyppiTila);
+    return window.location.origin + window.location.pathname + '?' + params.toString();
+  }
+
+  function lataaJaettuLinkki() {
+    const params = new URLSearchParams(window.location.search);
+    if ([...params].length === 0) return;
+    jaettavatKentat.forEach(([p, id]) => { if (params.has(p)) el(id).value = params.get(p); });
+    jaettavatKytkimet.forEach(([p, id]) => { if (params.has(p)) el(id).checked = params.get(p) === '1'; });
+    if (params.has('lk') && params.get('lk') === 'esitetty') {
+      document.querySelector('#lakiValitsin button[data-laki="esitetty"]').click();
+    }
+    if (params.has('lt')) {
+      const nappi = document.querySelector(`#lainatyyppiValitsin button[data-tyyppi="${params.get('lt')}"]`);
+      if (nappi) nappi.click();
+    }
+  }
+
+  el('jaaNappi').addEventListener('click', async () => {
+    const linkki = rakennaJakoLinkki();
+    try {
+      await navigator.clipboard.writeText(linkki);
+      el('jaaNappi').textContent = '✓ Linkki kopioitu!';
+      el('jaaNappi').classList.add('kopioitu');
+      setTimeout(() => {
+        el('jaaNappi').textContent = '🔗 Jaa laskelma';
+        el('jaaNappi').classList.remove('kopioitu');
+      }, 2500);
+    } catch (e) {
+      prompt('Kopioi linkki:', linkki);
+    }
+  });
+
+  lataaJaettuLinkki();
+  laske();
 </script>
 
 </body>
