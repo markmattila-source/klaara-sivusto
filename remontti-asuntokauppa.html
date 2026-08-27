@@ -122,6 +122,27 @@
           <input type="number" id="vastike" value="250" min="0" step="10">
           <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Vain asunto-osakkeille — kiinteistöllä/omakotitalolla ei ole yhtiövastiketta, vaan omat erilliset ylläpitokulut.</div>
         </div>
+
+        <div class="kentta" id="yhtiolainaKentta">
+          <label for="yhtiolaina">Osakkeeseen kohdistuva yhtiölainaosuus (€)</label>
+          <input type="number" id="yhtiolaina" value="0" min="0" step="500">
+          <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Jätä 0, jos kohteella ei ole yhtiölainaa tai velaton hinta jo sisältää sen.</div>
+        </div>
+
+        <div id="yhtiolainaLisakentat" class="piilotettu">
+          <div class="kytkin-rivi">
+            <label for="maksaYhtiolainaPois">Maksetaan pois kaupanteon yhteydessä</label>
+            <label class="kytkin">
+              <input type="checkbox" id="maksaYhtiolainaPois" checked>
+              <span class="liuku"></span>
+            </label>
+          </div>
+          <div class="kentta piilotettu" id="rahoitusvastikeKentta" style="margin-top:10px;">
+            <label for="rahoitusvastike">Kuukausittainen rahoitusvastike (€/kk)</label>
+            <input type="number" id="rahoitusvastike" value="0" min="0" step="10">
+            <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Jos yhtiölainaosuutta ei makseta pois, se jatkuu yleensä kuukausittaisena rahoitusvastikkeena — syötä pankilta/isännöitsijältä saatu arvio.</div>
+          </div>
+        </div>
       </div>
 
       <div class="osio-otsikko">Remontti</div>
@@ -223,6 +244,11 @@
         <input type="number" id="avausmaksu" value="0" min="0" step="10">
       </div>
 
+      <div class="kentta">
+        <label for="vakuutus">Koti-/kiinteistövakuutus (€/kk) — valinnainen</label>
+        <input type="number" id="vakuutus" value="25" min="0" step="5">
+      </div>
+
     </div>
 
     <!-- RESULTS -->
@@ -279,7 +305,7 @@
         </div>
 
         <div class="info-huomio" style="margin-bottom:14px;">
-          <strong>Muista myös:</strong> kiinteistövero (0,93–2,00 % verotusarvosta, ei kauppahinnasta) ja koti-/kiinteistövakuutus tulevat lainaerän ja vastikkeen lisäksi — nämä eivät ole mukana yllä olevassa luvussa, koska ne vaihtelevat kunnittain ja vakuutusyhtiöittäin.
+          <strong>Muista myös:</strong> kiinteistövero (0,93–2,00 % verotusarvosta, ei kauppahinnasta) tulee lainaerän, vastikkeen ja vakuutuksen lisäksi — se ei ole mukana yllä olevassa luvussa, koska se vaihtelee kunnittain eikä perustu kauppahintaan.
         </div>
 
         <div id="eiLainatarvetta" class="ei-lainatarvetta piilotettu">
@@ -403,13 +429,35 @@
           </div>
         </div>
 
-        <div style="margin-top:18px; text-align:center;">
-          <button id="lataaPdfNappi" type="button" style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600; color:#fff; background:var(--koralli); border:none; padding:14px 20px; border-radius:10px; cursor:pointer;">
-            📄 Lataa laskelma PDF:nä
-          </button>
-          <div style="font-size:11.5px; color:var(--muste-hiljainen); margin-top:8px;">Ilmainen — sisältää kaikki syöttämäsi luvut ja tulokset, esim. pankkineuvottelua varten.</div>
-        </div>
+      </div>
 
+      <div id="ylitysvaraOsio" style="margin-top:18px;">
+        <h3 style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muste-hiljainen); margin: 0 0 8px;">Remonttiriski — mitä jos remontti maksaakin enemmän?</h3>
+        <div class="osio-selite" style="margin-top:-4px;">Remontit ylittävät budjetin usein — näin kokonaiskustannus muuttuu jos työn ja materiaalien hinta nousisi arvioidusta.</div>
+        <div class="palkki-vertailu" style="margin-top:10px;">
+          <div class="palkki-rivi">
+            <div class="palkki-nimi">Arvioitu</div>
+            <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiYlitys0" style="background: var(--kuusi); width: 0%;"></div></div>
+            <div class="palkki-arvo" id="palkkiYlitys0Arvo">—</div>
+          </div>
+          <div class="palkki-rivi">
+            <div class="palkki-nimi">+15 %</div>
+            <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiYlitys15" style="background: var(--ruska); width: 0%;"></div></div>
+            <div class="palkki-arvo" id="palkkiYlitys15Arvo">—</div>
+          </div>
+          <div class="palkki-rivi">
+            <div class="palkki-nimi">+30 %</div>
+            <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiYlitys30" style="background: var(--virhe); width: 0%;"></div></div>
+            <div class="palkki-arvo" id="palkkiYlitys30Arvo">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px; text-align:center;">
+        <button id="lataaPdfNappi" type="button" style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600; color:#fff; background:var(--koralli); border:none; padding:14px 20px; border-radius:10px; cursor:pointer;">
+          📄 Lataa laskelma PDF:nä
+        </button>
+        <div style="font-size:11.5px; color:var(--muste-hiljainen); margin-top:8px;">Ilmainen — sisältää kaikki syöttämäsi luvut ja tulokset, esim. pankkineuvottelua varten.</div>
       </div>
 
     </div>
@@ -591,7 +639,16 @@
 
     const muuKustannus = parseFloat(el('muuKustannus').value) || 0;
 
-    const kokonais = hinta + varainsiirto + remonttiNetto + muuKustannus;
+    const onAsuntoOsake = veroProsentti === 0.015;
+    el('yhtiolainaKentta').classList.toggle('piilotettu', !(sisallytaAsunto && onAsuntoOsake));
+    const yhtiolaina = (sisallytaAsunto && onAsuntoOsake) ? (parseFloat(el('yhtiolaina').value) || 0) : 0;
+    el('yhtiolainaLisakentat').classList.toggle('piilotettu', !(yhtiolaina > 0));
+    const maksaYhtiolainaPois = el('maksaYhtiolainaPois').checked;
+    el('rahoitusvastikeKentta').classList.toggle('piilotettu', maksaYhtiolainaPois || yhtiolaina <= 0);
+    const yhtiolainaKertaluontoinen = (yhtiolaina > 0 && maksaYhtiolainaPois) ? yhtiolaina : 0;
+    const rahoitusvastike = (yhtiolaina > 0 && !maksaYhtiolainaPois) ? (parseFloat(el('rahoitusvastike').value) || 0) : 0;
+
+    const kokonais = hinta + varainsiirto + remonttiNetto + muuKustannus + yhtiolainaKertaluontoinen;
 
     // --- Vanhan asunnon myynti ---
     const myynVanhan = el('myynVanhan').checked;
@@ -621,8 +678,8 @@
     const korko = parseFloat(el('korko').value) || 0;
     const lainaAika = parseFloat(el('lainaAika').value) || 0;
     const avausmaksu = parseFloat(el('avausmaksu').value) || 0;
+    const vakuutus = parseFloat(el('vakuutus').value) || 0;
 
-    const onAsuntoOsake = veroProsentti === 0.015;
     el('vastikeKentta').classList.toggle('piilotettu', !(sisallytaAsunto && onAsuntoOsake));
     const vastike = (sisallytaAsunto && onAsuntoOsake) ? (parseFloat(el('vastike').value) || 0) : 0;
 
@@ -656,10 +713,13 @@
     el('lainaTulokset').classList.toggle('piilotettu', eiTarvetta);
 
     if (eiTarvetta) {
-      el('kuukausiKokonais').textContent = vastike > 0 ? (fmt(vastike) + ' / kk') : fmt(0) + ' / kk';
-      el('kuukausiKokonaisSelite').textContent = vastike > 0
-        ? `Ei lainaa — pelkkä yhtiövastike ${fmt(vastike)}`
-        : 'Ei lainaa eikä yhtiövastiketta';
+      const kkIlmanLainaa = vastike + vakuutus + rahoitusvastike;
+      el('kuukausiKokonais').textContent = fmt(kkIlmanLainaa) + ' / kk';
+      const osatLista2 = ['Ei lainaa'];
+      if (vastike > 0) osatLista2.push(`vastike ${fmt(vastike)}`);
+      if (vakuutus > 0) osatLista2.push(`vakuutus ${fmt(vakuutus)}`);
+      if (rahoitusvastike > 0) osatLista2.push(`rahoitusvastike ${fmt(rahoitusvastike)}`);
+      el('kuukausiKokonaisSelite').textContent = osatLista2.length > 1 ? osatLista2.join(' + ') : 'Ei lainaa eikä muita kuukausikuluja';
     }
 
     if (!eiTarvetta) {
@@ -685,12 +745,14 @@
       el('valittuYhteensaKorko').textContent = fmt(valittu.korkoYht);
       el('valittuYhteensaMaksettu').textContent = fmt(valittu.maksettuYht + avausmaksu);
 
-      // --- Kuukausittainen kokonaiskustannus (valittu lainaerä + vastike) ---
-      const kuukausiKokonais = valittu.alku + vastike;
+      // --- Kuukausittainen kokonaiskustannus (valittu lainaerä + vastike + vakuutus + rahoitusvastike) ---
+      const kuukausiKokonais = valittu.alku + vastike + vakuutus + rahoitusvastike;
       el('kuukausiKokonais').textContent = fmt(kuukausiKokonais) + ' / kk';
-      el('kuukausiKokonaisSelite').textContent = vastike > 0
-        ? `Lainaerä ${fmt(valittu.alku)} + yhtiövastike ${fmt(vastike)}`
-        : 'Lainaerä (ei yhtiövastiketta valitulle kohdetyypille)';
+      const osatLista = [`Lainaerä ${fmt(valittu.alku)}`];
+      if (vastike > 0) osatLista.push(`vastike ${fmt(vastike)}`);
+      if (vakuutus > 0) osatLista.push(`vakuutus ${fmt(vakuutus)}`);
+      if (rahoitusvastike > 0) osatLista.push(`rahoitusvastike ${fmt(rahoitusvastike)}`);
+      el('kuukausiKokonaisSelite').textContent = osatLista.join(' + ');
 
       // --- Korkoriski: sama lainatyyppi ja summa, korko +0 / +1 / +2 %-yks. ---
       function eraValitulla(k) {
@@ -734,6 +796,28 @@
       el('palkkiAnnArvo').textContent = fmt(ann.korkoYht);
       el('palkkiTalArvo').textContent = fmt(tal.korkoYht);
       el('palkkiBulArvo').textContent = fmt(bul.korkoYht);
+    }
+
+    // --- Remontin ylitysvara -herkkyys (riippumaton lainatarpeesta) ---
+    el('ylitysvaraOsio').classList.toggle('piilotettu', !sisallytaRemontti);
+    if (sisallytaRemontti) {
+      function remontinKokonaisKerroin(kerroin) {
+        const tyoK = tyoOsuus * kerroin;
+        const matK = materiaali * kerroin;
+        const vahennysK = laskeVahennys(tyoK, pariskunta);
+        const remonttiNettoK = (tyoK + matK) - vahennysK;
+        return hinta + varainsiirto + remonttiNettoK + muuKustannus + yhtiolainaKertaluontoinen;
+      }
+      const y0 = remontinKokonaisKerroin(1.0);
+      const y15 = remontinKokonaisKerroin(1.15);
+      const y30 = remontinKokonaisKerroin(1.30);
+      const maxY = Math.max(y0, y15, y30, 1);
+      el('palkkiYlitys0').style.width = (y0 / maxY * 100) + '%';
+      el('palkkiYlitys15').style.width = (y15 / maxY * 100) + '%';
+      el('palkkiYlitys30').style.width = (y30 / maxY * 100) + '%';
+      el('palkkiYlitys0Arvo').textContent = fmt(y0);
+      el('palkkiYlitys15Arvo').textContent = fmt(y15);
+      el('palkkiYlitys30Arvo').textContent = fmt(y30);
     }
   }
 
