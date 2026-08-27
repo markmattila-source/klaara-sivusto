@@ -49,6 +49,20 @@
     <div class="paneeli">
       <h2>Syötä tiedot</h2>
 
+      <div class="kentta">
+        <label>Mitä haluat laskea?</label>
+        <div class="segmentti-valitsin" id="tilaValitsin">
+          <button data-tila="loppusumma" class="aktiivinen" type="button">
+            <span class="tag-otsikko">Loppusumma</span>
+            Kuinka paljon kertyy
+          </button>
+          <button data-tila="tavoite" type="button">
+            <span class="tag-otsikko">Tarvittava säästö</span>
+            Kuinka paljon pitää säästää
+          </button>
+        </div>
+      </div>
+
       <div class="osio-otsikko">Lähtötiedot</div>
 
       <div class="kentta">
@@ -56,9 +70,14 @@
         <input type="number" id="alkupaaoma" value="5000" min="0" step="100">
       </div>
 
-      <div class="kentta">
+      <div class="kentta" id="kuukausisaastoKentta">
         <label for="kuukausisaasto">Kuukausisäästö (€)</label>
         <input type="number" id="kuukausisaasto" value="200" min="0" step="10">
+      </div>
+
+      <div class="kentta piilotettu" id="tavoiteKentta">
+        <label for="tavoiteLoppusumma">Tavoitesumma (€)</label>
+        <input type="number" id="tavoiteLoppusumma" value="100000" min="0" step="1000">
       </div>
 
       <div class="osio-otsikko">Oletukset</div>
@@ -79,6 +98,40 @@
         Tämä ei ole sijoitusneuvontaa. Todellinen tuotto vaihtelee eikä oletettu tai historiallinen tuotto ole tae tulevasta. Laskuri olettaa kiinteän kuukausittain kertyvän tuottoprosentin koko ajanjaksolle.
       </div>
 
+      <div class="osio-otsikko">Inflaatio</div>
+      <div class="kytkin-rivi">
+        <label for="huomioiInflaatio">Näytä myös ostovoimakorjattu (reaali) loppusumma</label>
+        <label class="kytkin">
+          <input type="checkbox" id="huomioiInflaatio">
+          <span class="liuku"></span>
+        </label>
+      </div>
+      <div class="kentta piilotettu" id="inflaatioKentta" style="margin-top:10px;">
+        <label for="inflaatio">Oletettu inflaatio (%/vuosi)</label>
+        <input type="number" id="inflaatio" value="2" min="0" step="0.1">
+      </div>
+
+      <div class="osio-otsikko">Verotehokkuus</div>
+      <div class="kytkin-rivi">
+        <label for="naytaVero">Vertaa arvo-osuustiliä (AOT) ja osakesäästötiliä (OST)</label>
+        <label class="kytkin">
+          <input type="checkbox" id="naytaVero">
+          <span class="liuku"></span>
+        </label>
+      </div>
+      <div class="piilotettu" id="veroKentat" style="margin-top:10px;">
+        <div class="kentta">
+          <label for="veroprosentti">Pääomatulovero (%)</label>
+          <select id="veroprosentti">
+            <option value="30">30 % (pääomatulot alle 30 000 €/v)</option>
+            <option value="34">34 % (pääomatulot yli 30 000 €/v)</option>
+          </select>
+        </div>
+        <div class="info-huomio">
+          AOT- ja OST-tilit eivät ole tuotenimiä vaan Suomen lain määrittelemiä tilityyppejä — kuka tahansa pankki tarjoaa niitä samoin ehdoin. Vertailu olettaa, että AOT:lla tuotto verotettaisiin vuosittain (esim. osinkoina) — jos et koskaan myisi tai nostaisi tuottoa matkan varrella, todellinen ero olisi pienempi. OST:n talletusraja on 100 000 €.
+        </div>
+      </div>
+
       <div class="info-huomio" style="background:#EDF3EF; border-color:#D3E3D8;">
         <strong>72:n sääntö:</strong> <span id="seitsemankaksi">—</span>
       </div>
@@ -89,28 +142,66 @@
     <div class="tulos-paneeli">
 
       <div class="paatulos">
-        <div class="label">Loppusumma</div>
+        <div class="label" id="paatulosLabel">Loppusumma</div>
         <div class="summa" id="loppusumma">—</div>
         <div class="selite" id="loppusummaSelite">Oma säästösumma + korkoa korolle -kasvu</div>
       </div>
 
       <div class="erittely" style="padding: 18px 24px;">
-        <div class="vertailu-otsikko" style="margin: 0 0 12px;">Kasvu ajan mittaan</div>
-        <svg id="kasvukayraSvg" viewBox="0 0 640 250" style="width:100%; height:auto; display:block;">
-          <line x1="40" y1="210" x2="620" y2="210" stroke="var(--viiva)" stroke-width="1"/>
-          <path id="kayraAlueTuotto" fill="var(--ruska)" fill-opacity="0.35" stroke="none"></path>
-          <path id="kayraAlueOma" fill="var(--kuusi)" fill-opacity="0.55" stroke="none"></path>
-          <path id="kayraViivaKok" fill="none" stroke="var(--ruska)" stroke-width="2"></path>
-          <path id="kayraViivaOma" fill="none" stroke="var(--kuusi-tumma)" stroke-width="2"></path>
-          <text id="kayraLabel0" x="40" y="228" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muste-hiljainen)" text-anchor="start">0</text>
-          <text id="kayraLabelPuoli" x="330" y="228" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muste-hiljainen)" text-anchor="middle">—</text>
-          <text id="kayraLabelLoppu" x="620" y="228" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muste-hiljainen)" text-anchor="end">—</text>
-        </svg>
+        <div class="vertailu-otsikko" style="margin: 0 0 12px;">Kasvu ajan mittaan <span style="font-weight:400; text-transform:none; letter-spacing:0;">— vie hiiri tai kosketa kaaviota</span></div>
+        <div class="kayra-kehys">
+          <svg id="kasvukayraSvg" viewBox="0 0 640 250" style="width:100%; height:auto; display:block; cursor:crosshair;">
+            <line x1="40" y1="210" x2="620" y2="210" stroke="var(--viiva)" stroke-width="1"/>
+            <path id="kayraAlueTuotto" fill="var(--ruska)" fill-opacity="0.35" stroke="none"></path>
+            <path id="kayraAlueOma" fill="var(--kuusi)" fill-opacity="0.55" stroke="none"></path>
+            <path id="kayraViivaKok" fill="none" stroke="var(--ruska)" stroke-width="2"></path>
+            <path id="kayraViivaOma" fill="none" stroke="var(--kuusi-tumma)" stroke-width="2"></path>
+            <text id="kayraLabel0" x="40" y="228" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muste-hiljainen)" text-anchor="start">0</text>
+            <text id="kayraLabelPuoli" x="330" y="228" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muste-hiljainen)" text-anchor="middle">—</text>
+            <text id="kayraLabelLoppu" x="620" y="228" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muste-hiljainen)" text-anchor="end">—</text>
+            <line id="kayraOsoitinviiva" x1="0" y1="20" x2="0" y2="210" stroke="var(--kuusi-tumma)" stroke-width="1" stroke-dasharray="3,3" opacity="0"/>
+          </svg>
+          <div class="kayra-osoitin" id="kayraOsoitin"></div>
+          <div class="kayra-tooltip" id="kayraTooltip">
+            <div style="font-weight:600; margin-bottom:4px;" id="tooltipVuosi">—</div>
+            <div class="rivi"><span>Oma säästö:</span><span id="tooltipOma">—</span></div>
+            <div class="rivi"><span>Tuotto:</span><span id="tooltipTuotto">—</span></div>
+            <div class="rivi" style="border-top:1px solid rgba(255,255,255,0.25); margin-top:3px; padding-top:3px;"><span>Yhteensä:</span><span id="tooltipYht">—</span></div>
+          </div>
+        </div>
         <div style="display:flex; gap:18px; margin-top:10px; font-size:12px; color:var(--muste-hiljainen);">
           <span><span style="display:inline-block; width:10px; height:10px; background:var(--kuusi); border-radius:2px; margin-right:5px;"></span>Oma säästö</span>
           <span><span style="display:inline-block; width:10px; height:10px; background:var(--ruska); border-radius:2px; margin-right:5px;"></span>Tuotto</span>
         </div>
       </div>
+
+      <div class="erittely piilotettu" id="inflaatioErittely">
+        <div class="erittely-rivi">
+          <div class="nimi">Nimellinen loppusumma<span class="alaselite">Ennen inflaatiokorjausta</span></div>
+          <div class="arvo" id="inflaatioNimellinen">—</div>
+        </div>
+        <div class="erittely-rivi korostettu">
+          <div class="nimi">Ostovoima tänään<span class="alaselite" id="inflaatioSelite">Reaaliarvo</span></div>
+          <div class="arvo negatiivinen" id="inflaatioReaali">—</div>
+        </div>
+      </div>
+
+      <div class="erittely piilotettu" id="veroErittely">
+        <div class="vertailu-otsikko" style="margin:14px 24px 4px;">AOT vs. OST — loppusumma verojen jälkeen</div>
+        <div class="erittely-rivi">
+          <div class="nimi">Arvo-osuustili (AOT)<span class="alaselite">Tuotto verotetaan vuosittain</span></div>
+          <div class="arvo" id="veroAot">—</div>
+        </div>
+        <div class="erittely-rivi korostettu">
+          <div class="nimi">Osakesäästötili (OST)<span class="alaselite">Vero vasta nostettaessa</span></div>
+          <div class="arvo positiivinen" id="veroOst">—</div>
+        </div>
+        <div class="erittely-rivi">
+          <div class="nimi">Ero OST:n eduksi</div>
+          <div class="arvo positiivinen" id="veroEro">—</div>
+        </div>
+      </div>
+      <div class="info-huomio piilotettu" id="ostRajaVaroitus" style="margin: 0 0 16px;"></div>
 
       <div class="erittely">
         <div class="erittely-rivi">
@@ -178,17 +269,74 @@
     return P0 * Math.pow(1 + rm, N) + C * ((Math.pow(1 + rm, N) - 1) / rm);
   }
 
+  function tarvittavaKuukausisaasto(P0, vuosituottoProsentti, vuodet, tavoite) {
+    const rm = vuosituottoProsentti / 100 / 12;
+    const N = vuodet * 12;
+    if (N <= 0) return 0;
+    if (rm === 0) return (tavoite - P0) / N;
+    const kerroin = (Math.pow(1 + rm, N) - 1) / rm;
+    return (tavoite - P0 * Math.pow(1 + rm, N)) / kerroin;
+  }
+
+  let tila = 'loppusumma';
+  let viimeisimmatPisteet = [];
+  let viimeisinAika = 20;
+
+  document.querySelectorAll('#tilaValitsin button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#tilaValitsin button').forEach(b => b.classList.remove('aktiivinen'));
+      btn.classList.add('aktiivinen');
+      tila = btn.dataset.tila;
+      el('kuukausisaastoKentta').classList.toggle('piilotettu', tila === 'tavoite');
+      el('tavoiteKentta').classList.toggle('piilotettu', tila !== 'tavoite');
+      el('kuukausisaasto').disabled = (tila === 'tavoite');
+      laske();
+    });
+  });
+
+  el('huomioiInflaatio').addEventListener('change', () => {
+    el('inflaatioKentta').classList.toggle('piilotettu', !el('huomioiInflaatio').checked);
+    laske();
+  });
+
+  el('naytaVero').addEventListener('change', () => {
+    el('veroKentat').classList.toggle('piilotettu', !el('naytaVero').checked);
+    laske();
+  });
+
   function laske() {
     const P0 = parseFloat(el('alkupaaoma').value) || 0;
-    const C = parseFloat(el('kuukausisaasto').value) || 0;
     const tuottoProsentti = parseFloat(el('tuotto').value) || 0;
     const vuodet = parseFloat(el('aika').value) || 0;
+    viimeisinAika = vuodet;
 
-    const loppusumma = tulevaArvo(P0, C, tuottoProsentti, vuodet);
+    let C, loppusumma;
+
+    if (tila === 'tavoite') {
+      const tavoite = parseFloat(el('tavoiteLoppusumma').value) || 0;
+      let Craaka = tarvittavaKuukausisaasto(P0, tuottoProsentti, vuodet, tavoite);
+      C = Math.max(0, Craaka);
+      el('kuukausisaasto').value = C.toFixed(2);
+      loppusumma = tulevaArvo(P0, C, tuottoProsentti, vuodet);
+
+      el('paatulosLabel').textContent = 'Tarvittava kuukausisäästö';
+      el('loppusumma').textContent = fmt(C) + ' / kk';
+      if (Craaka < 0) {
+        el('loppusummaSelite').textContent = `Alkupääoma yksin ylittää jo tavoitteen — loppusumma olisi ${fmt(tulevaArvo(P0,0,tuottoProsentti,vuodet))} ilman kuukausisäästöä`;
+      } else {
+        el('loppusummaSelite').textContent = `Jotta ${fmt(tavoite)} kertyisi ${vuodet} vuodessa`;
+      }
+    } else {
+      C = parseFloat(el('kuukausisaasto').value) || 0;
+      loppusumma = tulevaArvo(P0, C, tuottoProsentti, vuodet);
+      el('paatulosLabel').textContent = 'Loppusumma';
+      el('loppusumma').textContent = fmt(loppusumma);
+      el('loppusummaSelite').textContent = 'Oma säästösumma + korkoa korolle -kasvu';
+    }
+
     const omaSaasto = P0 + C * vuodet * 12;
     const tuotto = loppusumma - omaSaasto;
 
-    el('loppusumma').textContent = fmt(loppusumma);
     el('omaSaasto').textContent = fmt(omaSaasto);
     el('tuottoNaytto').textContent = '+' + fmt(tuotto);
     el('loppusummaErittely').textContent = fmt(loppusumma);
@@ -217,12 +365,44 @@
       el('seitsemankaksi').textContent = 'Tuottoprosentti pitää olla suurempi kuin 0, jotta tuplaantumisaikaa voi arvioida.';
     }
 
+    // --- Inflaatio ---
+    const huomioiInflaatio = el('huomioiInflaatio').checked;
+    el('inflaatioErittely').classList.toggle('piilotettu', !huomioiInflaatio);
+    if (huomioiInflaatio) {
+      const inflaatio = parseFloat(el('inflaatio').value) || 0;
+      const reaali = loppusumma / Math.pow(1 + inflaatio/100, vuodet);
+      el('inflaatioNimellinen').textContent = fmt(loppusumma);
+      el('inflaatioReaali').textContent = fmt(reaali);
+      el('inflaatioSelite').textContent = `${inflaatio}% inflaatiolla ${vuodet} vuodessa`;
+    }
+
+    // --- Verotehokkuus: AOT vs OST ---
+    const naytaVero = el('naytaVero').checked;
+    el('veroErittely').classList.toggle('piilotettu', !naytaVero);
+    el('ostRajaVaroitus').classList.toggle('piilotettu', !naytaVero);
+    if (naytaVero) {
+      const vero = (parseFloat(el('veroprosentti').value) || 30) / 100;
+      const ostLoppu = omaSaasto + Math.max(0, tuotto) * (1 - vero);
+      const aotTehokasTuotto = tuottoProsentti * (1 - vero);
+      const aotLoppu = tulevaArvo(P0, C, aotTehokasTuotto, vuodet);
+      const veroEroArvo = ostLoppu - aotLoppu;
+      el('veroAot').textContent = fmt(aotLoppu);
+      el('veroOst').textContent = fmt(ostLoppu);
+      el('veroEro').textContent = '+' + fmt(veroEroArvo);
+
+      if (omaSaasto > 100000) {
+        el('ostRajaVaroitus').classList.remove('piilotettu');
+        el('ostRajaVaroitus').textContent = `Huom: omat talletuksesi (${fmt(omaSaasto)}) ylittäisivät osakesäästötilin 100 000 €:n talletusrajan — vertailu on tästä eteenpäin teoreettinen.`;
+      }
+    }
+
     // --- Kasvukäyrä ---
     const aikaKokonaisluku = Math.max(1, Math.round(vuodet));
     const pisteet = [];
     for (let v = 0; v <= aikaKokonaisluku; v++) {
       pisteet.push({ v, oma: P0 + C * 12 * v, kok: tulevaArvo(P0, C, tuottoProsentti, v) });
     }
+    viimeisimmatPisteet = pisteet;
     const maxArvoKayra = Math.max(pisteet[pisteet.length - 1].kok, 1);
     const x0 = 40, x1 = 620, y0 = 20, y1 = 210;
     const xPikseli = v => x0 + (v / aikaKokonaisluku) * (x1 - x0);
@@ -231,7 +411,6 @@
     const omaPisteet = pisteet.map(p => `${xPikseli(p.v)},${yPikseli(p.oma)}`);
     const kokPisteet = pisteet.map(p => `${xPikseli(p.v)},${yPikseli(p.kok)}`);
     const kokPisteetKaanteinen = [...pisteet].reverse().map(p => `${xPikseli(p.v)},${yPikseli(p.kok)}`);
-    const omaPisteetKaanteinen = [...pisteet].reverse().map(p => `${xPikseli(p.v)},${yPikseli(p.oma)}`);
 
     el('kayraViivaOma').setAttribute('d', `M${omaPisteet.join(' L')}`);
     el('kayraViivaKok').setAttribute('d', `M${kokPisteet.join(' L')}`);
@@ -243,7 +422,65 @@
     el('kayraLabelPuoli').setAttribute('x', xPikseli(aikaKokonaisluku / 2));
   }
 
-  document.querySelectorAll('input').forEach(input => {
+  // --- Kaavion hover/kosketus-interaktiivisuus ---
+  const svg = el('kasvukayraSvg');
+  const kehys = document.querySelector('.kayra-kehys');
+  const tooltip = el('kayraTooltip');
+  const osoitin = el('kayraOsoitin');
+  const osoitinviiva = el('kayraOsoitinviiva');
+
+  function paivitaTooltip(clientX) {
+    if (!viimeisimmatPisteet.length) return;
+    const rect = svg.getBoundingClientRect();
+    const suhde = 640 / rect.width;
+    const svgX = (clientX - rect.left) * suhde;
+    const aikaKokonaisluku = Math.max(1, Math.round(viimeisinAika));
+    const x0 = 40, x1 = 620;
+    let vuosiArvio = ((svgX - x0) / (x1 - x0)) * aikaKokonaisluku;
+    vuosiArvio = Math.max(0, Math.min(aikaKokonaisluku, Math.round(vuosiArvio)));
+    const piste = viimeisimmatPisteet[vuosiArvio];
+    if (!piste) return;
+
+    const xPikseli = x0 + (piste.v / aikaKokonaisluku) * (x1 - x0);
+    const maxArvoKayra = Math.max(viimeisimmatPisteet[viimeisimmatPisteet.length-1].kok, 1);
+    const yPikseli = 210 - (Math.max(piste.kok,0) / maxArvoKayra) * (210 - 20);
+
+    const svgRect = svg.getBoundingClientRect();
+    const pikseliSuhde = svgRect.width / 640;
+    const naytaX = xPikseli * pikseliSuhde;
+    const naytaY = yPikseli * pikseliSuhde;
+
+    osoitin.style.left = naytaX + 'px';
+    osoitin.style.top = naytaY + 'px';
+    osoitin.classList.add('nakyy');
+
+    tooltip.style.left = naytaX + 'px';
+    tooltip.style.top = naytaY + 'px';
+    tooltip.classList.add('nakyy');
+
+    el('tooltipVuosi').textContent = 'Vuosi ' + piste.v;
+    el('tooltipOma').textContent = fmt(piste.oma);
+    el('tooltipTuotto').textContent = fmt(Math.max(0, piste.kok - piste.oma));
+    el('tooltipYht').textContent = fmt(piste.kok);
+
+    osoitinviiva.setAttribute('x1', xPikseli);
+    osoitinviiva.setAttribute('x2', xPikseli);
+    osoitinviiva.setAttribute('opacity', '0.4');
+  }
+
+  function piilotaTooltip() {
+    tooltip.classList.remove('nakyy');
+    osoitin.classList.remove('nakyy');
+    osoitinviiva.setAttribute('opacity', '0');
+  }
+
+  svg.addEventListener('mousemove', (e) => paivitaTooltip(e.clientX));
+  svg.addEventListener('mouseleave', piilotaTooltip);
+  svg.addEventListener('touchstart', (e) => { paivitaTooltip(e.touches[0].clientX); }, { passive: true });
+  svg.addEventListener('touchmove', (e) => { paivitaTooltip(e.touches[0].clientX); e.preventDefault(); }, { passive: false });
+  svg.addEventListener('touchend', piilotaTooltip);
+
+  document.querySelectorAll('input, select').forEach(input => {
     input.addEventListener('input', laske);
   });
 
