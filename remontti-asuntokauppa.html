@@ -78,6 +78,11 @@
           <input type="number" id="muutLainat" value="0" min="0" step="500">
         </div>
 
+        <div class="kentta">
+          <label for="valittajanPalkkio">Kiinteistönvälittäjän palkkio (€)<span style="font-weight:400; color:var(--muste-hiljainen);"> — jos myyt välittäjän kautta</span></label>
+          <input type="number" id="valittajanPalkkio" value="0" min="0" step="100">
+        </div>
+
         <div class="kytkin-rivi">
           <label for="maksaMuutPois">Muut lainat maksetaan pois myynnin yhteydessä</label>
           <label class="kytkin">
@@ -271,6 +276,10 @@
           <div style="font-size:12px; color:var(--muste-hiljainen); margin-bottom:4px;">Kuukausittainen kokonaiskustannus asumisesta</div>
           <div class="kuukausierä" id="kuukausiKokonais" style="font-size:26px;">—</div>
           <div style="font-size:12px; color:var(--muste-hiljainen); margin-top:4px;" id="kuukausiKokonaisSelite">Lainaerä + yhtiövastike</div>
+        </div>
+
+        <div class="info-huomio" style="margin-bottom:14px;">
+          <strong>Muista myös:</strong> kiinteistövero (0,93–2,00 % verotusarvosta, ei kauppahinnasta) ja koti-/kiinteistövakuutus tulevat lainaerän ja vastikkeen lisäksi — nämä eivät ole mukana yllä olevassa luvussa, koska ne vaihtelevat kunnittain ja vakuutusyhtiöittäin.
         </div>
 
         <div id="eiLainatarvetta" class="ei-lainatarvetta piilotettu">
@@ -592,12 +601,13 @@
       const vanhaMyyntihinta = parseFloat(el('vanhaMyyntihinta').value) || 0;
       const vanhaLaina = parseFloat(el('vanhaLaina').value) || 0;
       const muutLainat = parseFloat(el('muutLainat').value) || 0;
+      const valittajanPalkkio = parseFloat(el('valittajanPalkkio').value) || 0;
       const maksaMuutPois = el('maksaMuutPois').checked;
-      nettotuotto = vanhaMyyntihinta - vanhaLaina - (maksaMuutPois ? muutLainat : 0);
+      nettotuotto = vanhaMyyntihinta - vanhaLaina - valittajanPalkkio - (maksaMuutPois ? muutLainat : 0);
 
       el('nettotuottoHuomio').textContent = nettotuotto >= 0
-        ? `Myynnin nettotuotto: ${fmt(nettotuotto)} — tämä lisätään käytettävissä olevaan rahaan uuden asunnon rahoituksessa.`
-        : `Huom: nykyinen laina (${maksaMuutPois ? '+ muut lainat' : ''}) on suurempi kuin arvioitu myyntihinta — myynti ei tuota rahaa, vaan lisää rahoitustarvetta ${fmt(Math.abs(nettotuotto))} verran.`;
+        ? `Myynnin nettotuotto: ${fmt(nettotuotto)} (huomioi välittäjän palkkion) — tämä lisätään käytettävissä olevaan rahaan uuden asunnon rahoituksessa.`
+        : `Huom: nykyinen laina + kulut (${maksaMuutPois ? 'muut lainat + ' : ''}välittäjän palkkio) ylittävät arvioidun myyntihinnan — myynti ei tuota rahaa, vaan lisää rahoitustarvetta ${fmt(Math.abs(nettotuotto))} verran.`;
     }
     el('riviNettotuotto').classList.toggle('piilotettu', !myynVanhan);
     el('nettotuottoNaytto').textContent = (nettotuotto >= 0 ? '+' : '') + fmt(nettotuotto);
@@ -805,6 +815,7 @@
     if (el('myynVanhan').checked) {
       rivi('Vanhan asunnon myyntihinta', fmt(parseFloat(el('vanhaMyyntihinta').value) || 0));
       rivi('Vanhan asuntolainan saldo', fmt(parseFloat(el('vanhaLaina').value) || 0));
+      rivi('Välittäjän palkkio', fmt(parseFloat(el('valittajanPalkkio').value) || 0));
     }
     rivi('Omat säästöt', fmt(parseFloat(el('omatSaastot').value) || 0));
     rivi('Lainan korko', el('korko').value + ' %');
