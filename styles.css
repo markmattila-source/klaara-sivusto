@@ -1134,3 +1134,66 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* ---------- Miten Klaara toimii -osio ---------- */
+
+.miten-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 8px;
+}
+.miten-kortti { display: flex; flex-direction: column; }
+.miten-kuva-kehys {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--viiva);
+  box-shadow: 0 12px 28px -14px rgba(15,61,38,0.28);
+  margin-bottom: 16px;
+}
+.miten-kuva-kehys img { display: block; width: 100%; height: auto; }
+.miten-numero {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--koralli);
+  margin-bottom: 6px;
+}
+.miten-kortti h3 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 0 6px;
+  color: var(--muste);
+}
+.miten-kortti p { font-size: 13.5px; color: var(--muste-hiljainen); margin: 0; line-height: 1.5; }
+
+/* ---------- Tilastopalkki ---------- */
+
+.tilasto-palkki {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: var(--viiva);
+  border: 1px solid var(--viiva);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 40px 0;
+}
+.tilasto-solu {
+  background: var(--paneeli);
+  padding: 22px 20px;
+  text-align: center;
+}
+.tilasto-luku {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: clamp(26px, 4vw, 34px);
+  color: var(--kuusi-tumma);
+  line-height: 1;
+}
+.tilasto-kuvaus {
+  font-size: 12px;
+  color: var(--muste-hiljainen);
+  margin-top: 8px;
+}
