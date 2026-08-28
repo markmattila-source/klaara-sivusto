@@ -264,7 +264,6 @@ header.brandi {
 .uutinen-otsikko {
   font-family: 'Fraunces', serif;
   font-weight: 600;
-  font-style: italic;
   font-size: 17px;
   line-height: 1.3;
   margin-bottom: 10px;
@@ -307,7 +306,6 @@ header.brandi {
 
 .kuukausi-kortti .kuukausi-nimi {
   font-family: 'Fraunces', serif;
-  font-style: italic;
   font-weight: 600;
   font-size: 18px;
   margin: 0 0 3px;
@@ -339,7 +337,6 @@ header.brandi {
 .kuukausi-kortti li a { font-weight: 500; }
 
 .kuukausi-kortti .tulossa-maininta {
-  font-style: italic;
   opacity: 0.75;
 }
 
@@ -350,7 +347,6 @@ header.brandi {
 .hero h1 {
   font-family: 'Fraunces', serif;
   font-weight: 500;
-  font-style: italic;
   font-size: clamp(28px, 4.2vw, 44px);
   line-height: 1.12;
   margin: 0 0 14px;
@@ -388,7 +384,6 @@ header.brandi {
 
 .hero-fresh h1 {
   font-family: 'Fraunces', serif;
-  font-style: italic;
   font-weight: 700;
   font-size: clamp(28px, 4.5vw, 46px);
   line-height: 1.15;
@@ -454,7 +449,6 @@ header.brandi {
 .tyokalu-kortti h3 {
   font-family: 'Fraunces', serif;
   font-weight: 600;
-  font-style: italic;
   font-size: 19px;
   margin: 0 0 8px;
 }
@@ -517,7 +511,6 @@ header.brandi {
 }
 .osio-h2-etusivu {
   font-family: 'Fraunces', serif;
-  font-style: italic;
   font-weight: 600;
   font-size: clamp(22px, 3vw, 30px);
   margin: 0 0 22px;
@@ -1263,7 +1256,6 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 
 .miten-kortti h3 {
   font-family: 'Fraunces', serif;
-  font-style: italic;
   font-weight: 600;
   font-size: 19px;
   margin: 0 0 6px;
@@ -1376,7 +1368,6 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 }
 .mobiilivalikko-otsikko {
   font-family: 'Fraunces', serif;
-  font-style: italic;
   font-weight: 600;
   font-size: 19px;
   color: var(--muste);
@@ -1481,7 +1472,6 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 }
 .bento-otsikko {
   font-family: 'Fraunces', serif;
-  font-style: italic;
   font-weight: 600;
   font-size: 20px;
   color: #fff;
@@ -1525,7 +1515,7 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   .tulos-paneeli { max-width: 100%; }
 
   #tulostusOtsikko h1 {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 600;
+    font-family: 'Fraunces', serif; font-weight: 600;
     font-size: 26px; margin: 0 0 4px; color: #000;
   }
   #tulostusOtsikko p { font-size: 12px; color: #333; margin: 0 0 18px; }
