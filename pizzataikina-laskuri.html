@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pizzataikinan laskuri — Klaara Kevennys</title>
-<meta name="description" content="Napolilaisen pizzataikinan ainesosat leipurin prosenteilla — jauhot, vesi, suola ja hiiva täsmällisesti taikinapallojen määrän ja hydraation mukaan.">
+<meta name="description" content="Napolilaisen pizzataikinan ainesosat leipurin prosenteilla — jauhot, vesi, suola, hiiva ja poolish-esitaikina täsmällisesti, plus aikataulu ja työohjeet.">
 
 <link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-v2-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-v2-32.png">
@@ -22,6 +22,30 @@
     background:var(--koralli); padding:4px 10px; border-radius:999px; margin-left:10px;
     vertical-align:middle; position:relative; top:-2px;
   }
+  .alaotsikko-pieni {
+    font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--muste-hiljainen); margin:16px 24px 2px;
+  }
+  .tyoohje-lista { counter-reset: tyoohje; margin-top:8px; }
+  .tyoohje-vaihe {
+    counter-increment: tyoohje;
+    display:flex; gap:16px; padding:16px 0; border-top:1px solid var(--viiva);
+  }
+  .tyoohje-vaihe:first-child { border-top:none; }
+  .tyoohje-numero {
+    flex-shrink:0; width:30px; height:30px; border-radius:50%;
+    background:var(--kuusi); color:#fff; font-family:'IBM Plex Mono',monospace;
+    font-weight:600; font-size:13px; display:flex; align-items:center; justify-content:center;
+  }
+  .tyoohje-vaihe h4 { margin:0 0 4px; font-family:'Fraunces',serif; font-style:italic; font-weight:600; font-size:16px; }
+  .tyoohje-vaihe p { margin:0; font-size:13.5px; color:var(--muste-hiljainen); line-height:1.55; }
+  .aikataulu-rivi {
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:9px 0; border-top:1px solid var(--viiva); gap:10px;
+  }
+  .aikataulu-rivi:first-child { border-top:none; }
+  .aikataulu-rivi .aika { font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--kuusi-tumma); white-space:nowrap; }
+  .aikataulu-rivi .vaihe { font-size:13.5px; color:var(--muste); }
 </style>
 </head>
 <body>
@@ -49,7 +73,7 @@
   <div class="hero hero-fresh">
     <div class="hero-teksti">
       <h1>Pizzataikina, laskettuna asti.<span class="kevennys-tagi">Klaara Kevennys</span></h1>
-      <p>Sama täsmällisyys, kevyempi aihe. Napolilaisen pizzataikinan ainesosat leipurin prosenteilla — ei arvailua, ei "vähän tästä ja tuosta".</p>
+      <p>Sama täsmällisyys, kevyempi aihe. Ainesosat leipurin prosenteilla, poolish-esitaikina, aikataulu taaksepäin laskettuna, ja työohjeet — ei arvailua, ei "vähän tästä ja tuosta".</p>
     </div>
   </div>
 
@@ -102,6 +126,48 @@
         <div class="osio-selite" style="margin-top:6px; margin-bottom:0;" id="hiivaSelite">Pitkä nousu (8–24 h huoneenlämmössä/jääkaapissa) = vähemmän hiivaa. Lyhyt nousu (2–4 h) = enemmän.</div>
       </div>
 
+      <div class="osio-otsikko">Esitaikina</div>
+      <div class="kytkin-rivi">
+        <label for="poolishPaalla">Käytä poolish-esitaikinaa</label>
+        <label class="kytkin">
+          <input type="checkbox" id="poolishPaalla">
+          <span class="liuku"></span>
+        </label>
+      </div>
+      <div id="poolishKentat" class="piilotettu">
+        <div class="rivi-2" style="margin-top:10px;">
+          <div class="kentta">
+            <label for="poolishOsuus">Poolishin osuus jauhoista (%)</label>
+            <input type="number" id="poolishOsuus" value="30" min="1" max="90" step="5">
+          </div>
+          <div class="kentta">
+            <label for="poolishHydraatio">Poolishin hydraatio (%)</label>
+            <input type="number" id="poolishHydraatio" value="100" min="50" step="5">
+          </div>
+        </div>
+        <div class="osio-selite" style="margin-top:-4px;">Poolish on yleensä 100 % hydraatiota (yhtä paljon vettä kuin jauhoja). Kaikki hiiva menee poolishiin — suola vasta lopputaikinaan, koska suola hidastaisi poolishin kypsymistä.</div>
+        <div class="info-huomio piilotettu" id="poolishVaroitus" style="background:#FDECEA; border-color:#F5C6C0;"></div>
+      </div>
+
+      <div class="osio-otsikko">Aikataulu</div>
+      <div id="aikatauluValitsinKentta" class="kentta">
+        <label>Nousutapa</label>
+        <div class="segmentti-valitsin" id="aikatauluValitsin">
+          <button data-tapa="pika" class="aktiivinen" type="button">
+            <span class="tag-otsikko">Pikataikina</span>
+            Huoneenlämpö, n. 8 h
+          </button>
+          <button data-tapa="kylma" type="button">
+            <span class="tag-otsikko">Kylmä nousu</span>
+            Jääkaappi, n. 2–3 vrk
+          </button>
+        </div>
+      </div>
+      <div class="kentta">
+        <label for="syontiaika">Milloin haluat syödä?</label>
+        <input type="datetime-local" id="syontiaika">
+      </div>
+
       <div class="info-huomio">
         Leipurin prosentit lasketaan aina jauhopainosta (jauhot = 100 %). Tämä laskuri kääntää sen toisin päin: syötät halutun lopputaikinan painon, ja se ratkaisee jauhomäärän joka täsmää.
       </div>
@@ -112,12 +178,12 @@
     <div class="tulos-paneeli">
 
       <div class="paatulos">
-        <div class="label">Jauhot</div>
+        <div class="label">Jauhot yhteensä</div>
         <div class="summa" id="jauhotSumma">—</div>
         <div class="selite" id="jauhotSelite">Perusmäärä (100 %) — kaikki muu suhteutuu tähän</div>
       </div>
 
-      <div class="erittely">
+      <div id="tavallinenErittely" class="erittely">
         <div class="erittely-rivi">
           <div class="nimi">Vesi<span class="alaselite" id="vesiProsentti">Hydraatio</span></div>
           <div class="arvo" id="vesiMaara">—</div>
@@ -130,6 +196,42 @@
           <div class="nimi">Hiiva<span class="alaselite" id="hiivaProsentti">—</span></div>
           <div class="arvo" id="hiivaMaara">—</div>
         </div>
+      </div>
+
+      <div id="poolishErittelyt" class="piilotettu">
+        <div class="erittely">
+          <div class="alaotsikko-pieni" style="margin-top:0;">① Poolish — sekoita ensin</div>
+          <div class="erittely-rivi">
+            <div class="nimi">Jauhot poolishiin</div>
+            <div class="arvo" id="poolishJauhotArvo">—</div>
+          </div>
+          <div class="erittely-rivi">
+            <div class="nimi">Vesi poolishiin</div>
+            <div class="arvo" id="poolishVesiArvo">—</div>
+          </div>
+          <div class="erittely-rivi">
+            <div class="nimi">Hiiva poolishiin<span class="alaselite">Kaikki hiiva tähän vaiheeseen</span></div>
+            <div class="arvo" id="poolishHiivaArvo">—</div>
+          </div>
+        </div>
+        <div class="erittely" style="margin-top:14px;">
+          <div class="alaotsikko-pieni" style="margin-top:0;">② Lopputaikina — lisää kun poolish on kypsä</div>
+          <div class="erittely-rivi">
+            <div class="nimi">Jauhot lisää</div>
+            <div class="arvo" id="loppuJauhotArvo">—</div>
+          </div>
+          <div class="erittely-rivi">
+            <div class="nimi">Vesi lisää</div>
+            <div class="arvo" id="loppuVesiArvo">—</div>
+          </div>
+          <div class="erittely-rivi">
+            <div class="nimi">Suola<span class="alaselite">Vasta nyt, ei poolishiin</span></div>
+            <div class="arvo" id="loppuSuolaArvo">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="erittely" style="margin-top:14px;">
         <div class="erittely-rivi korostettu">
           <div class="nimi">Taikinaa yhteensä<span class="alaselite" id="painoSelite">Pallot × painoa</span></div>
           <div class="arvo" id="kokonaisPaino">—</div>
@@ -156,26 +258,30 @@
       </div>
 
       <div class="lainapaneeli">
-        <h3>Karkea aikataulu (suuntaa-antava)</h3>
-        <div style="font-size:13.5px; color:var(--muste); line-height:1.6;">
-          <strong>Huoneenlämpö (n. 21°C), lyhyt nousu:</strong> sekoita → 2–4 h → pallota → 4–6 h → paista.<br><br>
-          <strong>Jääkaappi, pitkä nousu:</strong> sekoita → 1–2 h huoneenlämmössä → jääkaappiin 24–72 h → nosta huoneenlämpöön 3–4 h ennen paistoa.
-        </div>
-        <div class="osio-selite" style="margin-top:12px; margin-bottom:0;">Todelliset ajat vaihtelevat lämpötilan, jauhotyypin ja hiivamäärän mukaan — tämä on suuntaa antava lähtökohta, ei tarkka resepti.</div>
+        <h3>Aikataulusi</h3>
+        <div id="aikatauluLista"></div>
+        <div class="osio-selite" style="margin-top:12px; margin-bottom:0;">Kellonajat ovat tyypillisiä keskiarvoja — todelliset ajat vaihtelevat huoneenlämmön, jauhotyypin ja hiivamäärän mukaan.</div>
       </div>
 
     </div>
   </div>
 
+  <div class="erittely" style="margin-top:26px; padding:6px 24px;">
+    <div class="alaotsikko-pieni" style="margin-left:0;">Työohjeet</div>
+    <div class="tyoohje-lista" id="tyoohjeLista"></div>
+  </div>
+
   <div class="artikkeli" style="max-width:100%; margin-top:26px;">
     <h2>Mitä hydraatio tarkoittaa käytännössä</h2>
     <p>Hydraatio kertoo veden määrän suhteessa jauhoihin prosentteina. 65 % hydraatio tarkoittaa, että vettä on 65 % jauhojen painosta. Matalampi hydraatio (58–62 %) antaa tiiviimmän, helpommin käsiteltävän taikinan — hyvä aloittelijalle. Korkeampi hydraatio (68–75 %) antaa ilmavamman, rapeamman lopputuloksen, mutta taikina on tahmeampaa ja vaikeampaa käsitellä.</p>
+    <h2>Miksi poolish kannattaa</h2>
+    <p>Poolish on pieni osa taikinan jauhoista ja vedestä, joka saa kypsyä pitkään omana seoksenaan ennen kuin loput ainekset lisätään. Pitkä, hidas esikypsytys kehittää makua ja rakennetta tavalla johon suora, kertasekoitettu taikina ei yksin pysty — sama periaate kuin hapanjuurella, mutta nopeampi ja ennustettavampi tavallisella hiivalla.</p>
     <h2>Miksi hiivamäärä ja aika liittyvät toisiinsa</h2>
-    <p>Hiiva syö sokereita ja tuottaa hiilidioksidia koko nousuajan — mitä pidempi nousuaika, sitä vähemmän hiivaa tarvitaan samaan lopputulokseen. Liian paljon hiivaa lyhyellä ajalla tuottaa nopean mutta mauttoman nousun; vähän hiivaa pitkällä, kylmällä nousulla kehittää enemmän makua. Tämä on sama periaate kuin monessa muussakin arjen asiassa — kärsivällisyys usein palkitaan.</p>
+    <p>Hiiva syö sokereita ja tuottaa hiilidioksidia koko nousuajan — mitä pidempi nousuaika, sitä vähemmän hiivaa tarvitaan samaan lopputulokseen. Liian paljon hiivaa lyhyellä ajalla tuottaa nopean mutta mauttoman nousun; vähän hiivaa pitkällä, kylmällä nousulla kehittää enemmän makua.</p>
   </div>
 
   <div class="vastuuvapaus">
-    <strong>Suuntaa-antava laskuri.</strong> Leipurin prosenttimatematiikka on tarkkaa, mutta paistotulokset vaihtelevat uunin, jauhon ja sään mukaan. Ei korvaa kokeilua ja omaa makuasi.
+    <strong>Suuntaa-antava laskuri.</strong> Leipurin prosenttimatematiikka on tarkkaa, mutta paisto- ja nousutulokset vaihtelevat uunin, jauhon, hiivan aktiivisuuden ja huoneenlämmön mukaan. Aikataulun kellonajat ovat tyypillisiä arvioita, eivät takuita. Ei korvaa kokeilua ja omaa makuasi.
   </div>
 
   <footer class="alatunniste">
@@ -188,8 +294,19 @@
 <script>
   const el = id => document.getElementById(id);
   const fmtG = n => new Intl.NumberFormat('fi-FI', { maximumFractionDigits: 1 }).format(n) + ' g';
+  const fmtAika = d => d.toLocaleString('fi-FI', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
 
   let hiivaTyyppi = 'tuore';
+  let aikatauluTapa = 'pika';
+
+  // Oletus: syöntiaika huomenna klo 19:00
+  (function asetaOletusaika() {
+    const huomenna = new Date();
+    huomenna.setDate(huomenna.getDate() + 1);
+    huomenna.setHours(19, 0, 0, 0);
+    const iso = huomenna.toISOString().slice(0, 16);
+    el('syontiaika').value = iso;
+  })();
 
   document.querySelectorAll('#hiivaValitsin button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -197,7 +314,6 @@
       document.querySelectorAll('#hiivaValitsin button').forEach(b => b.classList.remove('aktiivinen'));
       btn.classList.add('aktiivinen');
       hiivaTyyppi = btn.dataset.tyyppi;
-
       const nykyinen = parseFloat(el('hiiva').value) || 0;
       if (vanhaTyyppi === 'tuore' && hiivaTyyppi === 'kuiva') {
         el('hiiva').value = (nykyinen / 3).toFixed(3);
@@ -211,12 +327,78 @@
     });
   });
 
+  document.querySelectorAll('#aikatauluValitsin button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#aikatauluValitsin button').forEach(b => b.classList.remove('aktiivinen'));
+      btn.classList.add('aktiivinen');
+      aikatauluTapa = btn.dataset.tapa;
+      laske();
+    });
+  });
+
+  el('poolishPaalla').addEventListener('change', () => {
+    const paalla = el('poolishPaalla').checked;
+    el('poolishKentat').classList.toggle('piilotettu', !paalla);
+    el('tavallinenErittely').classList.toggle('piilotettu', paalla);
+    el('poolishErittelyt').classList.toggle('piilotettu', !paalla);
+    el('aikatauluValitsinKentta').classList.toggle('piilotettu', paalla);
+    laske();
+  });
+
+  function rakennaAikataulu(tapa, poolishPaalla, syontiaikaStr) {
+    const paisto = syontiaikaStr ? new Date(syontiaikaStr) : new Date();
+    const vaiheet = [];
+    const h = 3600000;
+
+    if (poolishPaalla) {
+      const pallotus = new Date(paisto.getTime() - 5*h);
+      const loppusekoitus = new Date(pallotus.getTime() - 1.5*h);
+      const poolishSekoitus = new Date(loppusekoitus.getTime() - 12*h);
+      vaiheet.push({ aika: poolishSekoitus, vaihe: 'Sekoita poolish (jauhot + vesi + hiiva)' });
+      vaiheet.push({ aika: loppusekoitus, vaihe: 'Lisää loput ainekset, sekoita lopputaikina' });
+      vaiheet.push({ aika: pallotus, vaihe: 'Pallota taikina' });
+      vaiheet.push({ aika: paisto, vaihe: 'Paista' });
+    } else if (tapa === 'pika') {
+      const pallotus = new Date(paisto.getTime() - 5*h);
+      const sekoitus = new Date(pallotus.getTime() - 3*h);
+      vaiheet.push({ aika: sekoitus, vaihe: 'Sekoita taikina' });
+      vaiheet.push({ aika: pallotus, vaihe: 'Pallota taikina' });
+      vaiheet.push({ aika: paisto, vaihe: 'Paista' });
+    } else {
+      const huoneenlampoonNosto = new Date(paisto.getTime() - 3.5*h);
+      const jaakaappiin = new Date(huoneenlampoonNosto.getTime() - 48*h);
+      const sekoitus = new Date(jaakaappiin.getTime() - 1.5*h);
+      vaiheet.push({ aika: sekoitus, vaihe: 'Sekoita ja pallota taikina' });
+      vaiheet.push({ aika: jaakaappiin, vaihe: 'Siirrä jääkaappiin (n. 2 vrk)' });
+      vaiheet.push({ aika: huoneenlampoonNosto, vaihe: 'Nosta huoneenlämpöön' });
+      vaiheet.push({ aika: paisto, vaihe: 'Paista' });
+    }
+    return vaiheet;
+  }
+
+  function rakennaTyoohjeet(poolishPaalla) {
+    const ohjeet = [];
+    if (poolishPaalla) {
+      ohjeet.push(['Sekoita poolish', 'Vatkaa poolishin jauhot ja vesi tasaiseksi, murustele hiiva joukkoon. Peitä ja anna kypsyä huoneenlämmössä (tai jääkaapissa pidempään) kunnes pinnalla on paljon kuplia ja tuoksu on selvästi hapokas.']);
+      ohjeet.push(['Yhdistä lopputaikina', 'Lisää kypsän poolishin joukkoon loput jauhot ja vesi. Sekoita hetki, anna levätä 15–20 min peitettynä (autolyysi) — tämä helpottaa vaivaamista ja parantaa rakennetta.']);
+      ohjeet.push(['Lisää suola, vaivaa', 'Lisää suola vasta nyt. Vaivaa käsin tai koneella kunnes taikina on sileä ja joustava, n. 10–15 min käsin.']);
+    } else {
+      ohjeet.push(['Sekoita taikina', 'Yhdistä jauhot ja suurin osa vedestä, sekoita karkeasti. Anna levätä 15–20 min peitettynä (autolyysi). Lisää loppuvesi, hiiva ja suola, vaivaa kunnes sileä ja joustava.']);
+    }
+    ohjeet.push(['Kohota (bulkkinousu)', 'Peitä taikina ja anna nousta yhtenä möykkynä kunnes tilavuus on selvästi kasvanut ja pinnalla näkyy kuplia.']);
+    ohjeet.push(['Pallota', 'Jaa taikina laskettuihin palakokoihin vaa\'alla. Pyöritä jokainen tiukaksi, sileäksi palloksi — tämä luo pintajännitteen joka pitää kaasut sisällä.']);
+    ohjeet.push(['Toinen nousu', 'Anna pallojen nousta peitettynä kunnes ne ovat pehmeitä ja notkeita, eivät enää kimmoisia vastaan painettaessa.']);
+    ohjeet.push(['Levitä ja paista', 'Levitä pallo sormin keskeltä reunoja kohti, jätä reunaan ilmava kohouma. Paista mahdollisimman kuumassa uunissa (mieluiten 400–500 °C pizzauuni, tai kotiuunin maksimilämpö pizzakivellä).']);
+    return ohjeet;
+  }
+
   function laske() {
     const pallot = parseFloat(el('pallot').value) || 0;
     const pallonPaino = parseFloat(el('pallonPaino').value) || 0;
     const hydraatio = parseFloat(el('hydraatio').value) || 0;
     const suolaPros = parseFloat(el('suola').value) || 0;
     const hiivaPros = parseFloat(el('hiiva').value) || 0;
+    const poolishPaalla = el('poolishPaalla').checked;
 
     const kokonaisPaino = pallot * pallonPaino;
     const kerroin = 1 + hydraatio/100 + suolaPros/100 + hiivaPros/100;
@@ -227,13 +409,41 @@
 
     el('jauhotSumma').textContent = fmtG(jauhot);
     el('jauhotSelite').textContent = `Perusmäärä (100 %) — ${pallot} pallo${pallot===1?'':'a'} á ${pallonPaino} g`;
-    el('vesiMaara').textContent = fmtG(vesi);
-    el('vesiProsentti').textContent = hydraatio.toFixed(0) + ' % hydraatio';
-    el('suolaMaara').textContent = fmtG(suola);
-    el('suolaProsentti').textContent = suolaPros.toFixed(1) + ' % jauhoista';
-    el('hiivaMaara').textContent = fmtG(hiiva);
-    el('hiivaProsentti').textContent = hiivaPros.toFixed(2) + ' % jauhoista (' + (hiivaTyyppi === 'tuore' ? 'tuore' : 'kuiva') + ')';
     el('kokonaisPaino').textContent = fmtG(kokonaisPaino);
+
+    if (!poolishPaalla) {
+      el('vesiMaara').textContent = fmtG(vesi);
+      el('vesiProsentti').textContent = hydraatio.toFixed(0) + ' % hydraatio';
+      el('suolaMaara').textContent = fmtG(suola);
+      el('suolaProsentti').textContent = suolaPros.toFixed(1) + ' % jauhoista';
+      el('hiivaMaara').textContent = fmtG(hiiva);
+      el('hiivaProsentti').textContent = hiivaPros.toFixed(2) + ' % jauhoista (' + (hiivaTyyppi === 'tuore' ? 'tuore' : 'kuiva') + ')';
+    } else {
+      const poolishOsuus = parseFloat(el('poolishOsuus').value) || 0;
+      const poolishHydraatio = parseFloat(el('poolishHydraatio').value) || 100;
+      const poolishJauhot = jauhot * poolishOsuus/100;
+      const poolishVesi = poolishJauhot * poolishHydraatio/100;
+      const poolishHiiva = hiiva;
+      const loppuJauhot = jauhot - poolishJauhot;
+      const loppuVesi = vesi - poolishVesi;
+
+      el('poolishJauhotArvo').textContent = fmtG(poolishJauhot);
+      el('poolishVesiArvo').textContent = fmtG(poolishVesi);
+      el('poolishHiivaArvo').textContent = fmtG(poolishHiiva);
+      el('loppuJauhotArvo').textContent = fmtG(loppuJauhot);
+      el('loppuVesiArvo').textContent = fmtG(loppuVesi);
+      el('loppuSuolaArvo').textContent = fmtG(suola);
+
+      if (loppuVesi < 0) {
+        el('poolishVaroitus').classList.remove('piilotettu');
+        el('poolishVaroitus').textContent = `Poolishin osuus (${poolishOsuus} %) on liian suuri tähän hydraatioon (${hydraatio} %) nähden — lopputaikinaan jäisi negatiivinen määrä vettä. Pienennä poolish-osuutta tai nosta kokonaishydraatiota.`;
+      } else {
+        el('poolishVaroitus').classList.add('piilotettu');
+      }
+    }
+
+    el('tavallinenErittely').classList.toggle('piilotettu', poolishPaalla);
+    el('poolishErittelyt').classList.toggle('piilotettu', !poolishPaalla);
 
     const maxOsa = Math.max(jauhot, vesi, suola+hiiva, 1);
     el('palkkiJauhot').style.width = (jauhot/maxOsa*100) + '%';
@@ -242,6 +452,18 @@
     el('palkkiJauhotArvo').textContent = fmtG(jauhot);
     el('palkkiVesiArvo').textContent = fmtG(vesi);
     el('palkkiMuuArvo').textContent = fmtG(suola+hiiva);
+
+    // Aikataulu
+    const vaiheet = rakennaAikataulu(aikatauluTapa, poolishPaalla, el('syontiaika').value);
+    el('aikatauluLista').innerHTML = vaiheet.map(v =>
+      `<div class="aikataulu-rivi"><span class="vaihe">${v.vaihe}</span><span class="aika">${fmtAika(v.aika)}</span></div>`
+    ).join('');
+
+    // Työohjeet
+    const ohjeet = rakennaTyoohjeet(poolishPaalla);
+    el('tyoohjeLista').innerHTML = ohjeet.map((o, i) =>
+      `<div class="tyoohje-vaihe"><div class="tyoohje-numero">${i+1}</div><div><h4>${o[0]}</h4><p>${o[1]}</p></div></div>`
+    ).join('');
   }
 
   document.querySelectorAll('input').forEach(i => i.addEventListener('input', laske));
