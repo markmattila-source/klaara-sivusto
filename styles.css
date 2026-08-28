@@ -85,7 +85,9 @@ header.brandi {
 .merkki-ryhma {
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   gap: 10px;
+  flex: 1;
   flex-wrap: wrap;
 }
 
@@ -1399,7 +1401,7 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 @media (max-width: 768px) {
   .paanavi { display: none; }
   .hampurilainen { display: flex; }
-  .merkki-ryhma { flex-direction: column !important; align-items: flex-start !important; gap: 2px !important; }
+  .merkki-ryhma { flex-direction: column !important; align-items: flex-start !important; justify-content: flex-start !important; gap: 2px !important; }
   header.brandi { margin-bottom: 22px; }
 }
 
@@ -1484,3 +1486,12 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   .bento-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 118px; }
   .bento-solu.iso { grid-column: span 2; grid-row: span 1; }
 }
+
+/* ---------- Kevennys-kortti (esim. pizzalaskuri) — erottuu selvästi vakavista työkaluista ---------- */
+
+.tyokalu-kortti.kevennys-kortti {
+  border: 1.5px dashed #F0C199;
+  background: #FFFAF5;
+}
+.tyokalu-kortti.kevennys-kortti:hover { border-color: var(--koralli); }
+.tyokalu-tila.kevennys { color: var(--koralli); }
