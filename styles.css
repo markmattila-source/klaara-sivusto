@@ -82,6 +82,13 @@ header.brandi {
   color: var(--muste);
 }
 
+.merkki-ryhma {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .merkki-tagline {
   font-size: 13px;
   color: var(--muste-hiljainen);
@@ -533,6 +540,16 @@ header.brandi {
 .hero-mockup-kehys {
   display: none;
   perspective: 1400px;
+  position: relative;
+}
+.hero-mockup-kehys::before {
+  content: '';
+  position: absolute;
+  inset: -50px;
+  background: radial-gradient(ellipse at center, rgba(31,162,78,0.45) 0%, rgba(31,162,78,0.15) 45%, transparent 72%);
+  filter: blur(28px);
+  z-index: -1;
+  pointer-events: none;
 }
 .hero-mockup {
   transform: rotateY(-9deg) rotateX(3deg) rotateZ(1.5deg);
@@ -542,6 +559,7 @@ header.brandi {
   border: 1px solid rgba(255,255,255,0.12);
   background: #fff;
   transition: transform 0.4s ease;
+  position: relative;
 }
 .hero-mockup:hover { transform: rotateY(-4deg) rotateX(1deg) rotateZ(0.5deg); }
 .hero-mockup-chrome {
@@ -552,6 +570,9 @@ header.brandi {
   gap: 6px;
 }
 .hero-mockup-dot { width: 8px; height: 8px; border-radius: 50%; background: #C6CDC8; }
+.hero-mockup-dot:nth-child(1) { background: #FF5F57; }
+.hero-mockup-dot:nth-child(2) { background: #FEBC2E; }
+.hero-mockup-dot:nth-child(3) { background: #28C840; }
 .hero-mockup-osoite {
   flex: 1;
   background: #fff;
@@ -777,6 +798,7 @@ input:focus-visible + .liuku { outline: 2px solid var(--kuusi); outline-offset: 
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
 }
 
 .paatulos .selite { font-size: 13px; opacity: 0.82; margin-top: 10px; }
@@ -847,7 +869,7 @@ input:focus-visible + .liuku { outline: 2px solid var(--kuusi); outline-offset: 
   margin-bottom: 3px;
 }
 
-.kuukausierä { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600; }
+.kuukausierä { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
 
 .ei-lainatarvetta {
   font-size: 14px;
@@ -1221,6 +1243,9 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   gap: 5px;
 }
 .miten-chrome .dot { width: 6px; height: 6px; border-radius: 50%; background: #C6CDC8; }
+.miten-chrome .dot:nth-child(1) { background: #FF5F57; }
+.miten-chrome .dot:nth-child(2) { background: #FEBC2E; }
+.miten-chrome .dot:nth-child(3) { background: #28C840; }
 .miten-mockup img { display: block; width: 100%; height: auto; }
 
 .miten-kortti h3 {
@@ -1374,7 +1399,7 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 @media (max-width: 768px) {
   .paanavi { display: none; }
   .hampurilainen { display: flex; }
-  .merkki-tagline { display: none; }
+  .merkki-ryhma { flex-direction: column !important; align-items: flex-start !important; gap: 2px !important; }
   header.brandi { margin-bottom: 22px; }
 }
 
@@ -1394,4 +1419,68 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   .miten-ghost-numero { font-size: 60px; top: -4px; }
 
   .miten-mockup img { height: auto; }
+}
+
+/* ---------- Bento-ruudukko (arvolupaukset, tumma) ---------- */
+
+.bento-osio {
+  background: linear-gradient(155deg, var(--tumma-kuusi-uusi), var(--kuusi-tumma));
+  border-radius: var(--radius);
+  padding: 22px;
+  margin: 40px 0;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 108px;
+  gap: 14px;
+}
+
+.bento-solu {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.bento-solu:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.22); }
+
+.bento-solu.iso {
+  grid-column: span 2;
+  grid-row: span 2;
+  justify-content: flex-end;
+}
+.bento-solu.iso .bento-luku { font-size: clamp(38px, 5vw, 52px); }
+.bento-solu.iso .bento-kuvaus { font-size: 14.5px; max-width: 220px; }
+
+.bento-luku {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 30px;
+  color: #fff;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 8px;
+}
+.bento-otsikko {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.bento-kuvaus {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.68);
+  line-height: 1.4;
+}
+
+@media (max-width: 700px) {
+  .bento-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 118px; }
+  .bento-solu.iso { grid-column: span 2; grid-row: span 1; }
 }
