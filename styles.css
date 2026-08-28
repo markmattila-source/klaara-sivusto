@@ -9,16 +9,16 @@
   --paneeli: #FFFFFF;
   --muste: #16241F;
   --muste-hiljainen: #4B5A54;
-  --kuusi: #2F5D50;
-  --kuusi-tumma: #1E3F36;
+  --kuusi: #5A4FCF;
+  --kuusi-tumma: #4B4590;
   --ruska: #C98A3B;
   --taivas: #4C6E96;
   --viiva: #D9DFDA;
   --virhe: #A34D3C;
   --radius: 14px;
-  --tuore-kuusi: #1FA24E;
-  --koralli: #FF6B35;
-  --tumma-kuusi-uusi: #0F3D26;
+  --tuore-kuusi: #5A4FCF;
+  --koralli: #FFC93C;
+  --tumma-kuusi-uusi: #2B2560;
 }
 
 * { box-sizing: border-box; }
@@ -172,7 +172,7 @@ header.brandi {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12.5px;
   font-weight: 600;
-  color: #fff;
+  color: var(--muste);
   background: var(--koralli);
   padding: 9px 16px;
   border-radius: 8px;
@@ -403,7 +403,7 @@ header.brandi {
 .fresh-badge {
   display: inline-block;
   background: var(--koralli);
-  color: #fff;
+  color: var(--muste);
   font-family: 'Inter', sans-serif;
   font-weight: 800;
   font-size: 12.5px;
