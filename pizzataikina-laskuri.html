@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizzataikinan laskuri — Klaara Kevennys</title>
+<meta name="description" content="Napolilaisen pizzataikinan ainesosat leipurin prosenteilla — jauhot, vesi, suola ja hiiva täsmällisesti taikinapallojen määrän ja hydraation mukaan.">
+
+<link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-v2-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-v2-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/klaara-favicon-v2-48.png">
+<link rel="apple-touch-icon" href="assets/klaara-app-ikoni-v2-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "bb1408a8d9e04e7c8e98181255a5ccec"}'></script><!-- End Cloudflare Web Analytics -->
+<style>
+  .kevennys-tagi {
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px;
+    letter-spacing:0.06em; text-transform:uppercase; color:#fff;
+    background:var(--koralli); padding:4px 10px; border-radius:999px; margin-left:10px;
+    vertical-align:middle; position:relative; top:-2px;
+  }
+</style>
+</head>
+<body>
+<div class="kehys">
+
+  <header class="brandi">
+    <a class="merkki" href="index.html">
+      <span class="merkki-symboli">
+        <img src="assets/klaara-merkki-v2.svg" alt="Klaara-logo">
+      </span>
+      <span class="merkki-nimi">Klaara</span>
+    </a>
+    <div class="merkki-tagline">arjen ratkaisut — selkeästi</div>
+  </header>
+
+  <nav class="paanavi">
+    <a href="index.html">Etusivu</a>
+    <a href="ajankohtaista.html">Ajankohtaista</a>
+    <a href="talouden-vuosikello.html">Vuosikello</a>
+    <a href="esimerkit.html">Esimerkit</a>
+    <a href="sanasto.html">Sanasto</a>
+    <a href="ukk.html">UKK</a>
+  </nav>
+
+  <div class="hero hero-fresh">
+    <div class="hero-teksti">
+      <h1>Pizzataikina, laskettuna asti.<span class="kevennys-tagi">Klaara Kevennys</span></h1>
+      <p>Sama täsmällisyys, kevyempi aihe. Napolilaisen pizzataikinan ainesosat leipurin prosenteilla — ei arvailua, ei "vähän tästä ja tuosta".</p>
+    </div>
+  </div>
+
+  <div class="runko">
+
+    <!-- INPUTS -->
+    <div class="paneeli">
+      <h2>Syötä tiedot</h2>
+
+      <div class="osio-otsikko">Taikinapallot</div>
+      <div class="rivi-2">
+        <div class="kentta">
+          <label for="pallot">Pallojen määrä (kpl)</label>
+          <input type="number" id="pallot" value="4" min="1" step="1">
+        </div>
+        <div class="kentta">
+          <label for="pallonPaino">Yhden pallon paino (g)</label>
+          <input type="number" id="pallonPaino" value="250" min="0" step="10">
+        </div>
+      </div>
+      <div class="osio-selite" style="margin-top:-8px;">Napolilainen pizza on tyypillisesti 230–280 g/pallo.</div>
+
+      <div class="osio-otsikko">Hydraatio & mausteet</div>
+      <div class="kentta">
+        <label for="hydraatio">Hydraatio (%)</label>
+        <input type="number" id="hydraatio" value="65" min="0" step="1">
+        <div class="osio-selite" style="margin-top:6px; margin-bottom:0;">Perinteinen napolilainen 58–65 %, moderni pehmeämpi pohja 65–72 %.</div>
+      </div>
+      <div class="kentta">
+        <label for="suola">Suola (%)</label>
+        <input type="number" id="suola" value="2.8" min="0" step="0.1">
+      </div>
+
+      <div class="osio-otsikko">Hiiva</div>
+      <div class="kentta">
+        <div class="segmentti-valitsin" id="hiivaValitsin">
+          <button data-tyyppi="tuore" class="aktiivinen" type="button">
+            <span class="tag-otsikko">Tuorehiiva</span>
+            Pieni määrä riittää
+          </button>
+          <button data-tyyppi="kuiva" type="button">
+            <span class="tag-otsikko">Kuivahiiva</span>
+            n. 1/3 tuoreesta
+          </button>
+        </div>
+      </div>
+      <div class="kentta">
+        <label for="hiiva">Hiiva (%)</label>
+        <input type="number" id="hiiva" value="0.2" min="0" step="0.01">
+        <div class="osio-selite" style="margin-top:6px; margin-bottom:0;" id="hiivaSelite">Pitkä nousu (8–24 h huoneenlämmössä/jääkaapissa) = vähemmän hiivaa. Lyhyt nousu (2–4 h) = enemmän.</div>
+      </div>
+
+      <div class="info-huomio">
+        Leipurin prosentit lasketaan aina jauhopainosta (jauhot = 100 %). Tämä laskuri kääntää sen toisin päin: syötät halutun lopputaikinan painon, ja se ratkaisee jauhomäärän joka täsmää.
+      </div>
+
+    </div>
+
+    <!-- RESULTS -->
+    <div class="tulos-paneeli">
+
+      <div class="paatulos">
+        <div class="label">Jauhot</div>
+        <div class="summa" id="jauhotSumma">—</div>
+        <div class="selite" id="jauhotSelite">Perusmäärä (100 %) — kaikki muu suhteutuu tähän</div>
+      </div>
+
+      <div class="erittely">
+        <div class="erittely-rivi">
+          <div class="nimi">Vesi<span class="alaselite" id="vesiProsentti">Hydraatio</span></div>
+          <div class="arvo" id="vesiMaara">—</div>
+        </div>
+        <div class="erittely-rivi">
+          <div class="nimi">Suola<span class="alaselite" id="suolaProsentti">—</span></div>
+          <div class="arvo" id="suolaMaara">—</div>
+        </div>
+        <div class="erittely-rivi">
+          <div class="nimi">Hiiva<span class="alaselite" id="hiivaProsentti">—</span></div>
+          <div class="arvo" id="hiivaMaara">—</div>
+        </div>
+        <div class="erittely-rivi korostettu">
+          <div class="nimi">Taikinaa yhteensä<span class="alaselite" id="painoSelite">Pallot × painoa</span></div>
+          <div class="arvo" id="kokonaisPaino">—</div>
+        </div>
+      </div>
+
+      <div class="vertailu-otsikko">Suhteet visuaalisesti</div>
+      <div class="palkki-vertailu">
+        <div class="palkki-rivi">
+          <div class="palkki-nimi">Jauhot</div>
+          <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiJauhot" style="background: var(--kuusi); width: 0%;"></div></div>
+          <div class="palkki-arvo" id="palkkiJauhotArvo">—</div>
+        </div>
+        <div class="palkki-rivi">
+          <div class="palkki-nimi">Vesi</div>
+          <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiVesi" style="background: var(--taivas); width: 0%;"></div></div>
+          <div class="palkki-arvo" id="palkkiVesiArvo">—</div>
+        </div>
+        <div class="palkki-rivi">
+          <div class="palkki-nimi">Suola + hiiva</div>
+          <div class="palkki-tausta"><div class="palkki-tayte" id="palkkiMuu" style="background: var(--ruska); width: 0%;"></div></div>
+          <div class="palkki-arvo" id="palkkiMuuArvo">—</div>
+        </div>
+      </div>
+
+      <div class="lainapaneeli">
+        <h3>Karkea aikataulu (suuntaa-antava)</h3>
+        <div style="font-size:13.5px; color:var(--muste); line-height:1.6;">
+          <strong>Huoneenlämpö (n. 21°C), lyhyt nousu:</strong> sekoita → 2–4 h → pallota → 4–6 h → paista.<br><br>
+          <strong>Jääkaappi, pitkä nousu:</strong> sekoita → 1–2 h huoneenlämmössä → jääkaappiin 24–72 h → nosta huoneenlämpöön 3–4 h ennen paistoa.
+        </div>
+        <div class="osio-selite" style="margin-top:12px; margin-bottom:0;">Todelliset ajat vaihtelevat lämpötilan, jauhotyypin ja hiivamäärän mukaan — tämä on suuntaa antava lähtökohta, ei tarkka resepti.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="artikkeli" style="max-width:100%; margin-top:26px;">
+    <h2>Mitä hydraatio tarkoittaa käytännössä</h2>
+    <p>Hydraatio kertoo veden määrän suhteessa jauhoihin prosentteina. 65 % hydraatio tarkoittaa, että vettä on 65 % jauhojen painosta. Matalampi hydraatio (58–62 %) antaa tiiviimmän, helpommin käsiteltävän taikinan — hyvä aloittelijalle. Korkeampi hydraatio (68–75 %) antaa ilmavamman, rapeamman lopputuloksen, mutta taikina on tahmeampaa ja vaikeampaa käsitellä.</p>
+    <h2>Miksi hiivamäärä ja aika liittyvät toisiinsa</h2>
+    <p>Hiiva syö sokereita ja tuottaa hiilidioksidia koko nousuajan — mitä pidempi nousuaika, sitä vähemmän hiivaa tarvitaan samaan lopputulokseen. Liian paljon hiivaa lyhyellä ajalla tuottaa nopean mutta mauttoman nousun; vähän hiivaa pitkällä, kylmällä nousulla kehittää enemmän makua. Tämä on sama periaate kuin monessa muussakin arjen asiassa — kärsivällisyys usein palkitaan.</p>
+  </div>
+
+  <div class="vastuuvapaus">
+    <strong>Suuntaa-antava laskuri.</strong> Leipurin prosenttimatematiikka on tarkkaa, mutta paistotulokset vaihtelevat uunin, jauhon ja sään mukaan. Ei korvaa kokeilua ja omaa makuasi.
+  </div>
+
+  <footer class="alatunniste">
+    <span>Klaara — arjen ratkaisut, selkeästi. (Ja välillä pizzaa.)</span>
+    <span>Tiedot päivitetty 28.8.2026</span>
+  </footer>
+
+</div>
+
+<script>
+  const el = id => document.getElementById(id);
+  const fmtG = n => new Intl.NumberFormat('fi-FI', { maximumFractionDigits: 1 }).format(n) + ' g';
+
+  let hiivaTyyppi = 'tuore';
+
+  document.querySelectorAll('#hiivaValitsin button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const vanhaTyyppi = hiivaTyyppi;
+      document.querySelectorAll('#hiivaValitsin button').forEach(b => b.classList.remove('aktiivinen'));
+      btn.classList.add('aktiivinen');
+      hiivaTyyppi = btn.dataset.tyyppi;
+
+      const nykyinen = parseFloat(el('hiiva').value) || 0;
+      if (vanhaTyyppi === 'tuore' && hiivaTyyppi === 'kuiva') {
+        el('hiiva').value = (nykyinen / 3).toFixed(3);
+      } else if (vanhaTyyppi === 'kuiva' && hiivaTyyppi === 'tuore') {
+        el('hiiva').value = (nykyinen * 3).toFixed(2);
+      }
+      el('hiivaSelite').textContent = hiivaTyyppi === 'tuore'
+        ? 'Pitkä nousu (8–24 h) = vähemmän hiivaa. Lyhyt nousu (2–4 h) = enemmän. Tyypillinen 0,1–0,5 %.'
+        : 'Kuivahiivaa tarvitaan n. 1/3 tuorehiivan määrästä. Tyypillinen 0,03–0,17 %.';
+      laske();
+    });
+  });
+
+  function laske() {
+    const pallot = parseFloat(el('pallot').value) || 0;
+    const pallonPaino = parseFloat(el('pallonPaino').value) || 0;
+    const hydraatio = parseFloat(el('hydraatio').value) || 0;
+    const suolaPros = parseFloat(el('suola').value) || 0;
+    const hiivaPros = parseFloat(el('hiiva').value) || 0;
+
+    const kokonaisPaino = pallot * pallonPaino;
+    const kerroin = 1 + hydraatio/100 + suolaPros/100 + hiivaPros/100;
+    const jauhot = kerroin > 0 ? kokonaisPaino / kerroin : 0;
+    const vesi = jauhot * hydraatio/100;
+    const suola = jauhot * suolaPros/100;
+    const hiiva = jauhot * hiivaPros/100;
+
+    el('jauhotSumma').textContent = fmtG(jauhot);
+    el('jauhotSelite').textContent = `Perusmäärä (100 %) — ${pallot} pallo${pallot===1?'':'a'} á ${pallonPaino} g`;
+    el('vesiMaara').textContent = fmtG(vesi);
+    el('vesiProsentti').textContent = hydraatio.toFixed(0) + ' % hydraatio';
+    el('suolaMaara').textContent = fmtG(suola);
+    el('suolaProsentti').textContent = suolaPros.toFixed(1) + ' % jauhoista';
+    el('hiivaMaara').textContent = fmtG(hiiva);
+    el('hiivaProsentti').textContent = hiivaPros.toFixed(2) + ' % jauhoista (' + (hiivaTyyppi === 'tuore' ? 'tuore' : 'kuiva') + ')';
+    el('kokonaisPaino').textContent = fmtG(kokonaisPaino);
+
+    const maxOsa = Math.max(jauhot, vesi, suola+hiiva, 1);
+    el('palkkiJauhot').style.width = (jauhot/maxOsa*100) + '%';
+    el('palkkiVesi').style.width = (vesi/maxOsa*100) + '%';
+    el('palkkiMuu').style.width = ((suola+hiiva)/maxOsa*100) + '%';
+    el('palkkiJauhotArvo').textContent = fmtG(jauhot);
+    el('palkkiVesiArvo').textContent = fmtG(vesi);
+    el('palkkiMuuArvo').textContent = fmtG(suola+hiiva);
+  }
+
+  document.querySelectorAll('input').forEach(i => i.addEventListener('input', laske));
+  laske();
+</script>
+
+</body>
+</html>
