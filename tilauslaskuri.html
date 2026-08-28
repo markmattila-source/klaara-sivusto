@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tilausten yhteislaskuri — paljonko kuukausitilaukset oikeasti maksavat | Klaara</title>
+<meta name="description" content="Laske kaikkien suoratoisto- ja kuukausitilaustesi yhteissumma. Näe mihin kategoriaan rahasi menee ja kuinka paljon maksavat tilaukset joita et edes muista käyttäväsi.">
+
+<link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-v2-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-v2-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/klaara-favicon-v2-48.png">
+<link rel="apple-touch-icon" href="assets/klaara-app-ikoni-v2-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "bb1408a8d9e04e7c8e98181255a5ccec"}'></script><!-- End Cloudflare Web Analytics -->
+<style>
+  .tilaus-rivi {
+    display: grid;
+    grid-template-columns: 1.3fr 1.6fr 0.9fr 1.2fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--viiva);
+  }
+  .tilaus-rivi:first-child { padding-top: 0; }
+  .tilaus-rivi input, .tilaus-rivi select {
+    width: 100%;
+    padding: 8px 9px;
+    border: 1px solid var(--viiva);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    background: #FCFCFB;
+  }
+  .tilaus-rivi input[type="number"] { font-family: 'IBM Plex Mono', monospace; }
+  .poista-rivi {
+    background: none; border: none; color: var(--muste-hiljainen);
+    font-size: 18px; cursor: pointer; padding: 4px 8px; line-height: 1;
+  }
+  .poista-rivi:hover { color: var(--virhe); }
+  .rivi-otsikot {
+    display: grid;
+    grid-template-columns: 1.3fr 1.6fr 0.9fr 1.2fr auto;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muste-hiljainen);
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--muste);
+  }
+  @media (max-width: 640px) {
+    .tilaus-rivi, .rivi-otsikot { grid-template-columns: 1fr; gap: 4px; }
+    .rivi-otsikot { display: none; }
+    .tilaus-rivi { padding: 14px 0; position: relative; }
+    .tilaus-rivi .poista-rivi { position: absolute; top: 10px; right: 0; }
+  }
+  .pika-lisays { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+  .pika-nappi {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+    background: #EDF3EF; border: 1px solid #D3E3D8; color: var(--kuusi-tumma);
+    padding: 6px 11px; border-radius: 999px; cursor: pointer;
+  }
+  .pika-nappi:hover { background: #D3E3D8; }
+  .lisaa-tilaus-nappi {
+    width: 100%; margin-top: 14px; padding: 11px;
+    border: 1.5px dashed var(--kuusi); border-radius: 10px;
+    background: none; color: var(--kuusi-tumma); font-weight: 600;
+    font-family: 'Inter', sans-serif; font-size: 13.5px; cursor: pointer;
+  }
+  .lisaa-tilaus-nappi:hover { background: #EDF3EF; }
+  .kayttoaste-tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px;
+    padding: 2px 8px; border-radius: 999px; display: inline-block;
+  }
+  .kayttoaste-tag.harva { background: #FDECEA; color: var(--virhe); }
+</style>
+</head>
+<body>
+<div class="kehys">
+
+  <header class="brandi">
+    <div class="merkki-ryhma">
+      <a class="merkki" href="index.html">
+        <span class="merkki-symboli"><img src="assets/klaara-merkki-v2.svg" alt="Klaara-logo"></span>
+        <span class="merkki-nimi">Klaara</span>
+      </a>
+      <div class="merkki-tagline">arjen ratkaisut — selkeästi</div>
+    </div>
+    <button class="hampurilainen" id="hampurilainenNappi" aria-label="Avaa valikko" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <nav class="paanavi">
+    <a href="index.html">Etusivu</a>
+    <a href="ajankohtaista.html">Ajankohtaista</a>
+    <a href="talouden-vuosikello.html">Vuosikello</a>
+    <a href="esimerkit.html">Esimerkit</a>
+    <a href="sanasto.html">Sanasto</a>
+    <a href="ukk.html">UKK</a>
+  </nav>
+
+  <div class="mobiilivalikko-scrim" id="mobiilivalikkoScrim"></div>
+  <div class="mobiilivalikko" id="mobiilivalikko">
+    <div class="mobiilivalikko-yla">
+      <span class="mobiilivalikko-otsikko">Valikko</span>
+      <button class="mobiilivalikko-sulje" id="mobiilivalikkoSulje" aria-label="Sulje valikko">&times;</button>
+    </div>
+    <nav class="mobiilivalikko-linkit">
+      <a href="index.html">Etusivu</a>
+      <a href="ajankohtaista.html">Ajankohtaista</a>
+      <a href="talouden-vuosikello.html">Vuosikello</a>
+      <a href="esimerkit.html">Esimerkit</a>
+      <a href="sanasto.html">Sanasto</a>
+      <a href="ukk.html">UKK</a>
+    </nav>
+  </div>
+
+  <div class="hero hero-fresh">
+    <svg class="hero-koriste" viewBox="0 0 200 200" aria-hidden="true">
+      <rect x="15" y="115" width="32" height="65" rx="9" fill="#fff" opacity="0.07"/>
+      <rect x="75" y="70" width="32" height="110" rx="9" fill="#fff" opacity="0.07"/>
+      <rect x="135" y="20" width="32" height="160" rx="9" fill="#fff" opacity="0.07"/>
+    </svg>
+    <div class="hero-teksti">
+      <h1>Paljonko tilauksesi oikeasti maksavat?</h1>
+      <p>Netflix, Spotify, kuntosali, pilvitallennus, lehdet — jokainen erikseen tuntuu pieneltä. Lisää kaikki tähän ja katso mitä ne maksavat yhdessä, kuukaudessa ja vuodessa.</p>
+    </div>
+  </div>
+
+  <div class="runko">
+
+    <!-- INPUTS -->
+    <div class="paneeli">
+      <h2>Tilauksesi</h2>
+
+      <div class="rivi-otsikot">
+        <div>Kategoria</div><div>Nimi</div><div>€/kk</div><div>Käyttöaste</div><div></div>
+      </div>
+      <div id="tilausRivit"></div>
+
+      <div class="pika-lisays" id="pikaLisays">
+        <button type="button" class="pika-nappi" data-nimi="Netflix" data-kat="Video">+ Netflix</button>
+        <button type="button" class="pika-nappi" data-nimi="Spotify" data-kat="Musiikki">+ Spotify</button>
+        <button type="button" class="pika-nappi" data-nimi="HBO Max" data-kat="Video">+ HBO Max</button>
+        <button type="button" class="pika-nappi" data-nimi="Disney+" data-kat="Video">+ Disney+</button>
+        <button type="button" class="pika-nappi" data-nimi="YouTube Premium" data-kat="Video">+ YouTube Premium</button>
+        <button type="button" class="pika-nappi" data-nimi="Kuntosali" data-kat="Hyvinvointi">+ Kuntosali</button>
+        <button type="button" class="pika-nappi" data-nimi="iCloud/Google-tallennus" data-kat="Ohjelmistot">+ Pilvitallennus</button>
+      </div>
+
+      <button type="button" class="lisaa-tilaus-nappi" id="lisaaTilausNappi">+ Lisää tilaus</button>
+
+      <div class="info-huomio" style="margin-top:18px;">
+        Hinnat ovat omia arvioitasi — Klaara ei hae eikä päivitä palveluiden hintoja automaattisesti, koska ne muuttuvat usein. Syötä oma, ajantasainen hintasi.
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="tulos-paneeli">
+
+      <div class="paatulos">
+        <div class="label">Tilaukset yhteensä</div>
+        <div class="summa" id="kkSumma">0 €</div>
+        <div class="selite" id="vuosiSelite">0 € / vuosi</div>
+      </div>
+
+      <div class="insight-grid" id="insightGrid" style="margin-top:14px;">
+        <div class="insight-kortti piilotettu" id="insightHarvoin"></div>
+        <div class="insight-kortti piilotettu" id="insightSuurin"></div>
+      </div>
+
+      <div class="erittely">
+        <div class="vertailu-otsikko" style="margin:14px 24px 4px;">Kategorioittain</div>
+        <div id="kategoriaLista"></div>
+      </div>
+
+      <div class="lainapaneeli">
+        <h3>Mitä jos karsisit?</h3>
+        <div class="segmentti-valitsin" id="karsiValitsin">
+          <button data-pros="10" class="aktiivinen" type="button"><span class="tag-otsikko">-10 %</span>Pieni karsinta</button>
+          <button data-pros="25" type="button"><span class="tag-otsikko">-25 %</span>Kohtuullinen</button>
+          <button data-pros="50" type="button"><span class="tag-otsikko">-50 %</span>Iso karsinta</button>
+        </div>
+        <div style="margin-top:14px; text-align:center;">
+          <div style="font-size:12px; color:var(--muste-hiljainen);">Säästäisit</div>
+          <div class="kuukausierä" id="karsiSaasto" style="font-size:30px;">0 € / kk</div>
+          <div style="font-size:12.5px; color:var(--muste-hiljainen); margin-top:2px;" id="karsiVuosi">0 € / vuosi</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="erittely" style="margin-top:26px; padding: 18px 24px;">
+    <div class="vertailu-otsikko" style="margin:0 0 10px;">Yleisiä tapoja pienentää tilauskuluja</div>
+    <div style="font-size:13.5px; color:var(--muste); line-height:1.7;">
+      • <strong>Vuosihinta on usein 15–20 % halvempi</strong> kuin sama palvelu kuukausittain maksettuna, jos tiedät käyttäväsi palvelua joka tapauksessa pitkään.<br>
+      • <strong>Perhepaketit ja jaetut tilit</strong> jakavat kiinteän kuukausihinnan useammalle käyttäjälle — kannattaa tarkistaa löytyykö kotoa tai kaveripiiristä jakajia.<br>
+      • <strong>Ilmaiset kokeilujaksot</strong> muuttuvat helposti maksullisiksi ilman että kukaan huomaa — kalenterimuistutus kokeilun päättymispäivälle on ilmainen tapa välttää tämä.<br>
+      • <strong>"En muista milloin käytin viimeksi"</strong> on itsessään hyödyllistä tietoa — ei kehotus perua, vaan merkki tarkistaa oma tarve.
+    </div>
+  </div>
+
+  <div class="vastuuvapaus">
+    <strong>Oma arviosi, ei ulkoinen tietolähde.</strong> Laskuri ei hae eikä tallenna tietoja mistään palvelusta — kaikki pysyy tässä selaimessa etkä lähetä mitään Klaaralle. Hinnat ja käyttöaste ovat omia syötteitäsi.
+  </div>
+
+  <footer class="alatunniste">
+    <span>Klaara — arjen ratkaisut, selkeästi.</span>
+    <span>Tiedot päivitetty 28.8.2026</span>
+  </footer>
+
+</div>
+
+<script>
+  const el = id => document.getElementById(id);
+  const fmt = n => new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+  const fmt2 = n => new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(n);
+
+  const KATEGORIAT = ['Video', 'Musiikki', 'Pelit', 'Hyvinvointi', 'Ohjelmistot', 'Lehdet/media', 'Muu'];
+  const rivitContainer = el('tilausRivit');
+  let karsiProsentti = 10;
+
+  function kategoriaOptionit(valittu) {
+    return KATEGORIAT.map(k => `<option value="${k}" ${k===valittu?'selected':''}>${k}</option>`).join('');
+  }
+
+  function lisaaRivi(nimi = '', kategoria = 'Video', hinta = '') {
+    const rivi = document.createElement('div');
+    rivi.className = 'tilaus-rivi';
+    rivi.innerHTML = `
+      <select class="r-kategoria">${kategoriaOptionit(kategoria)}</select>
+      <input type="text" class="r-nimi" placeholder="Palvelun nimi" value="${nimi}">
+      <input type="number" class="r-hinta" placeholder="0" min="0" step="0.5" value="${hinta}">
+      <select class="r-kaytto">
+        <option value="paivittain">Päivittäin</option>
+        <option value="viikoittain">Viikoittain</option>
+        <option value="harvemmin">Harvemmin</option>
+        <option value="en_muista">En muista</option>
+      </select>
+      <button type="button" class="poista-rivi" aria-label="Poista">×</button>
+    `;
+    rivitContainer.appendChild(rivi);
+    laske();
+  }
+
+  rivitContainer.addEventListener('input', laske);
+  rivitContainer.addEventListener('change', laske);
+  rivitContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('poista-rivi')) {
+      e.target.closest('.tilaus-rivi').remove();
+      laske();
+    }
+  });
+
+  el('lisaaTilausNappi').addEventListener('click', () => lisaaRivi());
+
+  document.querySelectorAll('.pika-nappi').forEach(btn => {
+    btn.addEventListener('click', () => lisaaRivi(btn.dataset.nimi, btn.dataset.kat));
+  });
+
+  document.querySelectorAll('#karsiValitsin button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#karsiValitsin button').forEach(b => b.classList.remove('aktiivinen'));
+      btn.classList.add('aktiivinen');
+      karsiProsentti = parseFloat(btn.dataset.pros);
+      laske();
+    });
+  });
+
+  function laske() {
+    const rivit = [...rivitContainer.querySelectorAll('.tilaus-rivi')].map(r => ({
+      kategoria: r.querySelector('.r-kategoria').value,
+      nimi: r.querySelector('.r-nimi').value || 'Nimetön tilaus',
+      hinta: parseFloat(r.querySelector('.r-hinta').value) || 0,
+      kaytto: r.querySelector('.r-kaytto').value
+    }));
+
+    const kkYht = rivit.reduce((s, r) => s + r.hinta, 0);
+    const vuosiYht = kkYht * 12;
+
+    el('kkSumma').textContent = fmt2(kkYht) + ' / kk';
+    el('vuosiSelite').textContent = fmt(vuosiYht) + ' / vuosi';
+
+    // Kategoriaerittely
+    const kategoriaMap = {};
+    rivit.forEach(r => {
+      if (!kategoriaMap[r.kategoria]) kategoriaMap[r.kategoria] = { summa: 0, lkm: 0 };
+      kategoriaMap[r.kategoria].summa += r.hinta;
+      kategoriaMap[r.kategoria].lkm += 1;
+    });
+    const kategoriaLista = Object.entries(kategoriaMap).sort((a, b) => b[1].summa - a[1].summa);
+    el('kategoriaLista').innerHTML = kategoriaLista.length ? kategoriaLista.map(([nimi, tiedot]) => `
+      <div class="erittely-rivi">
+        <div class="nimi">${nimi}<span class="alaselite">${tiedot.lkm} tilaus${tiedot.lkm === 1 ? '' : 'ta'}</span></div>
+        <div class="arvo">${fmt2(tiedot.summa)}</div>
+      </div>
+    `).join('') : '<div class="erittely-rivi"><div class="nimi">Ei vielä tilauksia lisättynä</div></div>';
+
+    // Insight: harvoin käytetyt
+    const harvoin = rivit.filter(r => r.kaytto === 'harvemmin' || r.kaytto === 'en_muista');
+    const harvoinSumma = harvoin.reduce((s, r) => s + r.hinta, 0);
+    if (harvoin.length > 0 && kkYht > 0) {
+      const osuus = (harvoinSumma / kkYht * 100).toFixed(0);
+      el('insightHarvoin').innerHTML = `<strong>${harvoin.length} tilaus${harvoin.length === 1 ? '' : 'ta'} jota käytät harvoin tai et muista</strong> maksaa yhteensä ${fmt2(harvoinSumma)}/kk (${fmt(harvoinSumma * 12)}/v) — ${osuus} % kaikista tilauksistasi.`;
+      el('insightHarvoin').classList.remove('piilotettu');
+    } else {
+      el('insightHarvoin').classList.add('piilotettu');
+    }
+
+    // Insight: suurin kategoria
+    if (kategoriaLista.length > 1) {
+      const [suurinNimi, suurinTiedot] = kategoriaLista[0];
+      el('insightSuurin').innerHTML = `<strong>${suurinNimi} on suurin kategoriasi:</strong> ${suurinTiedot.lkm} tilausta, ${fmt2(suurinTiedot.summa)}/kk yhteensä.`;
+      el('insightSuurin').classList.remove('piilotettu');
+    } else {
+      el('insightSuurin').classList.add('piilotettu');
+    }
+
+    // Mitä jos -karsinta
+    const saastoKk = kkYht * karsiProsentti / 100;
+    el('karsiSaasto').textContent = fmt2(saastoKk) + ' / kk';
+    el('karsiVuosi').textContent = fmt(saastoKk * 12) + ' / vuosi';
+  }
+
+  // Aloitustila: kolme esimerkkiä havainnollistamaan
+  lisaaRivi('Netflix', 'Video', 15.99);
+  lisaaRivi('Spotify', 'Musiikki', 11.99);
+  lisaaRivi('Kuntosali', 'Hyvinvointi', 39.90);
+  document.querySelector('#tilausRivit .tilaus-rivi:last-child .r-kaytto').value = 'harvemmin';
+  laske();
+</script>
+
+<script src="assets/nav.js"></script>
+</body>
+</html>
