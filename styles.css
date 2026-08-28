@@ -510,11 +510,59 @@ header.brandi {
 .hero-koriste {
   position: absolute;
   right: -30px; top: -30px;
-  width: 260px; height: 260px;
+  width: 180px; height: 180px;
   pointer-events: none;
   z-index: 0;
+  opacity: 0.5;
 }
 .hero-fresh > *:not(.hero-koriste) { position: relative; z-index: 1; }
+
+/* ---------- Hero-laitemockup ---------- */
+
+@media (min-width: 900px) {
+  .hero-fresh {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+  }
+  .hero-teksti { flex: 1; min-width: 0; }
+  .hero-mockup-kehys { display: block !important; flex-shrink: 0; width: 400px; }
+}
+
+.hero-mockup-kehys {
+  display: none;
+  perspective: 1400px;
+}
+.hero-mockup {
+  transform: rotateY(-9deg) rotateX(3deg) rotateZ(1.5deg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 35px 60px -20px rgba(0,0,0,0.45), 0 15px 25px -12px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #fff;
+  transition: transform 0.4s ease;
+}
+.hero-mockup:hover { transform: rotateY(-4deg) rotateX(1deg) rotateZ(0.5deg); }
+.hero-mockup-chrome {
+  background: #E8EBE9;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hero-mockup-dot { width: 8px; height: 8px; border-radius: 50%; background: #C6CDC8; }
+.hero-mockup-osoite {
+  flex: 1;
+  background: #fff;
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muste-hiljainen);
+  margin-left: 6px;
+}
+.hero-mockup img { display: block; width: 100%; height: auto; }
 
 /* ---------- Takaisin-linkki työkalusivuilla ---------- */
 
