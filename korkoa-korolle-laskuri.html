@@ -27,6 +27,10 @@
       <span class="merkki-nimi">Klaara</span>
     </a>
     <div class="merkki-tagline">arjen ratkaisut — selkeästi</div>
+  
+    <button class="hampurilainen" id="hampurilainenNappi" aria-label="Avaa valikko" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
   <nav class="paanavi">
@@ -37,6 +41,22 @@
     <a href="sanasto.html">Sanasto</a>
     <a href="ukk.html">UKK</a>
   </nav>
+
+  <div class="mobiilivalikko-scrim" id="mobiilivalikkoScrim"></div>
+  <div class="mobiilivalikko" id="mobiilivalikko">
+    <div class="mobiilivalikko-yla">
+      <span class="mobiilivalikko-otsikko">Valikko</span>
+      <button class="mobiilivalikko-sulje" id="mobiilivalikkoSulje" aria-label="Sulje valikko">&times;</button>
+    </div>
+    <nav class="mobiilivalikko-linkit">
+    <a href="index.html">Etusivu</a>
+    <a href="ajankohtaista.html">Ajankohtaista</a>
+    <a href="talouden-vuosikello.html">Vuosikello</a>
+    <a href="esimerkit.html">Esimerkit</a>
+    <a href="sanasto.html">Sanasto</a>
+    <a href="ukk.html">UKK</a>
+  </nav>
+  </div>
 
   <div class="hero hero-fresh">
     <h1>Mitä korkoa korolle -ilmiö oikeasti tekee säästöillesi?</h1>
@@ -487,5 +507,6 @@
   laske();
 </script>
 
+<script src="assets/nav.js"></script>
 </body>
 </html>

@@ -1196,7 +1196,8 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   font-family: 'IBM Plex Mono', monospace;
   font-weight: 600;
   font-size: 84px;
-  color: rgba(255,255,255,0.09);
+  color: rgba(255,255,255,0.15);
+  -webkit-text-stroke: 1px rgba(255,255,255,0.28);
   line-height: 1;
   z-index: 0;
   pointer-events: none;
@@ -1266,4 +1267,131 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   font-size: 12px;
   color: var(--muste-hiljainen);
   margin-top: 8px;
+}
+
+/* ---------- Hampurilaisvalikko (mobiili) ---------- */
+
+.hampurilainen {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+.hampurilainen span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--muste);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease, width 0.2s ease;
+}
+.hampurilainen span:nth-child(2) { width: 70%; }
+.hampurilainen.auki span:nth-child(1) { transform: translateY(7px) rotate(45deg); width: 100%; }
+.hampurilainen.auki span:nth-child(2) { opacity: 0; }
+.hampurilainen.auki span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); width: 100%; }
+
+.mobiilivalikko-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 30, 25, 0.45);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.mobiilivalikko-scrim.nakyy { opacity: 1; pointer-events: auto; }
+
+.mobiilivalikko {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(300px, 82vw);
+  height: 100vh;
+  height: 100dvh;
+  background: var(--paneeli);
+  box-shadow: -10px 0 34px rgba(0, 0, 0, 0.16);
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px 30px;
+  overflow-y: auto;
+}
+.mobiilivalikko.auki { transform: translateX(0); }
+
+.mobiilivalikko-yla {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--viiva);
+}
+.mobiilivalikko-otsikko {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 19px;
+  color: var(--muste);
+}
+.mobiilivalikko-sulje {
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--muste-hiljainen);
+  cursor: pointer;
+  padding: 8px;
+  margin: -8px;
+}
+
+.mobiilivalikko-linkit {
+  display: flex;
+  flex-direction: column;
+}
+.mobiilivalikko-linkit a {
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--muste);
+  text-decoration: none;
+  border-bottom: 1px solid var(--viiva);
+}
+.mobiilivalikko-linkit a.aktiivinen { color: var(--kuusi-tumma); font-weight: 600; }
+
+@media (max-width: 768px) {
+  .paanavi { display: none; }
+  .hampurilainen { display: flex; }
+  .merkki-tagline { display: none; }
+  header.brandi { margin-bottom: 22px; }
+}
+
+/* ---------- Miten toimii -osio: mobiilikorjaukset ---------- */
+
+@media (max-width: 860px) {
+  .miten-grid { gap: 0; }
+  .miten-kortti { margin-bottom: 3rem; }
+  .miten-kortti:last-child { margin-bottom: 0; }
+
+  .miten-nuoli {
+    display: flex;
+    margin: 0 auto 3rem;
+    transform: rotate(90deg);
+  }
+
+  .miten-ghost-numero { font-size: 60px; top: -4px; }
+
+  .miten-mockup img { height: auto; }
 }
