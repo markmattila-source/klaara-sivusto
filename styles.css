@@ -1171,25 +1171,36 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   display: flex;
   flex-direction: column;
   position: relative;
+  padding-top: 46px;
 }
 
 .miten-nuoli {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-top: 138px;
+  border-radius: 50%;
+  background: rgba(255,107,53,0.16);
   color: var(--koralli);
-  font-size: 22px;
-  padding-top: 90px;
-  opacity: 0.7;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .miten-ghost-numero {
+  position: absolute;
+  top: -8px;
+  left: -6px;
   font-family: 'IBM Plex Mono', monospace;
   font-weight: 600;
-  font-size: 56px;
-  color: rgba(255,255,255,0.10);
+  font-size: 84px;
+  color: rgba(255,255,255,0.09);
   line-height: 1;
-  margin-bottom: -34px;
-  position: relative;
   z-index: 0;
+  pointer-events: none;
+  user-select: none;
 }
 
 .miten-mockup {
@@ -1197,9 +1208,10 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   z-index: 1;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 20px 40px -16px rgba(0,0,0,0.5);
+  box-shadow: 0 22px 45px -16px rgba(0,0,0,0.55);
   background: #fff;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .miten-chrome {
   background: #E8EBE9;
