@@ -1494,3 +1494,55 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 }
 .tyokalu-kortti.kevennys-kortti:hover { border-color: var(--koralli); }
 .tyokalu-tila.kevennys { color: var(--koralli); }
+
+/* ---------- Tulostus (pizzalaskuri ja muut laskurit) ---------- */
+
+.vain-tulostuksessa { display: none; }
+
+@media print {
+  header.brandi, .paanavi, .hampurilainen,
+  .mobiilivalikko, .mobiilivalikko-scrim,
+  .hero, .paneeli, .ei-tulostuksessa,
+  .vertailu-otsikko, .palkki-vertailu,
+  .artikkeli, footer.alatunniste { display: none !important; }
+
+  .vain-tulostuksessa { display: block !important; }
+
+  body, .kehys { background: #fff !important; max-width: 100%; padding: 0; margin: 0; }
+  .runko { display: block; }
+  .tulos-paneeli { max-width: 100%; }
+
+  #tulostusOtsikko h1 {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 600;
+    font-size: 26px; margin: 0 0 4px; color: #000;
+  }
+  #tulostusOtsikko p { font-size: 12px; color: #333; margin: 0 0 18px; }
+
+  .paatulos {
+    background: #fff !important; color: #000 !important;
+    border: 2px solid #000; box-shadow: none;
+  }
+  .paatulos .label, .paatulos .selite { color: #333 !important; opacity: 1 !important; }
+
+  .erittely, .lainapaneeli {
+    box-shadow: none !important; border: 1px solid #999 !important;
+    break-inside: avoid;
+  }
+  .erittely-rivi .arvo { color: #000 !important; }
+  .erittely-rivi .nimi { color: #000 !important; }
+  .alaselite { color: #555 !important; }
+
+  .alaotsikko-pieni { color: #000 !important; font-weight: 700; }
+
+  .aikataulu-rivi .aika { color: #000 !important; }
+
+  .tyoohje-vaihe { break-inside: avoid; }
+  .tyoohje-numero { background: #000 !important; }
+
+  .vastuuvapaus {
+    border: 1px solid #ccc; background: #fff !important;
+    font-size: 10px; margin-top: 16px;
+  }
+
+  a[href]::after { content: ""; }
+}

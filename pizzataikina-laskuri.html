@@ -199,6 +199,15 @@
     <!-- RESULTS -->
     <div class="tulos-paneeli">
 
+      <div class="ei-tulostuksessa" style="text-align:right; margin-bottom:12px;">
+        <button type="button" class="jaa-nappi" id="tulostaNappi">🖨️ Tulosta resepti</button>
+      </div>
+
+      <div id="tulostusOtsikko" class="vain-tulostuksessa">
+        <h1 id="tulostusNimi">Pizzataikina</h1>
+        <p id="tulostusKuvaus"></p>
+      </div>
+
       <div class="paatulos">
         <div class="label">Jauhot yhteensä</div>
         <div class="summa" id="jauhotSumma">—</div>
@@ -433,6 +442,8 @@
     el('jauhotSelite').textContent = `Perusmäärä (100 %) — ${pallot} pallo${pallot===1?'':'a'} á ${pallonPaino} g`;
     el('kokonaisPaino').textContent = fmtG(kokonaisPaino);
 
+    el('tulostusKuvaus').textContent = `${pallot} pallo${pallot===1?'':'a'} á ${pallonPaino} g · ${hydraatio}% hydraatio · ${poolishPaalla ? 'poolish-esitaikinalla' : 'ilman esitaikinaa'} · Tulostettu klaaralaskuri.fi:stä`;
+
     if (!poolishPaalla) {
       el('vesiMaara').textContent = fmtG(vesi);
       el('vesiProsentti').textContent = hydraatio.toFixed(0) + ' % hydraatio';
@@ -490,6 +501,8 @@
 
   document.querySelectorAll('input').forEach(i => i.addEventListener('input', laske));
   laske();
+
+  el('tulostaNappi').addEventListener('click', () => window.print());
 </script>
 
 <script src="assets/nav.js"></script>
