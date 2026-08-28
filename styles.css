@@ -448,6 +448,74 @@ header.brandi {
 .tyokalu-kortti.tulossa { opacity: 0.55; cursor: default; }
 .tyokalu-kortti.tulossa:hover { border-color: var(--viiva); transform: none; }
 
+/* ---------- Bento-nosto lippulaivalle ---------- */
+
+.tyokalu-kortti { position: relative; }
+
+.tyokalu-kortti.featured {
+  grid-column: span 2;
+  background: linear-gradient(135deg, var(--tumma-kuusi-uusi), var(--kuusi-tumma));
+  border: none;
+  padding: 30px 28px;
+}
+.tyokalu-kortti.featured .tyokalu-tila { color: var(--koralli); }
+.tyokalu-kortti.featured h3 { color: #fff; font-size: 25px; }
+.tyokalu-kortti.featured p { color: rgba(255,255,255,0.82); font-size: 14.5px; max-width: 440px; }
+.tyokalu-kortti.featured:hover { border-color: transparent; transform: translateY(-3px); }
+
+@media (max-width: 620px) {
+  .tyokalu-kortti.featured { grid-column: span 1; }
+}
+
+/* ---------- Numerotunniste (Lemon Squeezy -tyylinen osiomerkintä) ---------- */
+
+.tyokalu-numero {
+  position: absolute;
+  top: 22px; right: 24px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--koralli);
+  opacity: 0.65;
+}
+.tyokalu-kortti.featured .tyokalu-numero { color: rgba(255,255,255,0.5); }
+.tyokalu-kortti.tulossa .tyokalu-numero { color: var(--muste-hiljainen); opacity: 0.5; }
+
+/* ---------- Osiotagi ---------- */
+
+.osio-tagi {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--koralli);
+  background: #FFF1EA;
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.osio-h2-etusivu {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(22px, 3vw, 30px);
+  margin: 0 0 22px;
+  color: var(--muste);
+  max-width: 480px;
+}
+
+/* ---------- Hero-koriste (logomerkin baaripatterni suurennettuna) ---------- */
+
+.hero-fresh { position: relative; overflow: hidden; }
+.hero-koriste {
+  position: absolute;
+  right: -30px; top: -30px;
+  width: 260px; height: 260px;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-fresh > *:not(.hero-koriste) { position: relative; z-index: 1; }
+
 /* ---------- Takaisin-linkki työkalusivuilla ---------- */
 
 .takaisin {
