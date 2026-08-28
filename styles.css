@@ -1186,7 +1186,6 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 }
 @media (max-width: 860px) {
   .miten-grid { flex-direction: column; }
-  .miten-nuoli { display: none; }
 }
 
 .miten-kortti {
@@ -1409,12 +1408,12 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 
 @media (max-width: 860px) {
   .miten-grid { gap: 0; }
-  .miten-kortti { margin-bottom: 3rem; }
+  .miten-kortti { margin-bottom: 1.5rem; }
   .miten-kortti:last-child { margin-bottom: 0; }
 
   .miten-nuoli {
     display: flex;
-    margin: 0 auto 3rem;
+    margin: 0 auto 1.5rem;
     transform: rotate(90deg);
   }
 
