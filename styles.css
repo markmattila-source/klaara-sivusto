@@ -1546,3 +1546,20 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 
   a[href]::after { content: ""; }
 }
+
+/* ---------- Mikro-ikoni-vinkkilista (Mercury-inspiroitu) ---------- */
+
+.ikonivinkki-lista { display: flex; flex-direction: column; gap: 20px; }
+.ikonivinkki {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.ikonivinkki-ikoni { flex-shrink: 0; width: 36px; height: 36px; }
+.ikonivinkki-teksti {
+  font-size: 13.5px;
+  color: var(--muste);
+  line-height: 1.6;
+  padding-top: 4px;
+}
+.ikonivinkki-teksti strong { color: var(--kuusi-tumma); }
