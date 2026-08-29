@@ -1425,11 +1425,7 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   .miten-kortti { margin-bottom: 1.5rem; }
   .miten-kortti:last-child { margin-bottom: 0; }
 
-  .miten-nuoli {
-    display: flex;
-    margin: 0 auto 1.5rem;
-    transform: rotate(90deg);
-  }
+  .miten-nuoli { display: none; }
 
   .miten-ghost-numero { font-size: 60px; top: -4px; }
 
@@ -1590,4 +1586,23 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .vierity-sisaan { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- Tilastolause (korvaa dashboard-kortit) ---------- */
+
+.tilasto-lause {
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  color: var(--muste-2);
+  text-align: center;
+  padding: 18px 16px;
+  margin: 28px 0;
+}
+.tilasto-lause strong {
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--violetti-2);
+  font-weight: 700;
+}
+@media (max-width: 560px) {
+  .tilasto-lause { font-size: 13.5px; line-height: 1.9; }
 }
