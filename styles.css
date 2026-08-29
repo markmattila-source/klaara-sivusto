@@ -1685,3 +1685,198 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 @media (max-width: 560px) {
   .tilasto-lause { font-size: 13.5px; line-height: 1.9; }
 }
+
+/* ============================================
+   VUOSIKELLO — SVG-rengaskello
+   ============================================ */
+
+.kello-osio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 32px 0 8px;
+}
+
+/* --- Rengas (desktop, 640px+) --- */
+
+.kello-wrap {
+  position: relative;
+  width: min(360px, 88vw);
+  margin: 0 auto;
+  display: none;
+}
+@media (min-width: 640px) {
+  .kello-wrap { display: block; }
+}
+
+.kello-rengas {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 18px 34px rgba(43,37,96,0.18));
+}
+.kello-rengas:focus-visible { outline: 2px solid var(--violetti); outline-offset: 4px; border-radius: 999px; }
+
+.kello-sektori {
+  fill: var(--paneeli);
+  stroke: var(--violetti);
+  stroke-width: 1;
+  stroke-opacity: 0.35;
+  cursor: pointer;
+  transition: fill 0.25s ease, transform 0.15s ease;
+  transform-box: view-box;
+  transform-origin: 150px 150px;
+}
+@media (hover: hover) {
+  .kello-sektori:hover { transform: scale(1.03); }
+}
+.kello-sektori.aktiivinen { fill: var(--cta); stroke-opacity: 0; }
+.kello-sektori:focus-visible { outline: 2px solid var(--violetti-2); outline-offset: -2px; }
+
+.kello-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--muste-2);
+  pointer-events: none;
+  transition: fill 0.25s ease;
+}
+.kello-label.aktiivinen { fill: var(--muste); }
+
+.kello-viisari {
+  stroke: var(--violetti-3);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transform-box: view-box;
+  transform-origin: 150px 150px;
+  transform: rotate(var(--kello-kulma, 0deg));
+}
+.kello-viisari-nuppi { fill: var(--violetti-3); }
+.kello-keskuspiste { fill: var(--paperi); stroke: var(--violetti-3); stroke-width: 1.5; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .kello-viisari { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+
+  @keyframes kelloSektoriSisaan { from { opacity: 0; } to { opacity: 1; } }
+  .kello-sektori {
+    opacity: 0;
+    animation: kelloSektoriSisaan 0.15s ease-out forwards;
+  }
+  .kello-sektori:nth-child(1) { animation-delay: 0.00s; }
+  .kello-sektori:nth-child(2) { animation-delay: 0.045s; }
+  .kello-sektori:nth-child(3) { animation-delay: 0.09s; }
+  .kello-sektori:nth-child(4) { animation-delay: 0.135s; }
+  .kello-sektori:nth-child(5) { animation-delay: 0.18s; }
+  .kello-sektori:nth-child(6) { animation-delay: 0.225s; }
+  .kello-sektori:nth-child(7) { animation-delay: 0.27s; }
+  .kello-sektori:nth-child(8) { animation-delay: 0.315s; }
+  .kello-sektori:nth-child(9) { animation-delay: 0.36s; }
+  .kello-sektori:nth-child(10) { animation-delay: 0.405s; }
+  .kello-sektori:nth-child(11) { animation-delay: 0.45s; }
+  .kello-sektori:nth-child(12) { animation-delay: 0.495s; }
+}
+
+.kello-keskus {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 54%;
+  text-align: center;
+  pointer-events: none;
+}
+.kello-kk-nimi {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: clamp(19px, 3vw, 24px);
+  color: var(--muste);
+  line-height: 1.1;
+}
+.kello-kk-teema {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--muste-2);
+  margin-top: 4px;
+}
+
+/* --- Vaakanauha (mobiili, alle 640px) --- */
+
+.kk-nauha {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  width: 100%;
+  padding: 2px 2px 12px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+@media (min-width: 640px) {
+  .kk-nauha { display: none; }
+}
+.kk-pilli {
+  flex-shrink: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muste-2);
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.kk-pilli.aktiivinen {
+  background: var(--cta);
+  color: var(--muste);
+  border-color: var(--cta);
+}
+
+/* --- Tehtäväkortti (yhteinen molemmille) --- */
+
+.tehtavakortti {
+  width: min(480px, 100%);
+  margin: 22px auto 0;
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: 14px;
+  padding: 18px 22px;
+}
+.tehtava-rivi {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid var(--viiva);
+}
+.tehtava-rivi:first-child { border-top: none; padding-top: 0; }
+.tehtava-rivi:last-child { padding-bottom: 0; }
+.tehtava-leima {
+  flex-shrink: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--violetti-2);
+  background: var(--hiljainen);
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+.tehtava-teksti {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: var(--muste);
+  line-height: 1.5;
+}
+.tehtava-linkki {
+  display: inline-block;
+  margin-top: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--violetti-2);
+  text-decoration: none;
+}
+
+.tehtavakortti.himmea { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .tehtavakortti { transition: opacity 0.15s ease; }
+}

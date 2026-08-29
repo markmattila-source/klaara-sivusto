@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Talouden vuosikello: kuukausi kerrallaan | Klaara</title>
-<meta name="description" content="Mikä talousasia pitää hoitaa milloinkin? Vuosikello kokoaa vakuutukset, sähkösopimuksen ja veroasiat kuukausittaiseksi muistilistaksi, ilman tiliä.">
+<title>Talouden vuosikello | Mitä hoitaa tässä kuussa | Klaara</title>
+<meta name="description" content="Vuoden rahatehtävät kuukausittain: vakuutukset, sähkösopimus, remontti ja verot oikeaan aikaan. Vuosikello aukeaa suoraan kuluvaan kuukauteen.">
 <link rel="canonical" href="https://klaaralaskuri.fi/talouden-vuosikello.html">
 <meta name="robots" content="index,follow">
 
@@ -62,121 +62,69 @@
 
   <div class="hero hero-fresh">
     <h1>Talouden vuosikello</h1>
-    <p>Arjen raha-asiat eivät jakaudu tasaisesti ympäri vuoden — osa asioista kannattaa hoitaa juuri tiettyyn aikaan. Tämä on kuukausittainen muistilista, joka kokoaa yhteen milloin mikäkin kannattaa tarkistaa.</p>
+    <p>Raha-asiat eivät jakaudu tasaisesti ympäri vuoden. Kello näyttää mikä on vuorossa juuri nyt.</p>
   </div>
 
-  <div class="vuosikello-grid">
+  <div class="kello-osio">
 
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Tammikuu</div>
-      <div class="kuukausi-teema">Vuoden aloitus & verokatsaus</div>
-      <ul>
-        <li>Kokoa edellisvuoden remonttikuitit talteen kotitalousvähennystä varten</li>
-        <li>Tarkista, onko <a href="sanasto-kotitalousvahennys.html">kotitalousvähennyksen lakimuutos</a> edennyt eduskunnassa</li>
-        <li>Aseta uuden vuoden säästötavoite <a href="korkoa-korolle-laskuri.html">korkoa korolle -laskurilla</a></li>
-      </ul>
+    <div class="kello-wrap">
+      <svg class="kello-rengas" viewBox="0 0 300 300" id="kelloSvg" tabindex="0" role="listbox" aria-label="Valitse kuukausi, nuolinäppäimet vaihtavat">
+      <path class="kello-sektori" data-kk="0" role="option" aria-label="Tammikuu" d="M113.2 12.8A142 142 0 0 1 186.8 12.8L171.2 70.8A82 82 0 0 0 128.8 70.8Z"></path>
+      <path class="kello-sektori" data-kk="1" role="option" aria-label="Helmikuu" d="M186.8 12.8A142 142 0 0 1 250.4 49.6L208.0 92.0A82 82 0 0 0 171.2 70.8Z"></path>
+      <path class="kello-sektori" data-kk="2" role="option" aria-label="Maaliskuu" d="M250.4 49.6A142 142 0 0 1 287.2 113.2L229.2 128.8A82 82 0 0 0 208.0 92.0Z"></path>
+      <path class="kello-sektori" data-kk="3" role="option" aria-label="Huhtikuu" d="M287.2 113.2A142 142 0 0 1 287.2 186.8L229.2 171.2A82 82 0 0 0 229.2 128.8Z"></path>
+      <path class="kello-sektori" data-kk="4" role="option" aria-label="Toukokuu" d="M287.2 186.8A142 142 0 0 1 250.4 250.4L208.0 208.0A82 82 0 0 0 229.2 171.2Z"></path>
+      <path class="kello-sektori" data-kk="5" role="option" aria-label="Kesäkuu" d="M250.4 250.4A142 142 0 0 1 186.8 287.2L171.2 229.2A82 82 0 0 0 208.0 208.0Z"></path>
+      <path class="kello-sektori" data-kk="6" role="option" aria-label="Heinäkuu" d="M186.8 287.2A142 142 0 0 1 113.2 287.2L128.8 229.2A82 82 0 0 0 171.2 229.2Z"></path>
+      <path class="kello-sektori" data-kk="7" role="option" aria-label="Elokuu" d="M113.2 287.2A142 142 0 0 1 49.6 250.4L92.0 208.0A82 82 0 0 0 128.8 229.2Z"></path>
+      <path class="kello-sektori" data-kk="8" role="option" aria-label="Syyskuu" d="M49.6 250.4A142 142 0 0 1 12.8 186.8L70.8 171.2A82 82 0 0 0 92.0 208.0Z"></path>
+      <path class="kello-sektori" data-kk="9" role="option" aria-label="Lokakuu" d="M12.8 186.8A142 142 0 0 1 12.8 113.2L70.8 128.8A82 82 0 0 0 70.8 171.2Z"></path>
+      <path class="kello-sektori" data-kk="10" role="option" aria-label="Marraskuu" d="M12.8 113.2A142 142 0 0 1 49.6 49.6L92.0 92.0A82 82 0 0 0 70.8 128.8Z"></path>
+      <path class="kello-sektori" data-kk="11" role="option" aria-label="Joulukuu" d="M49.6 49.6A142 142 0 0 1 113.2 12.8L128.8 70.8A82 82 0 0 0 92.0 92.0Z"></path>
+      <text class="kello-label" data-kk="0" x="150.0" y="42.0" text-anchor="middle">Tam</text>
+      <text class="kello-label" data-kk="1" x="206.0" y="57.0" text-anchor="middle">Hel</text>
+      <text class="kello-label" data-kk="2" x="247.0" y="98.0" text-anchor="middle">Maa</text>
+      <text class="kello-label" data-kk="3" x="262.0" y="154.0" text-anchor="middle">Huh</text>
+      <text class="kello-label" data-kk="4" x="247.0" y="210.0" text-anchor="middle">Tou</text>
+      <text class="kello-label" data-kk="5" x="206.0" y="251.0" text-anchor="middle">Kes</text>
+      <text class="kello-label" data-kk="6" x="150.0" y="266.0" text-anchor="middle">Hei</text>
+      <text class="kello-label" data-kk="7" x="94.0" y="251.0" text-anchor="middle">Elo</text>
+      <text class="kello-label" data-kk="8" x="53.0" y="210.0" text-anchor="middle">Syy</text>
+      <text class="kello-label" data-kk="9" x="38.0" y="154.0" text-anchor="middle">Lok</text>
+      <text class="kello-label" data-kk="10" x="53.0" y="98.0" text-anchor="middle">Mar</text>
+      <text class="kello-label" data-kk="11" x="94.0" y="57.0" text-anchor="middle">Jou</text>
+        <line class="kello-viisari" id="kelloViisari" x1="150" y1="150" x2="150" y2="78"></line>
+        <circle class="kello-viisari-nuppi" cx="150" cy="150" r="5"></circle>
+        <circle class="kello-keskuspiste" cx="150" cy="150" r="3"></circle>
+      </svg>
+      <div class="kello-keskus">
+        <div class="kello-kk-nimi" id="kelloKkNimi">Elokuu</div>
+        <div class="kello-kk-teema" id="kelloKkTeema">Asuminen</div>
+      </div>
     </div>
 
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Helmikuu</div>
-      <div class="kuukausi-teema">Vakuutusten tarkistus</div>
-      <ul>
-        <li>Käy läpi koti- tai kiinteistövakuutuksen kattavuus ja hinta</li>
-        <li>Kilpailuta vakuutus, jos sitä ei ole tehty pariin vuoteen</li>
-      </ul>
+    <div class="kk-nauha" id="kkNauha" role="listbox" aria-label="Valitse kuukausi">
+      <button class="kk-pilli" data-kk="0" role="option" aria-label="Tammikuu">Tam</button>
+      <button class="kk-pilli" data-kk="1" role="option" aria-label="Helmikuu">Hel</button>
+      <button class="kk-pilli" data-kk="2" role="option" aria-label="Maaliskuu">Maa</button>
+      <button class="kk-pilli" data-kk="3" role="option" aria-label="Huhtikuu">Huh</button>
+      <button class="kk-pilli" data-kk="4" role="option" aria-label="Toukokuu">Tou</button>
+      <button class="kk-pilli" data-kk="5" role="option" aria-label="Kesäkuu">Kes</button>
+      <button class="kk-pilli" data-kk="6" role="option" aria-label="Heinäkuu">Hei</button>
+      <button class="kk-pilli" data-kk="7" role="option" aria-label="Elokuu">Elo</button>
+      <button class="kk-pilli" data-kk="8" role="option" aria-label="Syyskuu">Syy</button>
+      <button class="kk-pilli" data-kk="9" role="option" aria-label="Lokakuu">Lok</button>
+      <button class="kk-pilli" data-kk="10" role="option" aria-label="Marraskuu">Mar</button>
+      <button class="kk-pilli" data-kk="11" role="option" aria-label="Joulukuu">Jou</button>
     </div>
 
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Maaliskuu</div>
-      <div class="kuukausi-teema">Sähkösopimuksen kilpailutus</div>
-      <ul>
-        <li>Vertaile kiinteää ja pörssisähköä <a href="sahkosopimus-laskuri.html">sähkösopimuslaskurilla</a> ennen kesän kulutusmuutoksia</li>
-      </ul>
-    </div>
-
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Huhtikuu</div>
-      <div class="kuukausi-teema">Kevätremontin suunnittelu</div>
-      <ul>
-        <li>Laske remontin kokonaiskustannus etukäteen <a href="remontti-asuntokauppa.html">remonttilaskurilla</a></li>
-        <li>Tarkista <a href="sanasto-kotitalousvahennys.html">omavastuu ja enimmäismäärä</a> ennen urakan tilaamista</li>
-      </ul>
-    </div>
-
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Toukokuu</div>
-      <div class="kuukausi-teema">Auton kausipäätökset</div>
-      <ul>
-        <li>Jos auto on vaihdossa, vertaile <a href="auto-osto-vs-liisaus.html">ostoa ja liisausta</a> ennen kesäkauden alkua</li>
-      </ul>
-    </div>
-
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Kesäkuu</div>
-      <div class="kuukausi-teema">Mökki ja kesäbudjetti</div>
-      <ul>
-        <li>Tarkista kesämökin vakuutusturva ennen kesäkautta</li>
-        <li>Budjetoi kesälomamenot etukäteen, jotta ne eivät yllätä</li>
-      </ul>
-    </div>
-
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Heinäkuu</div>
-      <div class="kuukausi-teema">Puolivuotiskatsaus säästöihin</div>
-      <ul>
-        <li>Tarkista, ovatko alkuvuoden säästötavoitteet edenneet suunnitellusti</li>
-        <li>Päivitä <a href="korkoa-korolle-laskuri.html">korkoa korolle -laskurin</a> luvut ajan tasalle</li>
-      </ul>
-    </div>
-
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Elokuu</div>
-      <div class="kuukausi-teema">Koulun alku & harrastuskausi</div>
-      <ul>
-        <li>Budjetoi syksyn harrastusmaksut ja -varusteet etukäteen</li>
-        <li class="tulossa-maininta">Harrastebudjettilaskuri tulossa Klaaraan myöhemmin</li>
-      </ul>
-    </div>
-
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Syyskuu</div>
-      <div class="kuukausi-teema">Asuntokaupan syyssesonki</div>
-      <ul>
-        <li>Syksy on perinteisesti vilkasta asuntokaupan aikaa — laske kokonaiskustannus <a href="remontti-asuntokauppa.html">asuntokauppa- ja remonttilaskurilla</a> ennen tarjouksen tekoa</li>
-      </ul>
-    </div>
-
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Lokakuu</div>
-      <div class="kuukausi-teema">Lainaehtojen tarkistus</div>
-      <ul>
-        <li>Asumiskulut ovat nousussa syksyllä 2026 — jos korkotaso on muuttunut, tarkista oman lainan kilpailukykyisyys</li>
-        <li>Kertaa erot <a href="sanasto-annuiteettilaina.html">annuiteetti-</a> ja <a href="sanasto-tasalyhennyslaina.html">tasalyhennyslainan</a> välillä</li>
-      </ul>
-    </div>
-
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Marraskuu</div>
-      <div class="kuukausi-teema">Talvikauden energiakulut</div>
-      <ul>
-        <li>Sähkön hinta nousee tyypillisesti selvästi syksyn ja talven aikana — vertaile <a href="sahkosopimus-laskuri.html">sähkösopimuslaskurilla</a> kannattaisiko vaihtaa ennen kulutuspiikkiä</li>
-      </ul>
-    </div>
-
-    <div class="kuukausi-kortti">
-      <div class="kuukausi-nimi">Joulukuu</div>
-      <div class="kuukausi-teema">Joululahjat & vuoden yhteenveto</div>
-      <ul>
-        <li>Budjetoi joululahjat etukäteen, jotta tammikuu ei yllätä</li>
-        <li>Käy läpi koko vuoden säästötavoitteet ja aseta seuraavan vuoden tavoitteet</li>
-      </ul>
-    </div>
+    <div class="tehtavakortti" id="tehtavakortti"></div>
 
   </div>
 
   <div class="artikkeli" style="max-width:100%; margin-top:26px;">
     <h2>Miksi ajoitus kannattaa huomioida</h2>
-    <p>Osa raha-asioista on ajasta riippumattomia, mutta moni ei ole: vakuutusten kilpailutus kannattaa tehdä ennen sopimuksen uusiutumista, remontti ennen kiireisintä urakoitsijakautta, ja säästötavoitteiden tarkistus säännöllisin väliajoin sen sijaan että unohtaa ne kokonaan. Tämä vuosikello ei ole tyhjentävä lista, vaan muistutus siitä, että moni pieni tarkistus säännöllisin väliajoin säästää enemmän kuin yksi iso päätös kerran vuodessa.</p>
+    <p>Osa raha-asioista on ajasta riippumattomia, mutta moni ei ole: vakuutusten kilpailutus kannattaa tehdä ennen sopimuksen uusiutumista, remontti ennen kiireisintä urakoitsijakautta, ja säästötavoitteiden tarkistus säännöllisin väliajoin sen sijaan että unohtaa ne kokonaan.</p>
   </div>
 
   <footer class="alatunniste">
@@ -186,10 +134,12 @@
       <a href="sanasto.html" style="color:var(--muste-2);">Sanasto</a>
     </div>
     <span>Klaara — arjen laskurit, selkeästi.</span>
-    <span>Tiedot päivitetty 20.8.2026</span>
+    <span>Tiedot päivitetty 29.8.2026</span>
   </footer>
 
 </div>
+<script src="assets/vuosikello-data.js"></script>
+<script src="assets/vuosikello.js"></script>
 <script src="assets/nav.js"></script>
 </body>
 </html>
