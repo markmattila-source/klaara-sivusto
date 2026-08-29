@@ -72,14 +72,35 @@
       <a class="fresh-badge" href="remontti-asuntokauppa.html">Avaa asuntolaskuri →</a>
     </div>
     <div class="hero-mockup-kehys">
-      <div class="hero-mockup">
+      <div class="hero-mockup" id="heroAnimKortti" role="button" tabindex="0" aria-label="Esimerkkilaskelma: 285 000 euron asunto, varainsiirtovero ja remontti yhteensä 301 675 euroa. Paina näyttääksesi lopputuloksen heti.">
         <div class="hero-mockup-chrome">
           <span class="hero-mockup-dot"></span>
           <span class="hero-mockup-dot"></span>
           <span class="hero-mockup-dot"></span>
           <span class="hero-mockup-osoite">klaaralaskuri.fi</span>
         </div>
-        <img src="assets/hero-laskuri-esikatselu.png" alt="Klaaran remonttilaskuri käytössä — syöttökentät ja tulokset näkyvissä">
+        <div class="hero-anim-sisalto">
+          <div class="hero-anim-summa" id="heroAnimSumma">285 000 €</div>
+          <div class="hero-anim-kerrokset">
+            <div class="hero-anim-kerros k01" id="heroKerros01">
+              <span class="ha-tagi">01 FAKTA</span>
+              <span class="ha-nimi">Velaton kauppahinta</span>
+              <span class="ha-arvo">285 000 €</span>
+            </div>
+            <div class="hero-anim-kerros k02" id="heroKerros02">
+              <span class="ha-tagi">02 FAKTA</span>
+              <span class="ha-nimi">Varainsiirtovero 1,5 %</span>
+              <span class="ha-arvo">4 275 €</span>
+            </div>
+            <div class="hero-anim-kerros k03" id="heroKerros03">
+              <span class="ha-tagi">03 ARVIO</span>
+              <span class="ha-nimi">Remontin netto</span>
+              <span class="ha-arvo">12 400 €</span>
+            </div>
+          </div>
+          <div class="hero-anim-selite">Velaton + vero + remontin netto</div>
+          <a class="hero-anim-linkki" id="heroAnimLinkki" href="remontti-asuntokauppa.html" tabindex="-1">Kokeile omilla luvuilla →</a>
+        </div>
       </div>
     </div>
   </div>
@@ -218,5 +239,6 @@
 </div>
 <script src="assets/nav.js"></script>
 <script src="assets/scroll-efektit.js"></script>
+<script src="assets/hero-animaatio.js"></script>
 </body>
 </html>
