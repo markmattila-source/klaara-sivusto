@@ -64,8 +64,8 @@
   <a class="takaisin" href="index.html">← Kaikki työkalut</a>
 
   <div class="hero hero-fresh">
-    <h1>Mitä remontti, asuntokauppa ja rahoitus oikeasti maksavat?</h1>
-    <p>Syötä luvut, näet heti kokonaiskuvan. Vertaile annuiteetti-, tasalyhennys- ja bullettilainaa rinnakkain, ja katso mitä kukin termi tarkoittaa käytännössä.</p>
+    <h1>Mitä tämä asunto oikeasti maksaa?</h1>
+    <p>Kauppahinta on vasta lähtöluku. Varainsiirtovero, remontti ja laina muuttavat summaa.</p>
   </div>
 
   <div class="runko">
@@ -517,12 +517,19 @@
 
       <div style="margin-top:18px; text-align:center;">
         <button id="lataaPdfNappi" type="button" style="width:100%; font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600; color:var(--muste); background:var(--cta); border:none; padding:14px 20px; border-radius:10px; cursor:pointer;">
-          📄 Lataa laskelma PDF:nä
+          📄 Lataa pankkikooste
         </button>
-        <div style="font-size:11.5px; color:var(--muste-hiljainen); margin-top:8px;">Ilmainen — sisältää kaikki syöttämäsi luvut ja tulokset, esim. pankkineuvottelua varten.</div>
+        <div style="font-size:11.5px; color:var(--muste-hiljainen); margin-top:8px;">Sama laskelma siistinä koosteena mukaan otettavaksi. Hinta 2,99 € tulossa myöhemmin — toistaiseksi maksuton, koska maksujärjestelmä ei ole vielä käytössä.</div>
       </div>
 
     </div>
+  </div>
+
+  <div class="artikkeli" style="max-width:100%; margin-top:26px;">
+    <p>Kauppailmoituksen hinta ja pankin lainatarjous näyttävät eri lukua kuin se, mitä tililtä lopulta lähtee.</p>
+    <p>Mukana varainsiirtovero, remontin kotitalousvähennys ja lainan kuukausierä — yhdessä laskelmassa, ei kolmessa eri välilehdessä.</p>
+    <p>Varainsiirtovero ja kotitalousvähennyksen enimmäismäärä ovat lain mukaisia lukuja. Korko ja remontin hinta ovat sinun arviosi — laskuri ei keksi niitä puolestasi.</p>
+    <p>Tämä ei ole pankin tarjous eikä sijoitusneuvontaa. Se on lähtökohta, jonka voit viedä mukaasi.</p>
   </div>
 
   <div class="sanasto">
@@ -956,7 +963,7 @@
     const oikea = 190;
     let y = 20;
     let sivu = 1;
-    const SIVUJA_YHT = 4;
+    const SIVUJA_YHT = 3;
 
     const vihrea = [31, 162, 78];
     const tummaVihrea = [15, 61, 38];
@@ -1106,30 +1113,24 @@
       doc.text(rivitetty, vasen, y);
       y += rivitetty.length * 5.5 + 2;
     });
+    y += 6;
 
-    // ============ SIVU 2: YKSITYISKOHTAINEN ERITTELY ============
-    uusiSivu('Yksityiskohtainen erittely');
+    doc.setDrawColor(220, 220, 220);
+    doc.line(vasen, y, oikea, y);
+    y += 8;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(...tummaVihrea);
+    doc.text('Fakta vs. arvio', vasen, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...musta);
+    const faktaArvio = doc.splitTextToSize('Varainsiirtovero ja kotitalousvähennyksen enimmäismäärä ovat lain mukaisia lukuja. Korko ja remontin hinta ovat sinun arviosi.', 165);
+    doc.text(faktaArvio, vasen, y);
 
-    otsikko('Syötetyt tiedot');
-    if (el('sisallytaAsuntokauppa').checked) {
-      rivi('Velaton kauppahinta', fmt(parseFloat(el('hinta').value) || 0));
-      rivi('Kohteen tyyppi', el('tyyppi').options[el('tyyppi').selectedIndex].text);
-    }
-    if (el('sisallytaRemontti').checked) {
-      rivi('Remontin työn osuus', fmt(parseFloat(el('tyoOsuus').value) || 0));
-      rivi('Remontin materiaalit', fmt(parseFloat(el('materiaali').value) || 0));
-      rivi('Kotitalousvähennyksen peruste', lakiTila === 'nykyinen' ? 'Voimassa oleva laki' : 'Esitetty muutos');
-    }
-    if (el('myynVanhan').checked) {
-      rivi('Vanhan asunnon myyntihinta', fmt(parseFloat(el('vanhaMyyntihinta').value) || 0));
-      rivi('Vanhan asuntolainan saldo', fmt(parseFloat(el('vanhaLaina').value) || 0));
-      rivi('Välittäjän palkkio', fmt(parseFloat(el('valittajanPalkkio').value) || 0));
-    }
-    rivi('Omat säästöt', fmt(parseFloat(el('omatSaastot').value) || 0));
-    rivi('Lainan korko', el('korko').value + ' %');
-    rivi('Laina-aika', el('lainaAika').value + ' vuotta');
-    rivi('Valittu lainatyyppi', lainatyyppiTila.charAt(0).toUpperCase() + lainatyyppiTila.slice(1));
-    y += 4;
+    // ============ SIVU 2: ERITTELY, LAINATYYPIT & HERKKYYS ============
+    uusiSivu('Erittely, lainatyypit & herkkyys');
 
     otsikko('Tulokset');
     rivi('Varainsiirtovero', el('varainsiirto').textContent);
@@ -1154,9 +1155,7 @@
       taulukkoRivi(['Bulletti', eur(el('vBulAlku').textContent), eur(el('vBulLoppu').textContent), eur(el('vBulKorko').textContent), eur(el('vBulYht').textContent)], xt, lainatyyppiTila === 'bulletti');
     }
 
-    // ============ SIVU 3: SKENAARIOT & HERKKYYS ============
-    uusiSivu('Skenaariot & herkkyysanalyysi');
-
+    // --- Herkkyys jatkuu samalla sivulla ---
     const eiLainatarvettaNyt = !el('eiLainatarvetta').classList.contains('piilotettu');
 
     if (!eiLainatarvettaNyt) {
@@ -1200,44 +1199,45 @@
       doc.text('Tässä laskelmassa ei ole rahoitustarvetta eikä remonttia, joten herkkyysanalyysiä ei tarvita.', vasen, y);
     }
 
-    // ============ SIVU 4: YLEISTÄ TIETOA ============
-    uusiSivu('Yleistä tietoa');
+    // ============ SIVU 3: OLETUKSET & KYSYMYKSET PANKILLE ============
+    uusiSivu('Oletukset & kysymykset pankille');
 
-    otsikko('Hyödyllistä tietoa prosessista');
-    const vinkit = [
-      'Useamman lainatarjouksen pyytäminen eri pankeista on yleinen tapa löytää kilpailukykyisempi korkomarginaali.',
-      'Kotitalousvähennys saadaan vasta seuraavan vuoden verotuksessa — se ei pienennä kaupanteon hetken kassatarvetta.',
-      'Remonttibudjetit ylittyvät tyypillisesti — tämän laskelman sivun 3 herkkyysanalyysi näyttää vaikutuksen euroissa.',
-      'Varainsiirtovero maksetaan viimeistään kuuden kuukauden kuluessa kaupasta, ellei kauppakirjassa muuta sovita.'
+    otsikko('Sinun arviosi');
+    if (el('sisallytaAsuntokauppa').checked) {
+      rivi('Velaton kauppahinta', fmt(parseFloat(el('hinta').value) || 0));
+      rivi('Kohteen tyyppi', el('tyyppi').options[el('tyyppi').selectedIndex].text);
+    }
+    if (el('sisallytaRemontti').checked) {
+      rivi('Remontin työn osuus', fmt(parseFloat(el('tyoOsuus').value) || 0));
+      rivi('Remontin materiaalit', fmt(parseFloat(el('materiaali').value) || 0));
+      rivi('Kotitalousvähennyksen peruste', lakiTila === 'nykyinen' ? 'Voimassa oleva laki' : 'Esitetty muutos');
+    }
+    if (el('myynVanhan').checked) {
+      rivi('Vanhan asunnon myyntihinta', fmt(parseFloat(el('vanhaMyyntihinta').value) || 0));
+      rivi('Vanhan asuntolainan saldo', fmt(parseFloat(el('vanhaLaina').value) || 0));
+      rivi('Välittäjän palkkio', fmt(parseFloat(el('valittajanPalkkio').value) || 0));
+    }
+    rivi('Omat säästöt', fmt(parseFloat(el('omatSaastot').value) || 0));
+    rivi('Lainan korko', el('korko').value + ' %');
+    rivi('Laina-aika', el('lainaAika').value + ' vuotta');
+    rivi('Valittu lainatyyppi', lainatyyppiTila.charAt(0).toUpperCase() + lainatyyppiTila.slice(1));
+    y += 8;
+
+    otsikko('Kysymykset vietäväksi pankkiin');
+    const kysymykset = [
+      'Mikä on todellinen marginaalinne tällä summalla ja vakuudella?',
+      'Miten lyhennysvapaat vaikuttaisivat kokonaiskorkoon?',
+      'Mikä osa lainaehdoista on neuvoteltavissa?'
     ];
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9.5);
     doc.setTextColor(...musta);
-    vinkit.forEach(v => {
-      const rivitetty = doc.splitTextToSize('•  ' + v, 165);
+    kysymykset.forEach(k => {
+      const rivitetty = doc.splitTextToSize('—  ' + k, 165);
       doc.text(rivitetty, vasen, y);
       y += rivitetty.length * 5.5 + 3;
     });
-    y += 6;
-
-    otsikko('Sanasto');
-    const sanasto = [
-      ['Annuiteettilaina', 'Kuukausierä pysyy samana koko laina-ajan.'],
-      ['Tasalyhennyslaina', 'Lyhennysosuus pysyy samana, erä pienenee ajan myötä.'],
-      ['Kotitalousvähennys', 'Verohyöty kotiin teetetystä työstä, ei materiaaleista.'],
-      ['Varainsiirtovero', 'Kertaluonteinen vero asunnon tai kiinteistön kaupasta.']
-    ];
-    doc.setFontSize(9);
-    sanasto.forEach(([termi, selitys]) => {
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(...tummaVihrea);
-      doc.text(termi + ':', vasen, y);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(...musta);
-      doc.text(selitys, vasen + 42, y, { maxWidth: 128 });
-      y += 6.5;
-    });
-    y += 8;
+    y += 10;
 
     doc.setDrawColor(220, 220, 220);
     doc.line(vasen, y, oikea, y);
