@@ -6,6 +6,12 @@
 <title>Klaara — arjen laskurit ilman myyntipuhetta</title>
 <meta name="description" content="Kauppahinta ei ole kokonaishinta. Ilmaiset laskurit asuntokauppaan, lainaan, autoon ja sopimuksiin. Ei tiliä, ei tuotesuosituksia.">
 <link rel="canonical" href="https://klaaralaskuri.fi/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fi_FI">
+<meta property="og:site_name" content="Klaara">
+<meta property="og:url" content="https://klaaralaskuri.fi/">
+<meta property="og:title" content="Klaara — arjen laskurit ilman myyntipuhetta">
+<meta property="og:description" content="Kauppahinta ei ole kokonaishinta. Ilmaiset laskurit asuntokauppaan, lainaan, autoon ja sopimuksiin. Ei tiliä, ei tuotesuosituksia.">
 <meta name="robots" content="index,follow">
 
 <link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-v2-16.png">
@@ -70,9 +76,13 @@
       <h1>Arjen ongelmat, ratkaistavaksi tehtynä.</h1>
       <p>Ilmaisia laskureita ilman myyntipuhetta. Fakta ja arvio pidetään erillään.</p>
       <a class="fresh-badge" href="remontti-asuntokauppa.html">Avaa asuntolaskuri →</a>
+      <div class="klaara-leima" style="margin-top:16px;">
+        <div class="kl-rivi1">FAKTA ≠ ARVIO</div>
+        <div class="kl-rivi2">0 € ruudulla</div>
+      </div>
     </div>
     <div class="hero-mockup-kehys">
-      <div class="hero-mockup" id="heroAnimKortti" role="button" tabindex="0" aria-label="Esimerkkilaskelma: 285 000 euron asunto, varainsiirtovero ja remontti yhteensä 301 675 euroa. Paina näyttääksesi lopputuloksen heti.">
+      <div class="hero-mockup">
         <div class="hero-mockup-chrome">
           <span class="hero-mockup-dot"></span>
           <span class="hero-mockup-dot"></span>
@@ -80,26 +90,8 @@
           <span class="hero-mockup-osoite">klaaralaskuri.fi</span>
         </div>
         <div class="hero-anim-sisalto">
-          <div class="hero-anim-summa" id="heroAnimSumma">285 000 €</div>
-          <div class="hero-anim-kerrokset">
-            <div class="hero-anim-kerros k01" id="heroKerros01">
-              <span class="ha-tagi">01 FAKTA</span>
-              <span class="ha-nimi">Velaton kauppahinta</span>
-              <span class="ha-arvo">285 000 €</span>
-            </div>
-            <div class="hero-anim-kerros k02" id="heroKerros02">
-              <span class="ha-tagi">02 FAKTA</span>
-              <span class="ha-nimi">Varainsiirtovero 1,5 %</span>
-              <span class="ha-arvo">4 275 €</span>
-            </div>
-            <div class="hero-anim-kerros k03" id="heroKerros03">
-              <span class="ha-tagi">03 ARVIO</span>
-              <span class="ha-nimi">Remontin netto</span>
-              <span class="ha-arvo">12 400 €</span>
-            </div>
-          </div>
+          <div class="hero-anim-summa" id="heroAnimSumma">301 675 €</div>
           <div class="hero-anim-selite">Velaton + vero + remontin netto</div>
-          <a class="hero-anim-linkki" id="heroAnimLinkki" href="remontti-asuntokauppa.html" tabindex="-1">Kokeile omilla luvuilla →</a>
         </div>
       </div>
     </div>
@@ -231,13 +223,22 @@
   </div>
 
   <footer class="alatunniste">
-    <div class="footeri-linkit" style="width:100%; display:flex; gap:18px; flex-wrap:wrap; margin-bottom:14px; font-size:13px;">
-      <a href="talouden-vuosikello.html" style="color:var(--muste-2);">Vuosikello</a>
-      <a href="esimerkit.html" style="color:var(--muste-2);">Esimerkit</a>
-      <a href="sanasto.html" style="color:var(--muste-2);">Sanasto</a>
+    <div class="colophon-rivi">
+      <div class="colophon-vasen">
+        <strong>Klaara</strong>
+        <span>klaaralaskuri.fi</span>
+        </div>
+      <div class="colophon-keski">
+        <a href="talouden-vuosikello.html">Vuosikello</a>
+        <a href="esimerkit.html">Esimerkit</a>
+        <a href="sanasto.html">Sanasto</a>
+      </div>
+      <div class="colophon-oikea">
+        <span>Tiedot 8/2026</span>
+        <span>Laskelmat suuntaa-antavia</span>
+      </div>
     </div>
-    <span>Klaara — arjen laskurit, selkeästi.</span>
-    <span>Tiedot päivitetty 20.8.2026</span>
+    <div class="colophon-alarivi">Ei tiliä · ei suositusta</div>
   </footer>
 
 </div>

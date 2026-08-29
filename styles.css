@@ -580,14 +580,8 @@ header.brandi {
   box-shadow: 0 35px 60px -20px rgba(0,0,0,0.45), 0 15px 25px -12px rgba(0,0,0,0.3);
   border: 1px solid rgba(255,255,255,0.12);
   background: var(--paneeli);
-  transition: transform 0.4s ease, box-shadow 0.3s ease;
   position: relative;
-  cursor: pointer;
 }
-.hero-mockup.hero-glow {
-  box-shadow: 0 0 0 3px rgba(90,79,207,0.35), 0 35px 60px -20px rgba(0,0,0,0.45), 0 15px 25px -12px rgba(0,0,0,0.3);
-}
-.hero-mockup:focus-visible { outline: 2px solid var(--violetti); outline-offset: 3px; }
 .hero-mockup-chrome {
   background: #E8EBE9;
   padding: 9px 12px;
@@ -609,78 +603,23 @@ header.brandi {
   color: var(--muste-hiljainen);
   margin-left: 6px;
 }
-.hero-anim-sisalto { padding: 20px 22px 18px; }
+.hero-anim-sisalto { padding: 26px 24px 24px; }
 
 .hero-anim-summa {
   font-family: 'Fraunces', serif;
   font-weight: 700;
-  font-size: clamp(26px, 4vw, 34px);
+  font-size: clamp(30px, 4.5vw, 40px);
   color: var(--muste);
-  margin-bottom: 16px;
-  font-variant-numeric: tabular-nums;
-}
-
-.hero-anim-kerrokset {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  margin-bottom: 14px;
-}
-
-.hero-anim-kerros {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: 8px;
-  opacity: 0;
-  transform: translateX(-14px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.hero-anim-kerros.nakyvissa { opacity: 1; transform: translateX(0); }
-.hero-anim-kerros.k01 { background: var(--violetti-3); color: #F3F4F6; }
-.hero-anim-kerros.k02 { background: var(--violetti); color: #F3F4F6; }
-.hero-anim-kerros.k03 { background: var(--cta); color: var(--muste); }
-
-.ha-tagi {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9.5px;
-  font-weight: 700;
-  opacity: 0.75;
-  flex-shrink: 0;
-}
-.ha-nimi { font-family: 'Inter', sans-serif; font-size: 12px; flex: 1; }
-.ha-arvo {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
-  font-weight: 700;
-  white-space: nowrap;
+  margin-bottom: 10px;
   font-variant-numeric: tabular-nums;
 }
 
 .hero-anim-selite {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 12.5px;
   color: var(--muste-2);
   border-top: 1px solid var(--viiva);
-  padding-top: 10px;
-}
-
-.hero-anim-linkki {
-  display: block;
-  margin-top: 12px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--violetti-2);
-  text-decoration: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-.hero-anim-linkki.nakyvissa { opacity: 1; }
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-anim-kerros, .hero-anim-linkki, .hero-mockup { transition: none; }
+  padding-top: 12px;
 }
 
 /* ---------- Takaisin-linkki työkalusivuilla ---------- */
@@ -1879,4 +1818,84 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
 .tehtavakortti.himmea { opacity: 0; }
 @media (prefers-reduced-motion: no-preference) {
   .tehtavakortti { transition: opacity 0.15s ease; }
+}
+
+/* ============================================
+   KLAARA-LEIMA — pieni luottamusleima
+   ============================================ */
+
+.klaara-leima {
+  display: inline-block;
+  background: var(--paneeli);
+  border: 1px solid var(--viiva);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.klaara-leima .kl-rivi1 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muste);
+  font-weight: 600;
+}
+.klaara-leima .kl-rivi2 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muste-2);
+  margin-top: 3px;
+}
+
+/* ============================================
+   COLOPHON-FOOTER
+   ============================================ */
+
+footer.alatunniste {
+  margin-top: 46px;
+  padding-top: 24px;
+  border-top: 1px solid var(--viiva);
+  display: block;
+}
+.colophon-rivi {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.colophon-vasen, .colophon-oikea { display: flex; flex-direction: column; gap: 6px; }
+.colophon-vasen strong {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: var(--muste);
+}
+.colophon-vasen span, .colophon-oikea span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: var(--muste-2);
+}
+.colophon-vasen .klaara-leima { margin-top: 6px; }
+.colophon-keski {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  font-size: 13px;
+}
+.colophon-keski a { color: var(--muste-2); text-decoration: none; }
+.colophon-keski a:hover { color: var(--violetti-2); }
+.colophon-oikea { text-align: right; align-items: flex-end; }
+
+.colophon-alarivi {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muste-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-top: 1px solid var(--viiva);
+  padding-top: 14px;
+}
+
+@media (max-width: 640px) {
+  .colophon-rivi { flex-direction: column; gap: 16px; }
+  .colophon-oikea { text-align: left; align-items: flex-start; }
 }
