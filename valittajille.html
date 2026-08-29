@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klaara välittäjille — pankkikooste asiakkaallesi | Klaara</title>
+<meta name="description" content="Lähetä asiakkaallesi valmiiksi laskettu kustannuskooste toimistosi nimellä. 99 €/kk, 14 päivää ilmaiseksi.">
+
+<link rel="icon" type="image/png" sizes="16x16" href="assets/klaara-favicon-v2-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/klaara-favicon-v2-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/klaara-favicon-v2-48.png">
+<link rel="apple-touch-icon" href="assets/klaara-app-ikoni-v2-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "bb1408a8d9e04e7c8e98181255a5ccec"}'></script><!-- End Cloudflare Web Analytics -->
+<style>
+  .hyoty-rivi { display: flex; gap: 16px; padding: 18px 0; border-top: 1px solid var(--viiva); }
+  .hyoty-rivi:first-of-type { border-top: none; }
+  .hyoty-numero {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 999px;
+    background: var(--hiljainen); color: var(--violetti-2);
+    font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vertailu-2sar {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px;
+  }
+  @media (max-width: 640px) { .vertailu-2sar { grid-template-columns: 1fr; } }
+  .vertailu-lohko {
+    background: var(--paneeli); border: 1px solid var(--viiva);
+    border-radius: 14px; padding: 20px 22px;
+  }
+  .vertailu-lohko h3 {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--muste-2); margin: 0 0 10px;
+  }
+  .hinta-laatikko {
+    background: linear-gradient(155deg, var(--violetti-3), var(--violetti-2));
+    border-radius: 14px; padding: 30px; text-align: center; margin: 24px 0;
+  }
+  .hinta-iso {
+    font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: #fff;
+    font-size: 40px; line-height: 1;
+  }
+  .hinta-selite { color: #F3F4F6; font-size: 13px; margin-top: 8px; }
+  .kiinnostus-lomake {
+    background: var(--paneeli); border: 1px solid var(--viiva); border-radius: 14px;
+    padding: 22px; margin-top: 16px; text-align: center;
+  }
+  .kiinnostus-lomake input[type="email"] {
+    width: 100%; max-width: 320px; padding: 11px 14px; border: 1px solid var(--viiva);
+    border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 14px; margin: 12px 0;
+  }
+  .kiinnostus-nappi {
+    background: var(--cta); color: var(--muste); border: none;
+    font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 12.5px;
+    text-transform: uppercase; padding: 12px 24px; border-radius: 8px; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="kehys">
+
+  <header class="brandi">
+    <div class="merkki-ryhma">
+      <a class="merkki" href="index.html">
+        <span class="merkki-symboli"><img src="assets/klaara-merkki-v2.svg" alt="Klaara-logo"></span>
+        <span class="merkki-nimi">Klaara</span>
+      </a>
+      <div class="merkki-tagline">arjen ratkaisut — selkeästi</div>
+    </div>
+    <button class="hampurilainen" id="hampurilainenNappi" aria-label="Avaa valikko" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <nav class="paanavi">
+    <a href="index.html">Etusivu</a>
+    <a href="ajankohtaista.html">Ajankohtaista</a>
+    <a href="talouden-vuosikello.html">Vuosikello</a>
+    <a href="esimerkit.html">Esimerkit</a>
+    <a href="sanasto.html">Sanasto</a>
+    <a href="ukk.html">UKK</a>
+  </nav>
+
+  <div class="mobiilivalikko-scrim" id="mobiilivalikkoScrim"></div>
+  <div class="mobiilivalikko" id="mobiilivalikko">
+    <div class="mobiilivalikko-yla">
+      <span class="mobiilivalikko-otsikko">Valikko</span>
+      <button class="mobiilivalikko-sulje" id="mobiilivalikkoSulje" aria-label="Sulje valikko">&times;</button>
+    </div>
+    <nav class="mobiilivalikko-linkit">
+      <a href="index.html">Etusivu</a>
+      <a href="ajankohtaista.html">Ajankohtaista</a>
+      <a href="talouden-vuosikello.html">Vuosikello</a>
+      <a href="esimerkit.html">Esimerkit</a>
+      <a href="sanasto.html">Sanasto</a>
+      <a href="ukk.html">UKK</a>
+    </nav>
+  </div>
+
+  <div class="hero hero-fresh">
+    <div class="hero-teksti">
+      <h1>Yksi linkki asiakkaallesi. Ei enää selitystä Excelin ääressä.</h1>
+      <p>Klaara-kooste kertoo kauppahinnan, varainsiirtoveron, remontin ja lainaerän — toimistosi nimellä, ennen näyttöä.</p>
+    </div>
+  </div>
+
+  <div class="paneeli" style="margin-bottom:24px;">
+    <h2 style="margin-top:0;">Kolme hyötyä</h2>
+
+    <div class="hyoty-rivi">
+      <div class="hyoty-numero">1</div>
+      <div>Lähetät kohteen luvut valmiiksi laskettuna — ei tarvitse selittää varainsiirtoveroa puhelimessa uudestaan.</div>
+    </div>
+    <div class="hyoty-rivi">
+      <div class="hyoty-numero">2</div>
+      <div>Asiakas näkee kokonaiskustannuksen ennen näyttöä, ei vasta tarjouksen jälkeen.</div>
+    </div>
+    <div class="hyoty-rivi">
+      <div class="hyoty-numero">3</div>
+      <div>Kooste kantaa toimistosi nimeä jokaisessa asiakaskohtaamisessa, ei kolmannen osapuolen brändiä.</div>
+    </div>
+  </div>
+
+  <div class="hinta-laatikko">
+    <div class="hinta-iso">99 € / kk</div>
+    <div class="hinta-selite">14 päivää ilmaiseksi. Ei sitoutumista.</div>
+  </div>
+
+  <div class="vertailu-2sar">
+    <div class="vertailu-lohko">
+      <h3>Mitä asiakas näkee</h3>
+      <p style="margin:0; font-size:14px; line-height:1.6;">Saman laskelman kuin kuka tahansa ilmaiseksi — vain ulkoasu on toimistosi näköinen.</p>
+    </div>
+    <div class="vertailu-lohko">
+      <h3>Mitä välittäjä saa</h3>
+      <p style="margin:0; font-size:14px; line-height:1.6;">Oman logon koosteeseen, ja mahdollisuuden lähettää se suoraan linkkinä ennen näyttöä. Ei erillistä, "parempaa" laskentaa maksaville — luvut ovat samat kaikille.</p>
+    </div>
+  </div>
+
+  <div class="kiinnostus-lomake">
+    <strong>Palvelu ei ole vielä avoinna tilattavaksi.</strong>
+    <div style="font-size:13px; color:var(--muste-2); margin-top:4px;">Jätä sähköpostisi, niin ilmoitamme kun välittäjäversio julkaistaan.</div>
+    <form onsubmit="return false;">
+      <input type="email" placeholder="etunimi@valitystoimisto.fi" required>
+      <div><button type="submit" class="kiinnostus-nappi">ILMOITA KIINNOSTUKSENI</button></div>
+    </form>
+  </div>
+
+  <div class="vastuuvapaus">
+    <strong>Ei vielä käytössä.</strong> Tämä sivu kuvaa suunnitellun palvelun — maksujärjestelmä ja välittäjätilit eivät ole vielä toiminnassa. Hinta ja ehdot voivat muuttua ennen julkaisua.
+  </div>
+
+  <footer class="alatunniste">
+    <span>Klaara — arjen ratkaisut, selkeästi.</span>
+    <span>Tiedot päivitetty 29.8.2026</span>
+  </footer>
+
+</div>
+
+<script src="assets/nav.js"></script>
+<script src="assets/scroll-efektit.js"></script>
+</body>
+</html>
