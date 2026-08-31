@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /valittajille.html
+
+Sitemap: https://klaaralaskuri.fi/sitemap.xml

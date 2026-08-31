@@ -1600,7 +1600,7 @@ details.lisaasetukset .lisaasetukset-sisalto { margin-top: 16px; }
   .runko { display: block; }
   .tulos-paneeli { max-width: 100%; }
 
-  #tulostusOtsikko h1 {
+  #tulostusOtsikko h2 {
     font-family: 'Fraunces', serif; font-weight: 600;
     font-size: 26px; margin: 0 0 4px; color: #000;
   }
